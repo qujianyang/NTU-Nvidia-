@@ -1,0 +1,9 @@
+# Core Dependencies
+pymupdf4llm==0.0.17      # Fast PDF to markdown conversion
+pymupdf==1.24.10          # PDF processing fallback
+pydantic==2.5.0           # Data validation and schemas
+python-dotenv==1.0.0      # Environment configuration
+# Optional Dependencies (uncomment if needed)
+# sentence-transformers==2.2.2  # For embeddings
+# numpy==1.24.3                  # For numerical operations
+# streamlit==1.29.0              # For web vi
