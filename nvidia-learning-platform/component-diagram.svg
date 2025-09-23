@@ -1,0 +1,345 @@
+<svg width="1400" height="900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="techGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Patterns -->
+    <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#333" />
+    </pattern>
+
+    <!-- Filters -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Arrow markers -->
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#10b981" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1400" height="900" fill="#0a0a0a"/>
+  <rect width="1400" height="900" fill="url(#dots)" opacity="0.3"/>
+
+  <!-- Title Section -->
+  <text x="700" y="40" font-family="Arial Black, sans-serif" font-size="32" fill="#10b981" text-anchor="middle" filter="url(#glow)">
+    Component Architecture Diagram
+  </text>
+  <text x="700" y="65" font-family="monospace" font-size="14" fill="#666" text-anchor="middle">
+    NVIDIA Learning Platform - Detailed Component View
+  </text>
+
+  <!-- Frontend Components Section -->
+  <g id="frontend-section">
+    <rect x="50" y="100" width="400" height="350" rx="10" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="5,5" opacity="0.8"/>
+    <text x="60" y="125" font-family="monospace" font-size="18" font-weight="bold" fill="#10b981">FRONTEND COMPONENTS</text>
+
+    <!-- Pathway Visualizer -->
+    <g id="pathway-viz">
+      <rect x="70" y="150" width="360" height="120" rx="8" fill="#1a1a1a" stroke="#10b981" stroke-width="1.5"/>
+      <text x="250" y="175" font-family="Arial" font-size="14" font-weight="bold" fill="#10b981" text-anchor="middle">Pathway Visualizer</text>
+
+      <rect x="80" y="190" width="100" height="30" rx="4" fill="#0f766e" opacity="0.8"/>
+      <text x="130" y="208" font-family="monospace" font-size="10" fill="white" text-anchor="middle">D3.ForceGraph</text>
+
+      <rect x="190" y="190" width="100" height="30" rx="4" fill="#0f766e" opacity="0.8"/>
+      <text x="240" y="208" font-family="monospace" font-size="10" fill="white" text-anchor="middle">CourseNode</text>
+
+      <rect x="300" y="190" width="100" height="30" rx="4" fill="#0f766e" opacity="0.8"/>
+      <text x="350" y="208" font-family="monospace" font-size="10" fill="white" text-anchor="middle">ProgressRing</text>
+
+      <rect x="80" y="230" width="100" height="30" rx="4" fill="#0f766e" opacity="0.8"/>
+      <text x="130" y="248" font-family="monospace" font-size="10" fill="white" text-anchor="middle">SkillFilter</text>
+
+      <rect x="190" y="230" width="100" height="30" rx="4" fill="#0f766e" opacity="0.8"/>
+      <text x="240" y="248" font-family="monospace" font-size="10" fill="white" text-anchor="middle">RoleSelector</text>
+
+      <rect x="300" y="230" width="100" height="30" rx="4" fill="#0f766e" opacity="0.8"/>
+      <text x="350" y="248" font-family="monospace" font-size="10" fill="white" text-anchor="middle">ZoomControl</text>
+    </g>
+
+    <!-- AI Assistant -->
+    <g id="ai-assistant">
+      <rect x="70" y="290" width="360" height="120" rx="8" fill="#1a1a1a" stroke="#10b981" stroke-width="1.5"/>
+      <text x="250" y="315" font-family="Arial" font-size="14" font-weight="bold" fill="#10b981" text-anchor="middle">AI Chat Assistant</text>
+
+      <rect x="80" y="330" width="100" height="30" rx="4" fill="#0f766e" opacity="0.8"/>
+      <text x="130" y="348" font-family="monospace" font-size="10" fill="white" text-anchor="middle">ChatInterface</text>
+
+      <rect x="190" y="330" width="100" height="30" rx="4" fill="#0f766e" opacity="0.8"/>
+      <text x="240" y="348" font-family="monospace" font-size="10" fill="white" text-anchor="middle">MessageList</text>
+
+      <rect x="300" y="330" width="100" height="30" rx="4" fill="#0f766e" opacity="0.8"/>
+      <text x="350" y="348" font-family="monospace" font-size="10" fill="white" text-anchor="middle">ContextPanel</text>
+
+      <rect x="80" y="370" width="100" height="30" rx="4" fill="#0f766e" opacity="0.8"/>
+      <text x="130" y="388" font-family="monospace" font-size="10" fill="white" text-anchor="middle">QuickPrompts</text>
+
+      <rect x="190" y="370" width="100" height="30" rx="4" fill="#0f766e" opacity="0.8"/>
+      <text x="240" y="388" font-family="monospace" font-size="10" fill="white" text-anchor="middle">Markdown</text>
+
+      <rect x="300" y="370" width="100" height="30" rx="4" fill="#0f766e" opacity="0.8"/>
+      <text x="350" y="388" font-family="monospace" font-size="10" fill="white" text-anchor="middle">Suggestions</text>
+    </g>
+  </g>
+
+  <!-- API Layer Section -->
+  <g id="api-section">
+    <rect x="500" y="100" width="400" height="350" rx="10" fill="none" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,5" opacity="0.8"/>
+    <text x="510" y="125" font-family="monospace" font-size="18" font-weight="bold" fill="#3b82f6">API ENDPOINTS</text>
+
+    <!-- REST Endpoints -->
+    <g id="rest-endpoints">
+      <rect x="520" y="150" width="360" height="280" rx="8" fill="#1a1a1a" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="700" y="175" font-family="Arial" font-size="14" font-weight="bold" fill="#3b82f6" text-anchor="middle">RESTful Services</text>
+
+      <!-- Course Endpoints -->
+      <g id="course-endpoints">
+        <rect x="530" y="190" width="165" height="100" rx="4" fill="#1e3a8a" opacity="0.8"/>
+        <text x="612" y="210" font-family="monospace" font-size="11" font-weight="bold" fill="white" text-anchor="middle">Course API</text>
+        <text x="540" y="230" font-family="monospace" font-size="9" fill="#93c5fd">GET /courses</text>
+        <text x="540" y="245" font-family="monospace" font-size="9" fill="#93c5fd">GET /courses/:id</text>
+        <text x="540" y="260" font-family="monospace" font-size="9" fill="#93c5fd">POST /courses/filter</text>
+        <text x="540" y="275" font-family="monospace" font-size="9" fill="#93c5fd">GET /prerequisites/:id</text>
+      </g>
+
+      <!-- User Endpoints -->
+      <g id="user-endpoints">
+        <rect x="705" y="190" width="165" height="100" rx="4" fill="#1e3a8a" opacity="0.8"/>
+        <text x="787" y="210" font-family="monospace" font-size="11" font-weight="bold" fill="white" text-anchor="middle">User API</text>
+        <text x="715" y="230" font-family="monospace" font-size="9" fill="#93c5fd">POST /auth/login</text>
+        <text x="715" y="245" font-family="monospace" font-size="9" fill="#93c5fd">GET /profile</text>
+        <text x="715" y="260" font-family="monospace" font-size="9" fill="#93c5fd">PUT /profile/update</text>
+        <text x="715" y="275" font-family="monospace" font-size="9" fill="#93c5fd">POST /skills/add</text>
+      </g>
+
+      <!-- Progress Endpoints -->
+      <g id="progress-endpoints">
+        <rect x="530" y="300" width="165" height="100" rx="4" fill="#1e3a8a" opacity="0.8"/>
+        <text x="612" y="320" font-family="monospace" font-size="11" font-weight="bold" fill="white" text-anchor="middle">Progress API</text>
+        <text x="540" y="340" font-family="monospace" font-size="9" fill="#93c5fd">GET /progress/user</text>
+        <text x="540" y="355" font-family="monospace" font-size="9" fill="#93c5fd">POST /progress/update</text>
+        <text x="540" y="370" font-family="monospace" font-size="9" fill="#93c5fd">GET /analytics</text>
+        <text x="540" y="385" font-family="monospace" font-size="9" fill="#93c5fd">POST /complete/:id</text>
+      </g>
+
+      <!-- AI Endpoints -->
+      <g id="ai-endpoints">
+        <rect x="705" y="300" width="165" height="100" rx="4" fill="#1e3a8a" opacity="0.8"/>
+        <text x="787" y="320" font-family="monospace" font-size="11" font-weight="bold" fill="white" text-anchor="middle">AI API</text>
+        <text x="715" y="340" font-family="monospace" font-size="9" fill="#93c5fd">POST /chat</text>
+        <text x="715" y="355" font-family="monospace" font-size="9" fill="#93c5fd">POST /recommend</text>
+        <text x="715" y="370" font-family="monospace" font-size="9" fill="#93c5fd">GET /paths/generate</text>
+        <text x="715" y="385" font-family="monospace" font-size="9" fill="#93c5fd">POST /analyze/skills</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Backend Services Section -->
+  <g id="backend-section">
+    <rect x="950" y="100" width="400" height="350" rx="10" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="5,5" opacity="0.8"/>
+    <text x="960" y="125" font-family="monospace" font-size="18" font-weight="bold" fill="#8b5cf6">BACKEND SERVICES</text>
+
+    <!-- Core Services -->
+    <g id="core-services">
+      <rect x="970" y="150" width="360" height="120" rx="8" fill="#1a1a1a" stroke="#8b5cf6" stroke-width="1.5"/>
+      <text x="1150" y="175" font-family="Arial" font-size="14" font-weight="bold" fill="#8b5cf6" text-anchor="middle">Core Business Logic</text>
+
+      <rect x="980" y="190" width="105" height="30" rx="4" fill="#581c87" opacity="0.8"/>
+      <text x="1032" y="208" font-family="monospace" font-size="9" fill="white" text-anchor="middle">CourseService</text>
+
+      <rect x="1095" y="190" width="105" height="30" rx="4" fill="#581c87" opacity="0.8"/>
+      <text x="1147" y="208" font-family="monospace" font-size="9" fill="white" text-anchor="middle">UserService</text>
+
+      <rect x="1210" y="190" width="105" height="30" rx="4" fill="#581c87" opacity="0.8"/>
+      <text x="1262" y="208" font-family="monospace" font-size="9" fill="white" text-anchor="middle">ProgressService</text>
+
+      <rect x="980" y="230" width="105" height="30" rx="4" fill="#581c87" opacity="0.8"/>
+      <text x="1032" y="248" font-family="monospace" font-size="9" fill="white" text-anchor="middle">PathGenerator</text>
+
+      <rect x="1095" y="230" width="105" height="30" rx="4" fill="#581c87" opacity="0.8"/>
+      <text x="1147" y="248" font-family="monospace" font-size="9" fill="white" text-anchor="middle">RecommendEngine</text>
+
+      <rect x="1210" y="230" width="105" height="30" rx="4" fill="#581c87" opacity="0.8"/>
+      <text x="1262" y="248" font-family="monospace" font-size="9" fill="white" text-anchor="middle">AnalyticsEngine</text>
+    </g>
+
+    <!-- AI Services -->
+    <g id="ai-services">
+      <rect x="970" y="290" width="360" height="120" rx="8" fill="#1a1a1a" stroke="#8b5cf6" stroke-width="1.5"/>
+      <text x="1150" y="315" font-family="Arial" font-size="14" font-weight="bold" fill="#8b5cf6" text-anchor="middle">AI & ML Services</text>
+
+      <rect x="980" y="330" width="105" height="30" rx="4" fill="#581c87" opacity="0.8"/>
+      <text x="1032" y="348" font-family="monospace" font-size="9" fill="white" text-anchor="middle">LangChain</text>
+
+      <rect x="1095" y="330" width="105" height="30" rx="4" fill="#581c87" opacity="0.8"/>
+      <text x="1147" y="348" font-family="monospace" font-size="9" fill="white" text-anchor="middle">OpenAI Client</text>
+
+      <rect x="1210" y="330" width="105" height="30" rx="4" fill="#581c87" opacity="0.8"/>
+      <text x="1262" y="348" font-family="monospace" font-size="9" fill="white" text-anchor="middle">VectorStore</text>
+
+      <rect x="980" y="370" width="105" height="30" rx="4" fill="#581c87" opacity="0.8"/>
+      <text x="1032" y="388" font-family="monospace" font-size="9" fill="white" text-anchor="middle">PromptTemplates</text>
+
+      <rect x="1095" y="370" width="105" height="30" rx="4" fill="#581c87" opacity="0.8"/>
+      <text x="1147" y="388" font-family="monospace" font-size="9" fill="white" text-anchor="middle">Memory</text>
+
+      <rect x="1210" y="370" width="105" height="30" rx="4" fill="#581c87" opacity="0.8"/>
+      <text x="1262" y="388" font-family="monospace" font-size="9" fill="white" text-anchor="middle">Embeddings</text>
+    </g>
+  </g>
+
+  <!-- Data Layer -->
+  <g id="data-layer">
+    <rect x="50" y="480" width="1300" height="150" rx="10" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,5" opacity="0.8"/>
+    <text x="60" y="505" font-family="monospace" font-size="18" font-weight="bold" fill="#f59e0b">DATA LAYER</text>
+
+    <!-- PostgreSQL -->
+    <g id="postgres">
+      <rect x="70" y="520" width="300" height="90" rx="8" fill="#1a1a1a" stroke="#10b981" stroke-width="1.5"/>
+      <text x="220" y="545" font-family="Arial" font-size="14" font-weight="bold" fill="#10b981" text-anchor="middle">PostgreSQL (Prisma ORM)</text>
+
+      <text x="80" y="565" font-family="monospace" font-size="10" fill="#4ade80">• courses</text>
+      <text x="80" y="580" font-family="monospace" font-size="10" fill="#4ade80">• users</text>
+      <text x="80" y="595" font-family="monospace" font-size="10" fill="#4ade80">• progress</text>
+
+      <text x="180" y="565" font-family="monospace" font-size="10" fill="#4ade80">• learning_paths</text>
+      <text x="180" y="580" font-family="monospace" font-size="10" fill="#4ade80">• prerequisites</text>
+      <text x="180" y="595" font-family="monospace" font-size="10" fill="#4ade80">• skills</text>
+
+      <text x="280" y="565" font-family="monospace" font-size="10" fill="#4ade80">• conversations</text>
+      <text x="280" y="580" font-family="monospace" font-size="10" fill="#4ade80">• messages</text>
+      <text x="280" y="595" font-family="monospace" font-size="10" fill="#4ade80">• analytics</text>
+    </g>
+
+    <!-- Redis Cache -->
+    <g id="redis">
+      <rect x="400" y="520" width="200" height="90" rx="8" fill="#1a1a1a" stroke="#ef4444" stroke-width="1.5"/>
+      <text x="500" y="545" font-family="Arial" font-size="14" font-weight="bold" fill="#ef4444" text-anchor="middle">Redis Cache</text>
+
+      <text x="410" y="565" font-family="monospace" font-size="10" fill="#f87171">• Session Store</text>
+      <text x="410" y="580" font-family="monospace" font-size="10" fill="#f87171">• API Cache</text>
+      <text x="410" y="595" font-family="monospace" font-size="10" fill="#f87171">• Rate Limiting</text>
+    </g>
+
+    <!-- Vector Database -->
+    <g id="vector-db">
+      <rect x="630" y="520" width="200" height="90" rx="8" fill="#1a1a1a" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="730" y="545" font-family="Arial" font-size="14" font-weight="bold" fill="#3b82f6" text-anchor="middle">Pinecone Vector DB</text>
+
+      <text x="640" y="565" font-family="monospace" font-size="10" fill="#60a5fa">• Course Embeddings</text>
+      <text x="640" y="580" font-family="monospace" font-size="10" fill="#60a5fa">• Skill Embeddings</text>
+      <text x="640" y="595" font-family="monospace" font-size="10" fill="#60a5fa">• Chat History</text>
+    </g>
+
+    <!-- File Storage -->
+    <g id="s3">
+      <rect x="860" y="520" width="200" height="90" rx="8" fill="#1a1a1a" stroke="#8b5cf6" stroke-width="1.5"/>
+      <text x="960" y="545" font-family="Arial" font-size="14" font-weight="bold" fill="#8b5cf6" text-anchor="middle">AWS S3</text>
+
+      <text x="870" y="565" font-family="monospace" font-size="10" fill="#a78bfa">• Course Materials</text>
+      <text x="870" y="580" font-family="monospace" font-size="10" fill="#a78bfa">• User Avatars</text>
+      <text x="870" y="595" font-family="monospace" font-size="10" fill="#a78bfa">• Certificates</text>
+    </g>
+
+    <!-- Analytics DB -->
+    <g id="analytics">
+      <rect x="1090" y="520" width="240" height="90" rx="8" fill="#1a1a1a" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="1210" y="545" font-family="Arial" font-size="14" font-weight="bold" fill="#f59e0b" text-anchor="middle">Analytics (ClickHouse)</text>
+
+      <text x="1100" y="565" font-family="monospace" font-size="10" fill="#fbbf24">• User Events</text>
+      <text x="1100" y="580" font-family="monospace" font-size="10" fill="#fbbf24">• Learning Metrics</text>
+      <text x="1100" y="595" font-family="monospace" font-size="10" fill="#fbbf24">• Performance Data</text>
+    </g>
+  </g>
+
+  <!-- Communication Flows -->
+  <g id="flows">
+    <!-- Frontend to API -->
+    <path d="M 450 300 Q 475 300 500 300" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrow)" opacity="0.6"/>
+
+    <!-- API to Backend -->
+    <path d="M 900 300 Q 925 300 950 300" stroke="#3b82f6" stroke-width="2" fill="none" marker-end="url(#arrow)" opacity="0.6"/>
+
+    <!-- Backend to Data -->
+    <path d="M 1150 430 Q 1150 455 700 480" stroke="#8b5cf6" stroke-width="2" fill="none" marker-end="url(#arrow)" opacity="0.6"/>
+  </g>
+
+  <!-- Tech Stack Labels -->
+  <g id="tech-stack">
+    <rect x="50" y="660" width="1300" height="80" rx="10" fill="#1a1a1a" stroke="#666" stroke-width="1" opacity="0.8"/>
+    <text x="60" y="685" font-family="monospace" font-size="14" font-weight="bold" fill="#10b981">TECHNOLOGY STACK:</text>
+
+    <text x="60" y="710" font-family="monospace" font-size="11" fill="#888">Frontend:</text>
+    <text x="130" y="710" font-family="monospace" font-size="11" fill="#4ade80">React 18, Next.js 14, D3.js, TailwindCSS, TypeScript</text>
+
+    <text x="500" y="710" font-family="monospace" font-size="11" fill="#888">Backend:</text>
+    <text x="560" y="710" font-family="monospace" font-size="11" fill="#60a5fa">Fastify, Node.js, Prisma ORM, Zod</text>
+
+    <text x="850" y="710" font-family="monospace" font-size="11" fill="#888">AI/ML:</text>
+    <text x="900" y="710" font-family="monospace" font-size="11" fill="#a78bfa">LangChain, OpenAI GPT-4, Pinecone</text>
+
+    <text x="60" y="730" font-family="monospace" font-size="11" fill="#888">DevOps:</text>
+    <text x="120" y="730" font-family="monospace" font-size="11" fill="#f59e0b">Docker, Kubernetes, GitHub Actions, Terraform, AWS</text>
+
+    <text x="500" y="730" font-family="monospace" font-size="11" fill="#888">Monitoring:</text>
+    <text x="580" y="730" font-family="monospace" font-size="11" fill="#ef4444">Prometheus, Grafana, Sentry, DataDog</text>
+  </g>
+
+  <!-- Performance Metrics -->
+  <g id="metrics" transform="translate(50, 770)">
+    <rect x="0" y="0" width="400" height="100" rx="8" fill="#1a1a1a" stroke="#10b981" stroke-width="1" opacity="0.9"/>
+    <text x="10" y="25" font-family="monospace" font-size="14" font-weight="bold" fill="#10b981">PERFORMANCE METRICS</text>
+
+    <text x="10" y="45" font-family="monospace" font-size="11" fill="#4ade80">• Response Time: P95 &lt; 500ms</text>
+    <text x="10" y="60" font-family="monospace" font-size="11" fill="#4ade80">• Throughput: 10K req/sec</text>
+    <text x="10" y="75" font-family="monospace" font-size="11" fill="#4ade80">• Availability: 99.9% SLA</text>
+    <text x="10" y="90" font-family="monospace" font-size="11" fill="#4ade80">• Error Rate: &lt; 0.1%</text>
+
+    <text x="210" y="45" font-family="monospace" font-size="11" fill="#60a5fa">• DB Queries: &lt; 100ms</text>
+    <text x="210" y="60" font-family="monospace" font-size="11" fill="#60a5fa">• Cache Hit Rate: &gt; 90%</text>
+    <text x="210" y="75" font-family="monospace" font-size="11" fill="#60a5fa">• AI Response: &lt; 3s</text>
+    <text x="210" y="90" font-family="monospace" font-size="11" fill="#60a5fa">• Concurrent Users: 10K+</text>
+  </g>
+
+  <!-- Security & Compliance -->
+  <g id="security" transform="translate(480, 770)">
+    <rect x="0" y="0" width="400" height="100" rx="8" fill="#1a1a1a" stroke="#ef4444" stroke-width="1" opacity="0.9"/>
+    <text x="10" y="25" font-family="monospace" font-size="14" font-weight="bold" fill="#ef4444">SECURITY & COMPLIANCE</text>
+
+    <text x="10" y="45" font-family="monospace" font-size="11" fill="#f87171">• OAuth 2.0 / JWT Auth</text>
+    <text x="10" y="60" font-family="monospace" font-size="11" fill="#f87171">• HTTPS/TLS 1.3</text>
+    <text x="10" y="75" font-family="monospace" font-size="11" fill="#f87171">• API Rate Limiting</text>
+    <text x="10" y="90" font-family="monospace" font-size="11" fill="#f87171">• CORS Policy</text>
+
+    <text x="210" y="45" font-family="monospace" font-size="11" fill="#fbbf24">• Data Encryption (AES-256)</text>
+    <text x="210" y="60" font-family="monospace" font-size="11" fill="#fbbf24">• GDPR Compliant</text>
+    <text x="210" y="75" font-family="monospace" font-size="11" fill="#fbbf24">• SOC 2 Type II</text>
+    <text x="210" y="90" font-family="monospace" font-size="11" fill="#fbbf24">• PCI DSS (payments)</text>
+  </g>
+
+  <!-- Scalability -->
+  <g id="scalability" transform="translate(910, 770)">
+    <rect x="0" y="0" width="440" height="100" rx="8" fill="#1a1a1a" stroke="#8b5cf6" stroke-width="1" opacity="0.9"/>
+    <text x="10" y="25" font-family="monospace" font-size="14" font-weight="bold" fill="#8b5cf6">SCALABILITY ARCHITECTURE</text>
+
+    <text x="10" y="45" font-family="monospace" font-size="11" fill="#a78bfa">• Horizontal Pod Autoscaling</text>
+    <text x="10" y="60" font-family="monospace" font-size="11" fill="#a78bfa">• Database Read Replicas</text>
+    <text x="10" y="75" font-family="monospace" font-size="11" fill="#a78bfa">• CDN (CloudFlare)</text>
+    <text x="10" y="90" font-family="monospace" font-size="11" fill="#a78bfa">• Load Balancer (AWS ALB)</text>
+
+    <text x="230" y="45" font-family="monospace" font-size="11" fill="#10b981">• Microservices Pattern</text>
+    <text x="230" y="60" font-family="monospace" font-size="11" fill="#10b981">• Event-Driven Architecture</text>
+    <text x="230" y="75" font-family="monospace" font-size="11" fill="#10b981">• Message Queue (RabbitMQ)</text>
+    <text x="230" y="90" font-family="monospace" font-size="11" fill="#10b981">• Async Processing</text>
+  </g>
+</svg>
