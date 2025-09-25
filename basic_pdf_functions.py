@@ -12,6 +12,7 @@ def open_pdf(pdf_path):
     """
     Just open a PDF file
     """
+    pdf_path="C:\Users\qujia\QuantumKeyDistribution\NTU-Nvidia-\nvidia.pdf"
     pdf = fitz.open(pdf_path)
     return pdf
 
