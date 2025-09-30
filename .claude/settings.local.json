@@ -2,9 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(python:*)",
-      "WebFetch(domain:www.learnpython.org)"
+      "WebFetch(domain:www.learnpython.org)",
+      "WebSearch",
+      "WebFetch(domain:learn.nvidia.com)",
+      "Bash(tree:*)"
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "outputStyle": "Explanatory"
 }

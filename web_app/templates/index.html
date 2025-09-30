@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NVIDIA Course Advisor - AI Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 NVIDIA Course Advisor</h1>
+            <p>Ask me anything about NVIDIA's robotics and AI courses!</p>
+        </header>
+
+        <!-- Optional: Simple preferences -->
+        <div class="preferences-bar">
+            <label>
+                My Level:
+                <select id="user-level">
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+            </label>
+            <button onclick="savePreferences()" class="save-btn">Save Preferences</button>
+        </div>
+
+        <!-- Chat interface -->
+        <div id="chat-container">
+            <div id="chat-messages">
+                <!-- Welcome message -->
+                <div class="message bot">
+                    <strong>Advisor:</strong>
+                    <p>Hello! I can help you navigate NVIDIA's course catalog. You can ask me:</p>
+                    <ul>
+                        <li>What prerequisites do I need for [course]?</li>
+                        <li>Which courses teach [topic]?</li>
+                        <li>What's a good starting point for beginners?</li>
+                        <li>How long does [course] take?</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input area -->
+        <div class="input-area">
+            <input
+                type="text"
+                id="user-input"
+                placeholder="Ask about courses, prerequisites, learning paths..."
+                autofocus
+            >
+            <button onclick="sendMessage()" id="send-btn">Send</button>
+        </div>
+
+        <footer>
+            <small>💡 Tip: I have information about 18 NVIDIA courses including Isaac Sim, Isaac ROS, Isaac Lab, and more!</small>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
