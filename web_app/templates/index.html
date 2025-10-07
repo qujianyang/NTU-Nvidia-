@@ -4,13 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NVIDIA Course Advisor - AI Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎓 NVIDIA Course Advisor</h1>
-            <p>Ask me anything about NVIDIA's robotics and AI courses!</p>
+            <div class="header-content">
+                <h1><i class="fas fa-graduation-cap"></i> NVIDIA Course Advisor</h1>
+                <p>Ask me anything about NVIDIA's robotics and AI courses!</p>
+            </div>
+            <div class="header-status">
+                <span class="status-indicator online" id="status-indicator"></span>
+                <span id="status-text">Course Advisor Ready</span>
+            </div>
         </header>
 
         <!-- Optional: Simple preferences -->
@@ -31,7 +38,7 @@
             <div id="chat-messages">
                 <!-- Welcome message -->
                 <div class="message bot">
-                    <strong>Advisor:</strong>
+                    <strong><i class="fas fa-robot"></i> Advisor:</strong>
                     <p>Hello! I can help you navigate NVIDIA's course catalog. You can ask me:</p>
                     <ul>
                         <li>What prerequisites do I need for [course]?</li>
@@ -41,17 +48,39 @@
                     </ul>
                 </div>
             </div>
+
+            <!-- Thought Process Indicator -->
+            <div id="thought-process-container" class="thought-process-container" style="display: none;">
+                <div class="thought-process-content">
+                    <i class="fas fa-brain fa-pulse thought-process-icon"></i>
+                    <span id="thought-process-text">Processing...</span>
+                    <div class="step-dots">
+                        <span class="dot" id="dot-1"></span>
+                        <span class="dot" id="dot-2"></span>
+                        <span class="dot" id="dot-3"></span>
+                        <span class="dot" id="dot-4"></span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Input area -->
         <div class="input-area">
-            <input
-                type="text"
-                id="user-input"
-                placeholder="Ask about courses, prerequisites, learning paths..."
-                autofocus
-            >
-            <button onclick="sendMessage()" id="send-btn">Send</button>
+            <div class="input-container">
+                <input
+                    type="text"
+                    id="user-input"
+                    placeholder="Ask about courses, prerequisites, learning paths..."
+                    maxlength="500"
+                    autofocus
+                >
+                <button onclick="sendMessage()" id="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="input-footer">
+                <span id="char-counter">0/500</span>
+            </div>
         </div>
 
         <footer>

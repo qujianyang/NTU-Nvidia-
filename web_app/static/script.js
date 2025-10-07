@@ -1,15 +1,41 @@
 /**
- * Simple Chat Interface for NVIDIA Course Advisor
- * KISS Principle: Just enough JavaScript to make it work
+ * Enhanced Chat Interface for NVIDIA Course Advisor
+ * Phase 1: Professional UI with character counter and thought process
  */
 
+// Character Counter
+const userInput = document.getElementById('user-input');
+const charCounter = document.getElementById('char-counter');
+
+userInput.addEventListener('input', function() {
+    const length = this.value.length;
+    charCounter.textContent = `${length}/500`;
+
+    // Warn when approaching limit
+    if (length > 450) {
+        charCounter.classList.add('warning');
+    } else {
+        charCounter.classList.remove('warning');
+    }
+});
+
 // Send message when Enter is pressed
-document.getElementById('user-input').addEventListener('keypress', function(e) {
+userInput.addEventListener('keypress', function(e) {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         sendMessage();
     }
 });
+
+// Thought process messages
+const thoughtMessages = [
+    "Searching course catalog...",
+    "Analyzing prerequisites...",
+    "Matching your level...",
+    "Preparing recommendations..."
+];
+
+let thoughtInterval = null;
 
 // Main function to send messages
 function sendMessage() {
@@ -23,11 +49,13 @@ function sendMessage() {
 
     // Clear input and disable while processing
     input.value = '';
+    charCounter.textContent = '0/500';  // Reset character counter
+    charCounter.classList.remove('warning');
     input.disabled = true;
     document.getElementById('send-btn').disabled = true;
 
-    // Show thinking indicator
-    const thinkingId = addThinkingMessage();
+    // Show enhanced thought process
+    startThoughtProcess();
 
     // Send to backend
     fetch('/api/chat', {
@@ -39,8 +67,8 @@ function sendMessage() {
     })
     .then(response => response.json())
     .then(data => {
-        // Remove thinking indicator
-        removeThinkingMessage(thinkingId);
+        // Stop thought process
+        stopThoughtProcess();
 
         // Show bot response
         if (data.error) {
@@ -50,7 +78,7 @@ function sendMessage() {
         }
     })
     .catch(error => {
-        removeThinkingMessage(thinkingId);
+        stopThoughtProcess();
         addMessage('Sorry, I encountered a connection error. Please try again.', 'bot error');
         console.error('Error:', error);
     })
@@ -68,9 +96,15 @@ function addMessage(text, sender) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${sender}`;
 
-    // Add sender label
+    // Add sender label with icon
     const label = document.createElement('strong');
-    label.textContent = sender === 'user' ? 'You:' : 'Advisor:';
+    if (sender === 'user') {
+        label.innerHTML = '<i class="fas fa-user"></i> You:';
+    } else if (sender.includes('error')) {
+        label.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error:';
+    } else {
+        label.innerHTML = '<i class="fas fa-robot"></i> Advisor:';
+    }
     messageDiv.appendChild(label);
 
     // Add message text (handle markdown-style formatting)
@@ -84,24 +118,60 @@ function addMessage(text, sender) {
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
 
-// Add thinking indicator
-function addThinkingMessage() {
-    const messagesDiv = document.getElementById('chat-messages');
-    const thinkingDiv = document.createElement('div');
-    thinkingDiv.className = 'message bot thinking';
-    thinkingDiv.id = `thinking-${Date.now()}`;
-    thinkingDiv.innerHTML = '<strong>Advisor:</strong><div class="thinking-dots"><span>.</span><span>.</span><span>.</span></div>';
-    messagesDiv.appendChild(thinkingDiv);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    return thinkingDiv.id;
+// Enhanced Thought Process Indicator
+function startThoughtProcess() {
+    const thoughtContainer = document.getElementById('thought-process-container');
+    const thoughtText = document.getElementById('thought-process-text');
+    const dots = [
+        document.getElementById('dot-1'),
+        document.getElementById('dot-2'),
+        document.getElementById('dot-3'),
+        document.getElementById('dot-4')
+    ];
+
+    // Show the container
+    thoughtContainer.style.display = 'block';
+
+    // Start cycling through messages and dots
+    let messageIndex = 0;
+    let dotIndex = 0;
+
+    // Update first message immediately
+    thoughtText.textContent = thoughtMessages[0];
+    dots[0].classList.add('active');
+
+    thoughtInterval = setInterval(() => {
+        // Update message
+        messageIndex = (messageIndex + 1) % thoughtMessages.length;
+        thoughtText.textContent = thoughtMessages[messageIndex];
+
+        // Update dots
+        dots.forEach(dot => dot.classList.remove('active'));
+        dotIndex = (dotIndex + 1) % dots.length;
+        dots[dotIndex].classList.add('active');
+    }, 2000);
 }
 
-// Remove thinking indicator
-function removeThinkingMessage(thinkingId) {
-    const thinkingDiv = document.getElementById(thinkingId);
-    if (thinkingDiv) {
-        thinkingDiv.remove();
+function stopThoughtProcess() {
+    const thoughtContainer = document.getElementById('thought-process-container');
+    const dots = [
+        document.getElementById('dot-1'),
+        document.getElementById('dot-2'),
+        document.getElementById('dot-3'),
+        document.getElementById('dot-4')
+    ];
+
+    // Clear interval
+    if (thoughtInterval) {
+        clearInterval(thoughtInterval);
+        thoughtInterval = null;
     }
+
+    // Hide container
+    thoughtContainer.style.display = 'none';
+
+    // Reset dots
+    dots.forEach(dot => dot.classList.remove('active'));
 }
 
 // Basic message formatting (convert line breaks and basic markdown)
