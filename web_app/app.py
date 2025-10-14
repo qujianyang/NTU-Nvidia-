@@ -14,9 +14,17 @@ from rag_retriever import CourseRAGRetriever
 app = Flask(__name__)
 app.secret_key = 'dev-key-nvidia-courses-2024'  # Change in production
 
-# Initialize RAG system with existing database
+# Lazy initialization - only load RAG system on first request
 db_path = os.path.join(os.path.dirname(__file__), '..', 'pdf_ingestion_system', 'nvidia_courses.db')
-retriever = CourseRAGRetriever(db_path)
+retriever = None
+
+def get_retriever():
+    """Get or initialize the RAG retriever (lazy loading)."""
+    global retriever
+    if retriever is None:
+        print("Initializing RAG retriever on first request...")
+        retriever = CourseRAGRetriever(db_path)
+    return retriever
 
 @app.route('/')
 def index():
@@ -40,7 +48,7 @@ def chat():
         contextualized_question = f"[User level: {user_level}] {question}"
 
         # Get answer from RAG system
-        answer = retriever.answer_question(contextualized_question)
+        answer = get_retriever().answer_question(contextualized_question)
 
         return jsonify({'answer': answer})
 
@@ -64,7 +72,7 @@ def save_preferences():
 def get_courses():
     """Optional: Get list of all courses for display"""
     try:
-        courses = retriever.db.get_all_courses()
+        courses = get_retriever().db.get_all_courses()
         return jsonify(courses)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -73,4 +81,6 @@ if __name__ == '__main__':
     print("Starting NVIDIA Course Advisor...")
     print(f"Database path: {db_path}")
     print("Server running at http://0.0.0.0:5000")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    print("Note: Auto-reloader disabled to prevent model loading interruptions")
+    # Disable reloader to prevent interruptions during embeddings model loading
+    app.run(debug=True, host='0.0.0.0', port=5000, use_reloader=False)

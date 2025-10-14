@@ -103,7 +103,7 @@ function addMessage(text, sender) {
     } else if (sender.includes('error')) {
         label.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error:';
     } else {
-        label.innerHTML = '<i class="fas fa-robot"></i> Advisor:';
+        label.innerHTML = '<i class="fas fa-robot"></i> NvidiAdvisor:';
     }
     messageDiv.appendChild(label);
 

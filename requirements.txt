@@ -8,6 +8,7 @@ python-dotenv==1.0.0      # Environment configuration
 langchain>=0.1.0          # LangChain framework
 langchain-community>=0.1.0  # LangChain community integrations
 langchain-chroma>=0.1.0   # Chroma vector store integration
+langchain-huggingface>=0.0.1  # HuggingFace embeddings (replaces deprecated import)
 sentence-transformers>=2.2.0  # Local embeddings
 chromadb>=0.4.0           # Vector database
 requests>=2.31.0          # HTTP client for Ollama
@@ -15,3 +16,4 @@ requests>=2.31.0          # HTTP client for Ollama
 # Optional Dependencies (uncomment if needed)
 # numpy==1.24.3                  # For numerical operations
 # streamlit==1.29.0              # For web UI
+Flask==2.3.3

@@ -230,6 +230,58 @@ header p {
     color: #495057;
 }
 
+/* Hero welcome message styling - visually prominent greeting */
+.message.bot.hero {
+    margin: 0 auto 25px auto;
+    max-width: 85%;
+    background: linear-gradient(135deg, #f8fdf5 0%, #ffffff 100%);
+    border: 2px solid #76b900;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 6px 20px rgba(118, 185, 0, 0.15);
+    text-align: center;
+}
+
+.message.bot.hero strong {
+    font-size: 1.3rem;
+    color: #76b900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.message.bot.hero strong i {
+    font-size: 2rem;
+    animation: wave 2s ease-in-out infinite;
+}
+
+.message.bot.hero p {
+    font-size: 1.05rem;
+    color: #495057;
+    margin-bottom: 16px;
+}
+
+.message.bot.hero ul {
+    text-align: left;
+    display: inline-block;
+    margin: 0 auto;
+    color: #6c757d;
+}
+
+.message.bot.hero ul li {
+    margin: 8px 0;
+    font-size: 0.95rem;
+}
+
+/* Wave animation for robot icon */
+@keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
+}
+
 .message.error {
     background: #ffebee;
     color: var(--error-color);

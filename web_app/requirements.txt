@@ -1,6 +1,0 @@
-# KISS Principle: Just what we need for the web app
-Flask==2.3.3
-
-# Note: The RAG system dependencies are already installed
-# from pdf_ingestion_system/requirements.txt
-# This file only needs Flask for the web server
