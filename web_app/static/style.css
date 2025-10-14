@@ -110,62 +110,6 @@ header p {
     animation: none;
 }
 
-/* Preferences Bar */
-.preferences-bar {
-    background: white;
-    padding: 15px 20px;
-    border-radius: var(--border-radius);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    box-shadow: var(--shadow-sm);
-}
-
-.preferences-bar label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 500;
-    color: #495057;
-}
-
-.preferences-bar select {
-    padding: 6px 12px;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    background: white;
-    cursor: pointer;
-    transition: border-color var(--transition-fast);
-}
-
-.preferences-bar select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(118, 185, 0, 0.2);
-}
-
-.save-btn {
-    padding: 8px 20px;
-    background: var(--primary-gradient);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all var(--transition-normal);
-    box-shadow: 0 2px 8px rgba(118, 185, 0, 0.3);
-}
-
-.save-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(118, 185, 0, 0.4);
-}
-
-.save-btn.saved {
-    background: linear-gradient(135deg, #4caf50, #2e7d32);
-}
-
 /* Chat Container */
 #chat-container {
     flex: 1;
@@ -542,11 +486,6 @@ footer {
 
     .header-status {
         align-self: flex-start;
-    }
-
-    .preferences-bar {
-        flex-direction: column;
-        align-items: stretch;
     }
 
     .message {
