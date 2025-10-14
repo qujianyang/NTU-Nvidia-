@@ -212,3 +212,34 @@ function formatMessage(text) {
 
     return text;
 }
+
+// Save user preferences
+function savePreferences() {
+    const level = document.getElementById('user-level').value;
+
+    fetch('/api/preferences', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            level: level
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Show brief confirmation
+        const btn = document.querySelector('.save-btn');
+        const originalText = btn.textContent;
+        btn.textContent = '✓ Saved!';
+        btn.classList.add('saved');
+
+        setTimeout(() => {
+            btn.textContent = originalText;
+            btn.classList.remove('saved');
+        }, 2000);
+    })
+    .catch(error => {
+        console.error('Error saving preferences:', error);
+    });
+}

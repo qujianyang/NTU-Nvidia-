@@ -20,6 +20,19 @@
             </div>
         </header>
 
+        <!-- Optional: Simple preferences -->
+        <div class="preferences-bar">
+            <label>
+                My Level:
+                <select id="user-level">
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+            </label>
+            <button onclick="savePreferences()" class="save-btn">Save Preferences</button>
+        </div>
+
         <!-- Chat interface -->
         <div id="chat-container">
             <div id="chat-messages">

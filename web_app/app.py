@@ -3,7 +3,7 @@ Simple Flask Chatbot for NVIDIA Course Advisor
 KISS/YAGNI Principle: Just enough to work, nothing more
 """
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session
 import sys
 import os
 
@@ -12,6 +12,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'pdf_ingestion_sys
 from rag_retriever import CourseRAGRetriever
 
 app = Flask(__name__)
+app.secret_key = 'dev-key-nvidia-courses-2024'  # Change in production
 
 # Lazy initialization - only load RAG system on first request
 db_path = os.path.join(os.path.dirname(__file__), '..', 'pdf_ingestion_system', 'nvidia_courses.db')
@@ -27,12 +28,7 @@ def get_retriever():
 
 @app.route('/')
 def index():
-    """Serve the main landing page with floating chat widget"""
-    return render_template('home.html')
-
-@app.route('/chat')
-def chat_fullpage():
-    """Serve the full-page chat interface (legacy)"""
+    """Serve the main chat interface"""
     return render_template('index.html')
 
 @app.route('/api/chat', methods=['POST'])
@@ -45,14 +41,32 @@ def chat():
         if not question:
             return jsonify({'error': 'No question provided'}), 400
 
+        # Get user preferences from session if they exist
+        user_level = session.get('level', 'beginner')
+
+        # Add context to question based on user level
+        contextualized_question = f"[User level: {user_level}] {question}"
+
         # Get answer from RAG system
-        answer = get_retriever().answer_question(question)
+        answer = get_retriever().answer_question(contextualized_question)
 
         return jsonify({'answer': answer})
 
     except Exception as e:
         print(f"Error in chat: {e}")
         return jsonify({'error': 'Sorry, I encountered an error. Please try again.'}), 500
+
+@app.route('/api/preferences', methods=['POST'])
+def save_preferences():
+    """Save user preferences in session (no auth needed)"""
+    data = request.get_json()
+
+    # Store preferences in session
+    session['level'] = data.get('level', 'beginner')
+    session['goal'] = data.get('goal', '')
+    session['time_available'] = data.get('time_available', '')
+
+    return jsonify({'status': 'saved', 'message': 'Preferences updated!'})
 
 @app.route('/api/courses', methods=['GET'])
 def get_courses():
