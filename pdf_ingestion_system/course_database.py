@@ -31,6 +31,8 @@ class CourseDatabase:
                 description TEXT,
                 target_audience TEXT,
                 technical_requirements TEXT,
+                prerequisites TEXT,  -- JSON array of prerequisite course IDs
+                leads_to TEXT,       -- JSON array of next course IDs
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
@@ -70,12 +72,14 @@ class CourseDatabase:
 
     def insert_course(self, course: Dict[str, Any]) -> str:
         """Insert a course into the database."""
+        import json
         cursor = self.conn.cursor()
         cursor.execute("""
             INSERT OR REPLACE INTO courses
             (id, title, url, duration, duration_hours, price, cost_usd, level,
-             description, target_audience, technical_requirements, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             description, target_audience, technical_requirements,
+             prerequisites, leads_to, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             course['id'],
             course['title'],
@@ -88,6 +92,8 @@ class CourseDatabase:
             course.get('description', ''),
             course.get('target_audience', ''),
             course.get('technical_requirements', ''),
+            json.dumps(course.get('prerequisites', [])),  # Store as JSON array
+            json.dumps(course.get('leads_to', [])),       # Store as JSON array
             datetime.now()
         ))
         self.conn.commit()
@@ -123,9 +129,23 @@ class CourseDatabase:
 
     def get_all_courses(self) -> List[Dict[str, Any]]:
         """Get all courses."""
+        import json
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM courses ORDER BY title")
-        return [dict(row) for row in cursor.fetchall()]
+        courses = []
+        for row in cursor.fetchall():
+            course = dict(row)
+            # Parse JSON fields back to lists
+            if course.get('prerequisites'):
+                course['prerequisites'] = json.loads(course['prerequisites'])
+            else:
+                course['prerequisites'] = []
+            if course.get('leads_to'):
+                course['leads_to'] = json.loads(course['leads_to'])
+            else:
+                course['leads_to'] = []
+            courses.append(course)
+        return courses
 
     def get_course_stats(self) -> Dict[str, Any]:
         """Get database statistics."""
