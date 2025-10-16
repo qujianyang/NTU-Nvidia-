@@ -199,6 +199,183 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
+
+        /* View Toggle Styles */
+        .view-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .view-btn {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .view-btn:hover {
+            border-color: #76b900;
+            background: rgba(118, 185, 0, 0.05);
+        }
+
+        .view-btn.active {
+            background: #76b900;
+            color: white;
+            border-color: #76b900;
+        }
+
+        /* Tree View Styles */
+        .tree-view {
+            margin: 20px 0;
+        }
+
+        .tree-container {
+            overflow-x: auto;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        #tree-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 100%;
+        }
+
+        .tree-level {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin: 30px 0;
+            position: relative;
+            width: 100%;
+        }
+
+        .tree-node {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px;
+            min-width: 250px;
+            max-width: 300px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .tree-node:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(118, 185, 0, 0.3);
+            border-color: #76b900;
+        }
+
+        .tree-node.root {
+            border-color: #76b900;
+            background: linear-gradient(135deg, rgba(118, 185, 0, 0.05), rgba(94, 147, 0, 0.02));
+        }
+
+        .tree-node h4 {
+            margin: 0 0 10px 0;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .tree-node .node-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .tree-node .node-level {
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .tree-node .node-level.beginner {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .tree-node .node-level.intermediate {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .tree-node .node-level.advanced {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .tree-node .node-level.general {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        /* Connection lines */
+        .tree-connection {
+            position: absolute;
+            background: #76b900;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .tree-connection.vertical {
+            width: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .tree-connection.horizontal {
+            height: 2px;
+            top: 50%;
+        }
+
+        /* Path groups */
+        .path-group {
+            background: white;
+            border: 2px solid #76b900;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .path-group h3 {
+            color: #76b900;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .path-group h3 i {
+            font-size: 1.2rem;
+        }
+
+        .path-flow {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .path-arrow {
+            color: #76b900;
+            font-size: 1.5rem;
+        }
     </style>
 </head>
 <body>
@@ -209,8 +386,18 @@
             <p>Discover courses and trace your learning journey through robotics and AI</p>
         </div>
 
-        <!-- Filter Buttons -->
-        <div class="filters">
+        <!-- View Toggle -->
+        <div class="view-toggle">
+            <button class="view-btn active" onclick="switchView('catalog')">
+                <i class="fas fa-th-large"></i> Catalog View
+            </button>
+            <button class="view-btn" onclick="switchView('tree')">
+                <i class="fas fa-sitemap"></i> Learning Path Tree
+            </button>
+        </div>
+
+        <!-- Filter Buttons (for catalog view) -->
+        <div class="filters" id="filter-buttons">
             <button class="filter-btn active" onclick="filterCourses('all')">
                 <i class="fas fa-th"></i> All Courses
             </button>
@@ -225,11 +412,20 @@
             </button>
         </div>
 
-        <!-- Course Grid -->
+        <!-- Course Grid (Catalog View) -->
         <div id="course-grid" class="course-grid">
             <div class="loading">
                 <i class="fas fa-spinner"></i>
                 <p>Loading courses...</p>
+            </div>
+        </div>
+
+        <!-- Tree View Container -->
+        <div id="tree-view" class="tree-view" style="display: none;">
+            <div class="tree-container">
+                <div id="tree-content">
+                    <!-- Tree will be dynamically generated here -->
+                </div>
             </div>
         </div>
     </div>
@@ -466,6 +662,169 @@
                     }
                 }
             }, 300);
+        }
+
+        // Switch between catalog and tree view
+        function switchView(viewType) {
+            const catalogView = document.getElementById('course-grid');
+            const treeView = document.getElementById('tree-view');
+            const filters = document.getElementById('filter-buttons');
+            const viewBtns = document.querySelectorAll('.view-btn');
+
+            // Update active button
+            viewBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (viewType === 'catalog') {
+                catalogView.style.display = 'grid';
+                treeView.style.display = 'none';
+                filters.style.display = 'flex';
+            } else {
+                catalogView.style.display = 'none';
+                treeView.style.display = 'block';
+                filters.style.display = 'none';
+                buildTreeView();
+            }
+        }
+
+        // Build the tree view
+        function buildTreeView() {
+            const treeContent = document.getElementById('tree-content');
+
+            // Group courses by learning paths
+            const paths = groupCoursesByPath();
+
+            let treeHTML = '';
+
+            // Build each learning path
+            paths.forEach(path => {
+                treeHTML += `
+                    <div class="path-group">
+                        <h3>
+                            <i class="fas fa-route"></i>
+                            ${path.name}
+                        </h3>
+                        <div class="path-flow">
+                `;
+
+                path.courses.forEach((course, index) => {
+                    const levelClass = getLevelClass(course.level);
+
+                    treeHTML += `
+                        <div class="tree-node ${index === 0 ? 'root' : ''}"
+                             onclick="askAboutCourse('${course.id}', '${course.title.replace(/'/g, "\\'")}')"
+                             title="Click to learn more">
+                            <h4>${course.title}</h4>
+                            <div class="node-meta">
+                                <span class="node-level ${levelClass}">${course.level || 'General'}</span>
+                                <span><i class="fas fa-clock"></i> ${course.duration || 'N/A'}</span>
+                            </div>
+                        </div>
+                    `;
+
+                    // Add arrow between courses
+                    if (index < path.courses.length - 1) {
+                        treeHTML += '<i class="fas fa-arrow-right path-arrow"></i>';
+                    }
+                });
+
+                treeHTML += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            treeContent.innerHTML = treeHTML;
+        }
+
+        // Group courses by their learning paths
+        function groupCoursesByPath() {
+            const paths = [];
+            const courseMap = {};
+
+            // Create a map for quick lookup
+            allCourses.forEach(course => {
+                courseMap[course.id] = course;
+            });
+
+            // Find root courses (no prerequisites)
+            const rootCourses = allCourses.filter(c =>
+                !c.prerequisites || c.prerequisites.length === 0
+            );
+
+            // Build paths starting from each root
+            rootCourses.forEach(root => {
+                const path = buildPath(root, courseMap);
+                if (path.length > 0) {
+                    // Group by category/track
+                    const pathName = getPathName(root);
+                    paths.push({
+                        name: pathName,
+                        courses: path
+                    });
+                }
+            });
+
+            // Add orphaned courses (those not in any path)
+            const orphaned = allCourses.filter(c => {
+                const inPath = paths.some(p =>
+                    p.courses.some(pc => pc.id === c.id)
+                );
+                return !inPath;
+            });
+
+            if (orphaned.length > 0) {
+                paths.push({
+                    name: 'Standalone Courses',
+                    courses: orphaned
+                });
+            }
+
+            return paths;
+        }
+
+        // Build a path from a root course
+        function buildPath(course, courseMap) {
+            const path = [course];
+            const visited = new Set([course.id]);
+
+            // Follow the leads_to chain
+            let current = course;
+            while (current.leads_to && current.leads_to.length > 0) {
+                const nextId = current.leads_to[0]; // Take first path
+                if (visited.has(nextId)) break; // Avoid cycles
+
+                const next = courseMap[nextId];
+                if (next) {
+                    path.push(next);
+                    visited.add(nextId);
+                    current = next;
+                } else {
+                    break;
+                }
+            }
+
+            return path;
+        }
+
+        // Get path name based on course ID pattern
+        function getPathName(course) {
+            if (course.id.includes('isaac-sim')) return 'Isaac Sim Learning Path';
+            if (course.id.includes('isaac-lab')) return 'Isaac Lab Training Path';
+            if (course.id.includes('isaac-ros')) return 'Isaac ROS Development Path';
+            if (course.id.includes('jetson')) return 'Jetson AI Hardware Path';
+            if (course.id.includes('cosmos')) return 'Cosmos Physical AI Path';
+            return 'Robotics Foundations';
+        }
+
+        // Get level class for styling
+        function getLevelClass(level) {
+            if (!level) return 'general';
+            const levelLower = level.toLowerCase();
+            if (levelLower.includes('beginner')) return 'beginner';
+            if (levelLower.includes('intermediate')) return 'intermediate';
+            if (levelLower.includes('advanced')) return 'advanced';
+            return 'general';
         }
     </script>
 </body>

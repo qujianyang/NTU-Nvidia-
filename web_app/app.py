@@ -58,7 +58,14 @@ def chat():
 def get_courses():
     """Optional: Get list of all courses for display"""
     try:
-        courses = get_retriever().db.get_all_courses()
+        # Fix: Create a new database connection for thread safety
+        import sqlite3
+        conn = sqlite3.connect(db_path)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM courses ORDER BY title")
+        courses = [dict(row) for row in cursor.fetchall()]
+        conn.close()
         return jsonify(courses)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
