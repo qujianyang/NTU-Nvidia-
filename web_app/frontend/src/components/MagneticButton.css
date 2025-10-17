@@ -1,0 +1,311 @@
+/* Magnetic Button Styles */
+
+.magnetic-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: none; /* Use custom cursor */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Size Variants */
+.magnetic-btn--small {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.8rem;
+  min-width: 120px;
+}
+
+.magnetic-btn--medium {
+  padding: 1rem 2rem;
+  font-size: 0.9rem;
+  min-width: 160px;
+}
+
+.magnetic-btn--large {
+  padding: 1.25rem 2.5rem;
+  font-size: 1rem;
+  min-width: 200px;
+}
+
+/* Variant Styles */
+.magnetic-btn--primary {
+  background: linear-gradient(135deg,
+    rgba(118, 185, 0, 0.1) 0%,
+    rgba(118, 185, 0, 0.05) 100%);
+  color: #76b900;
+}
+
+.magnetic-btn--secondary {
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 100%);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.magnetic-btn--ghost {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Glow Effect */
+.magnetic-btn__glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle,
+    rgba(118, 185, 0, 0.4) 0%,
+    transparent 70%);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.magnetic-btn:hover .magnetic-btn__glow {
+  transform: translate(-50%, -50%) scale(2);
+  opacity: 1;
+}
+
+/* Animated Border */
+.magnetic-btn__border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.magnetic-btn__border svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.border-animation {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.magnetic-btn:hover .border-animation {
+  stroke-dashoffset: 0;
+  stroke-dasharray: 400;
+}
+
+/* Button Text */
+.magnetic-btn__text {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.magnetic-btn:hover .magnetic-btn__text {
+  transform: scale(1.05);
+}
+
+/* Particle Effects */
+.magnetic-btn__particles {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #76b900;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.magnetic-btn:hover .particle {
+  animation: particleAnimation 1s ease-out forwards;
+}
+
+.particle:nth-child(1) { animation-delay: 0s; }
+.particle:nth-child(2) { animation-delay: 0.1s; }
+.particle:nth-child(3) { animation-delay: 0.2s; }
+.particle:nth-child(4) { animation-delay: 0.3s; }
+.particle:nth-child(5) { animation-delay: 0.4s; }
+.particle:nth-child(6) { animation-delay: 0.5s; }
+
+@keyframes particleAnimation {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(
+      calc(-50% + var(--x, 0px)),
+      calc(-50% + var(--y, 0px))
+    ) scale(1);
+    opacity: 0;
+  }
+}
+
+.particle:nth-child(1) { --x: -40px; --y: -40px; }
+.particle:nth-child(2) { --x: 40px; --y: -40px; }
+.particle:nth-child(3) { --x: -40px; --y: 40px; }
+.particle:nth-child(4) { --x: 40px; --y: 40px; }
+.particle:nth-child(5) { --x: 0px; --y: -50px; }
+.particle:nth-child(6) { --x: 0px; --y: 50px; }
+
+/* Custom Cursor */
+.custom-cursor {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(118, 185, 0, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  mix-blend-mode: difference;
+  transition: width 0.3s, height 0.3s, border-color 0.3s;
+}
+
+.custom-cursor-dot {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: #76b900;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10001;
+  mix-blend-mode: difference;
+  transition: width 0.3s, height 0.3s;
+}
+
+.cursor--hover {
+  width: 60px;
+  height: 60px;
+  border-color: #76b900;
+  background: rgba(118, 185, 0, 0.1);
+}
+
+.cursor-dot--hover {
+  width: 6px;
+  height: 6px;
+  background: #fff;
+}
+
+/* Hide default cursor on supported browsers */
+body {
+  cursor: none;
+}
+
+button, a, input, select, textarea {
+  cursor: none;
+}
+
+/* Ripple Effect on Click */
+.magnetic-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(118, 185, 0, 0.3) 0%,
+    transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s, height 0.5s;
+}
+
+.magnetic-btn:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Hover State Enhancements */
+.magnetic-btn:hover {
+  transform: translateZ(10px);
+  box-shadow:
+    0 10px 30px rgba(118, 185, 0, 0.3),
+    0 0 60px rgba(118, 185, 0, 0.1),
+    inset 0 0 20px rgba(118, 185, 0, 0.05);
+}
+
+/* Focus State for Accessibility */
+.magnetic-btn:focus-visible {
+  outline: 2px solid #76b900;
+  outline-offset: 4px;
+}
+
+/* Disabled State */
+.magnetic-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.magnetic-btn:disabled::before,
+.magnetic-btn:disabled::after {
+  display: none;
+}
+
+/* Loading State */
+.magnetic-btn--loading .magnetic-btn__text {
+  visibility: hidden;
+}
+
+.magnetic-btn--loading::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(118, 185, 0, 0.3);
+  border-top-color: #76b900;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .custom-cursor,
+  .custom-cursor-dot {
+    display: none;
+  }
+
+  body,
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    cursor: auto;
+  }
+
+  .magnetic-btn {
+    cursor: pointer;
+  }
+}

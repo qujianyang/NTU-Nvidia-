@@ -12,7 +12,8 @@
       "Bash(source activate qkd-env)",
       "Bash(npm create:*)",
       "Bash(npm install)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []

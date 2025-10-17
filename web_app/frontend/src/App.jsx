@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Typography, Spin, message, ConfigProvider } from 'antd';
 import { BookOutlined, PartitionOutlined, RobotOutlined } from '@ant-design/icons';
 import CourseCatalog from './components/CourseCatalog';
+import PremiumCourseCatalog from './components/PremiumCourseCatalog';
 import LearningPathTree from './components/LearningPathTree';
 import ChatWidget from './components/ChatWidget';
+import WebGLBackground from './components/WebGLBackground';
+import MagneticButton, { CustomCursor } from './components/MagneticButton';
 import axios from 'axios';
+import { gsap } from 'gsap';
 import './App.css';
 
 const { Header, Content } = Layout;
@@ -45,6 +49,15 @@ function App() {
     },
   ];
 
+  // Add entrance animation
+  useEffect(() => {
+    // Animate header on load
+    gsap.fromTo('.premium-header',
+      { opacity: 0, y: -50 },
+      { opacity: 1, y: 0, duration: 1, delay: 0.5, ease: 'power3.out' }
+    );
+  }, []);
+
   return (
     <ConfigProvider
       theme={{
@@ -54,50 +67,78 @@ function App() {
         },
       }}
     >
-      <Layout className="app-layout">
-        <Header className="app-header">
-          <div className="header-content">
-            <Title level={2} style={{ color: 'white', margin: 0 }}>
-              🎓 NVIDIA Learning Path Explorer
-            </Title>
-            <Menu
-              theme="dark"
-              mode="horizontal"
-              selectedKeys={[activeView]}
-              items={menuItems}
-              onClick={(e) => setActiveView(e.key)}
-              style={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
-            />
-          </div>
-        </Header>
+      {/* WebGL Background */}
+      <WebGLBackground intensity={0.8} />
 
-        <Content className="app-content">
+      {/* Custom Cursor */}
+      <CustomCursor />
+
+      <div className="premium-app">
+        {/* Premium Header */}
+        <header className="premium-header">
+          <div className="header-inner">
+            <div className="logo-section">
+              <span className="logo-text">NVIDIA</span>
+              <span className="logo-subtitle">Learning Universe</span>
+            </div>
+
+            <nav className="premium-nav">
+              <MagneticButton
+                variant={activeView === 'catalog' ? 'primary' : 'ghost'}
+                onClick={() => setActiveView('catalog')}
+              >
+                Catalog
+              </MagneticButton>
+              <MagneticButton
+                variant={activeView === 'tree' ? 'primary' : 'ghost'}
+                onClick={() => setActiveView('tree')}
+              >
+                Paths
+              </MagneticButton>
+            </nav>
+          </div>
+        </header>
+
+        {/* Premium Content */}
+        <main className="premium-content">
           {loading ? (
-            <div className="loading-container">
-              <Spin size="large" tip="Loading courses..." />
+            <div className="premium-loading">
+              <div className="loading-orb" />
+              <p className="loading-text">Initializing Learning Universe...</p>
             </div>
           ) : (
             <>
-              {activeView === 'catalog' && <CourseCatalog courses={courses} />}
+              {activeView === 'catalog' && <PremiumCourseCatalog courses={courses} />}
               {activeView === 'tree' && <LearningPathTree courses={courses} />}
             </>
           )}
-        </Content>
+        </main>
 
-        {/* Floating Chat Button */}
-        <div
-          className="floating-chat-button"
+        {/* Floating Chat Button with Magnetic Effect */}
+        <MagneticButton
+          variant="primary"
+          size="large"
           onClick={() => setChatOpen(true)}
+          magnetStrength={0.5}
+          style={{
+            position: 'fixed',
+            bottom: '2rem',
+            right: '2rem',
+            borderRadius: '50%',
+            width: '60px',
+            height: '60px',
+            zIndex: 1000,
+          }}
         >
           <RobotOutlined style={{ fontSize: '24px' }} />
-        </div>
+        </MagneticButton>
 
         {/* Chat Widget */}
         <ChatWidget
           open={chatOpen}
           onClose={() => setChatOpen(false)}
         />
-      </Layout>
+      </div>
     </ConfigProvider>
   );
 }

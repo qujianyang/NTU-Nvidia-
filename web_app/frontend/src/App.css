@@ -1,50 +1,189 @@
-/* Reset and Base Styles */
+/* NVIDIA Premium App Styles */
+
+/* Reset and Base */
 #root {
   width: 100%;
   height: 100vh;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  background: #000;
+  color: #fff;
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* App Layout */
-.app-layout {
-  height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-}
-
-/* Header Styles */
-.app-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  padding: 0 24px;
-}
-
-.header-content {
-  display: flex;
-  align-items: center;
-  gap: 48px;
+/* Premium App Container */
+.premium-app {
+  position: relative;
   width: 100%;
+  min-height: 100vh;
+  z-index: 1;
+}
+
+/* Premium Header */
+.premium-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(118, 185, 0, 0.2);
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+
+.premium-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    #76b900 50%,
+    transparent 100%);
+  animation: scanline 3s linear infinite;
+}
+
+@keyframes scanline {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.header-inner {
   max-width: 1400px;
   margin: 0 auto;
-}
-
-/* Content Area */
-.app-content {
-  padding: 0;
-  overflow-y: auto;
-  height: calc(100vh - 64px);
-  background: transparent;
-}
-
-/* Loading Container */
-.loading-container {
+  height: 100%;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+.logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo-text {
+  font-size: 1.8rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #76b900 0%, #91ce47 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.logo-subtitle {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-top: -4px;
+}
+
+.premium-nav {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Premium Content */
+.premium-content {
+  padding-top: 80px;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* Premium Loading Animation */
+.premium-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  flex-direction: column;
-  gap: 16px;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+}
+
+.loading-orb {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    #76b900 0%,
+    transparent 70%);
+  animation: pulseGlow 2s ease-in-out infinite;
+  position: relative;
+}
+
+.loading-orb::before,
+.loading-orb::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid rgba(118, 185, 0, 0.3);
+}
+
+.loading-orb::before {
+  width: 150px;
+  height: 150px;
+  animation: orbit 3s linear infinite;
+}
+
+.loading-orb::after {
+  width: 180px;
+  height: 180px;
+  animation: orbit 4s linear infinite reverse;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes orbit {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.loading-text {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.1em;
+  animation: fadeInOut 2s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* Floating Chat Button */
