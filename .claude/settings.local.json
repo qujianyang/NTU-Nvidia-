@@ -8,7 +8,11 @@
       "Bash(tree:*)",
       "C:\\Users\\user\\Documents\\GitHub\\QuantumKeyDistribution",
       "Read(//c/Users/user/Documents/GitHub/QuantumKeyDistribution/GUI/**)",
-      "Bash(powershell -Command \"Get-ExecutionPolicy\")"
+      "Bash(powershell -Command \"Get-ExecutionPolicy\")",
+      "Bash(source activate qkd-env)",
+      "Bash(npm create:*)",
+      "Bash(npm install)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []
