@@ -176,22 +176,28 @@ function stopThoughtProcess() {
 
 // Basic message formatting (convert line breaks and basic markdown)
 function formatMessage(text) {
-    // Escape HTML to prevent XSS (but preserve URLs we'll convert)
+    // KISS APPROACH: Simple and working
+
+    // 1. First escape HTML to prevent XSS
     text = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-    // Convert NVIDIA Learn URLs to clickable links
+    // 2. Handle markdown links: [text](url) -> clickable link with text
     text = text.replace(
-        /(https:\/\/learn\.nvidia\.com\/courses\/[^\s]+)/g,
-        '<a href="$1" target="_blank" class="course-link">🔗 View on NVIDIA Learn</a>'
+        /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
+        '<a href="$2" target="_blank" class="course-link">$1</a>'
     );
 
-    // Convert any other URLs to clickable links
+    // 3. Convert any remaining plain URLs to clickable links
+    // Only match URLs that aren't already in anchor tags
     text = text.replace(
-        /(https?:\/\/[^\s]+)/g,
-        function(url) {
-            // Skip if already converted (has HTML tags)
-            if (url.includes('</a>')) return url;
-            return `<a href="${url}" target="_blank" class="external-link">${url}</a>`;
+        /(^|[^">])(https?:\/\/[^\s<]+)/g,
+        function(match, prefix, url) {
+            // Clean any trailing punctuation from URL
+            url = url.replace(/[.,;:!?\)]$/, '');
+            if (url.includes('learn.nvidia.com')) {
+                return prefix + '<a href="' + url + '" target="_blank" class="course-link">🔗 View on NVIDIA Learn</a>';
+            }
+            return prefix + '<a href="' + url + '" target="_blank" class="external-link">' + url + '</a>';
         }
     );
 
@@ -208,7 +214,7 @@ function formatMessage(text) {
     text = text.replace(/^- (.+)$/gm, '• $1');
 
     // Special formatting for course IDs (make them stand out)
-    text = text.replace(/\b(isaac-\w+-\d{3}|jetson-\d{3}|cosmos-\d{3})\b/g, '<span class="course-id">$1</span>');
+    text = text.replace(/\b(isaac-\w+-\d{3}|jetson-\d{3}|cosmos-\d{3}|robotics-\w+-\d{3})\b/g, '<span class="course-id">$1</span>');
 
     return text;
 }

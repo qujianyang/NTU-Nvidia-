@@ -7,13 +7,20 @@ from typing import List, Dict, Any
 from pathlib import Path
 import requests
 import time
+import sqlite3
+import torch
 
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
+
+# Fix 1: Use the updated import to avoid deprecation warning
 try:
     from langchain_huggingface import HuggingFaceEmbeddings
 except ImportError:
-    from langchain_community.embeddings import HuggingFaceEmbeddings
+    try:
+        from langchain_community.embeddings import HuggingFaceEmbeddings
+    except ImportError:
+        from langchain.embeddings import HuggingFaceEmbeddings
 
 from course_database import CourseDatabase
 
@@ -23,7 +30,7 @@ from course_database import CourseDatabase
 
 # Ollama settings
 OLLAMA_API_URL = "http://localhost:11434"
-OLLAMA_MODEL = "qwen2:7b-instruct-q4_0"
+OLLAMA_MODEL = "mistral:7b-instruct-v0.3-q4_K_M"
 
 # Embedding settings (local, no API key needed)
 EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
@@ -50,7 +57,8 @@ class CourseRAGRetriever:
 
     def __init__(self, db_path: str = "nvidia_courses.db"):
         self.db_path = db_path
-        self.db = CourseDatabase(db_path)
+        # Fix 2: Don't keep a persistent database connection (threading issue)
+        # Create connections as needed instead
 
         print("Initializing RAG retriever...")
         self.embeddings = self._load_embeddings()
@@ -60,18 +68,52 @@ class CourseRAGRetriever:
     def _load_embeddings(self):
         """Load local embedding model."""
         print(f"Loading embeddings model: {EMBEDDING_MODEL}")
+
+        # Fix 3: Handle device properly to avoid meta tensor error
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+        # Ensure model loads to the correct device
+        model_kwargs = {
+            'device': device,
+            'trust_remote_code': True  # Allow model to load properly
+        }
+
+        # If CPU, ensure no CUDA tensors are created
+        if device == 'cpu':
+            torch.set_default_tensor_type(torch.FloatTensor)
+
         return HuggingFaceEmbeddings(
             model_name=EMBEDDING_MODEL,
-            model_kwargs={'device': 'cpu'},
-            encode_kwargs={'normalize_embeddings': True}
+            model_kwargs=model_kwargs,
+            encode_kwargs={'normalize_embeddings': True, 'device': device}
         )
+
+    def get_course_details(self, course_id: str) -> Dict[str, str]:
+        """Get course title and URL by course ID."""
+        # Fix 4: Create a new connection for thread safety
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT title, url
+            FROM courses
+            WHERE id = ?
+        """, (course_id,))
+        row = cursor.fetchone()
+        conn.close()
+
+        if row:
+            return {"title": row[0], "url": row[1] or ""}
+        return {"title": course_id, "url": ""}
 
     def _setup_vectorstore(self):
         """Set up vector store with child chunks and parent document mapping."""
         print("Loading parent documents and child chunks from database...")
 
+        # Fix 5: Create a new connection for thread safety
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+
         # Get all parent documents
-        cursor = self.db.conn.cursor()
         cursor.execute("""
             SELECT id, course_id, content
             FROM parent_documents
@@ -86,6 +128,8 @@ class CourseRAGRetriever:
             ORDER BY parent_id, chunk_index
         """)
         child_rows = cursor.fetchall()
+
+        conn.close()
 
         print(f"Loaded {len(parent_rows)} parent docs, {len(child_rows)} child chunks")
 
@@ -142,11 +186,18 @@ class CourseRAGRetriever:
             if parent_id:
                 parent_ids.add(parent_id)
 
-        # Retrieve parent documents
+        # Retrieve parent documents with course details
         parent_docs = []
         for parent_id in list(parent_ids)[:CHUNK_OVERLAP]:  # Limit to CHUNK_OVERLAP parents
             if parent_id in self.parent_map:
-                parent_docs.append(self.parent_map[parent_id])
+                parent_doc = self.parent_map[parent_id].copy()
+                # Get course details including URL
+                course_id = parent_doc.get('course_id', '')
+                if course_id:
+                    course_details = self.get_course_details(course_id)
+                    parent_doc['course_title'] = course_details['title']
+                    parent_doc['course_url'] = course_details['url']
+                parent_docs.append(parent_doc)
 
         print(f"Retrieved {len(parent_docs)} parent documents")
         return parent_docs
@@ -167,14 +218,29 @@ class CourseRAGRetriever:
         if not parent_docs:
             return "I couldn't find relevant information about that in the NVIDIA course catalog."
 
-        # Build context from parent documents
+        # Build context from parent documents with URLs
         context_parts = []
+        course_info_list = []  # Store course info for fallback
+
         for i, doc in enumerate(parent_docs, 1):
             course_id = doc.get('course_id', 'unknown')
+            course_title = doc.get('course_title', course_id)
+            course_url = doc.get('course_url', '')
             content = doc.get('content', '')
-            context_parts.append(f"[Course {i} - {course_id}]\n{content}\n")
+
+            # Add course info for context
+            context_parts.append(f"[Course {i}: {course_title} ({course_id})]\n{content}\n")
+
+            # Store course info as tuple for fallback mechanism
+            if course_url:
+                course_info_list.append((course_title, course_url))
 
         context = "\n---\n".join(context_parts)
+
+        # Add course URLs section to help LLM include them
+        if course_info_list:
+            course_urls_section = "\nAVAILABLE COURSE LINKS:\n" + "\n".join([f"{title}: {url}" for title, url in course_info_list])
+            context = context + "\n\n" + course_urls_section
 
         # Build prompt
         prompt = self._build_prompt(question, context)
@@ -182,24 +248,33 @@ class CourseRAGRetriever:
         # Generate answer with Ollama
         answer = self._call_ollama(prompt)
 
+        # KISS Fix: Post-process to ensure URLs are included if missing
+        # Check if any course URLs are in the response
+        has_urls = any(url in answer for _, url in course_info_list)
+
+        # If no URLs found in answer, append them at the end
+        if not has_urls and course_info_list:
+            answer += "\n\n**Learn more:**\n"
+            for title, url in course_info_list:
+                answer += f"- {title}: {url}\n"
+
         return answer
 
     def _build_prompt(self, question: str, context: str) -> str:
         """Build prompt for LLM."""
-        return f"""You are a helpful assistant that answers questions about NVIDIA's robotics and AI courses.
-
-Based on the course information below, answer the user's question clearly and concisely.
+        return f"""You are a helpful assistant for NVIDIA courses.
 
 COURSE INFORMATION:
 {context}
 
 USER QUESTION: {question}
 
-INSTRUCTIONS:
-- Answer based only on the provided course information
-- Be specific about course names, prerequisites, and learning paths
-- If the information doesn't fully answer the question, say so
-- Keep your answer focused and practical
+IMPORTANT: Always include course URLs when mentioning courses.
+
+Example format:
+"I recommend Taking Isaac Sim (https://learn.nvidia.com/...) which teaches..."
+
+Answer the question using the course information above. Include URLs for all mentioned courses.
 
 ANSWER:"""
 
@@ -238,23 +313,37 @@ ANSWER:"""
 
     def close(self):
         """Close database connection."""
-        self.db.close()
+        # No persistent connection to close anymore (thread-safe)
 
 
 def test_retriever():
-    """Simple test function."""
+    """Enhanced test function to verify URL inclusion."""
     retriever = CourseRAGRetriever()
 
-    # Test query
-    question = "What prerequisites do I need for Isaac Sim?"
-    answer = retriever.answer_question(question)
+    # Test queries
+    test_questions = [
+        "What prerequisites do I need for Isaac Sim?",
+        "Which courses should I take to learn about robotics?",
+        "What are the beginner-friendly NVIDIA courses?"
+    ]
 
-    print("\n" + "="*60)
-    print("TEST QUERY")
-    print("="*60)
-    print(f"Question: {question}")
-    print(f"\nAnswer:\n{answer}")
-    print("="*60)
+    for question in test_questions:
+        print("\n" + "="*60)
+        print("TEST QUERY")
+        print("="*60)
+        print(f"Question: {question}")
+
+        # Get answer
+        answer = retriever.answer_question(question)
+        print(f"\nAnswer:\n{answer}")
+
+        # Check if URLs are present in the answer
+        if "https://" in answer or "http://" in answer:
+            print("\n✓ URLs detected in response")
+        else:
+            print("\n⚠ No URLs found in response - LLM may need different prompting")
+
+        print("="*60)
 
     retriever.close()
 
