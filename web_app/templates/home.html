@@ -355,34 +355,70 @@
                     course.level.toLowerCase().includes('advanced') ? 'advanced' :
                     'general' : 'general';
 
-                // Build prerequisites HTML
+                // Build prerequisites HTML with defensive handling
                 let prereqsHtml = '';
-                if (course.prerequisites && course.prerequisites.length > 0) {
-                    prereqsHtml = `
-                        <div class="relationship-row">
-                            <span class="relationship-label">
-                                <i class="fas fa-lock"></i> Prerequisites:
-                            </span>
-                            ${course.prerequisites.map(p =>
-                                `<span class="relationship-item">${p}</span>`
-                            ).join('')}
-                        </div>
-                    `;
+                // Handle prerequisites - could be array or JSON string
+                let prerequisites = course.prerequisites;
+                if (prerequisites) {
+                    // If it's a string, try to parse it as JSON
+                    if (typeof prerequisites === 'string') {
+                        try {
+                            prerequisites = JSON.parse(prerequisites);
+                        } catch (e) {
+                            console.warn('Failed to parse prerequisites for course:', course.id, e);
+                            prerequisites = [];
+                        }
+                    }
+                    // Ensure it's an array
+                    if (!Array.isArray(prerequisites)) {
+                        prerequisites = [];
+                    }
+
+                    if (prerequisites.length > 0) {
+                        prereqsHtml = `
+                            <div class="relationship-row">
+                                <span class="relationship-label">
+                                    <i class="fas fa-lock"></i> Prerequisites:
+                                </span>
+                                ${prerequisites.map(p =>
+                                    `<span class="relationship-item">${p}</span>`
+                                ).join('')}
+                            </div>
+                        `;
+                    }
                 }
 
-                // Build leads_to HTML
+                // Build leads_to HTML with defensive handling
                 let leadsToHtml = '';
-                if (course.leads_to && course.leads_to.length > 0) {
-                    leadsToHtml = `
-                        <div class="relationship-row">
-                            <span class="relationship-label">
-                                <i class="fas fa-arrow-right"></i> Leads to:
-                            </span>
-                            ${course.leads_to.map(l =>
-                                `<span class="relationship-item">${l}</span>`
-                            ).join('')}
-                        </div>
-                    `;
+                // Handle leads_to - could be array or JSON string
+                let leadsTo = course.leads_to;
+                if (leadsTo) {
+                    // If it's a string, try to parse it as JSON
+                    if (typeof leadsTo === 'string') {
+                        try {
+                            leadsTo = JSON.parse(leadsTo);
+                        } catch (e) {
+                            console.warn('Failed to parse leads_to for course:', course.id, e);
+                            leadsTo = [];
+                        }
+                    }
+                    // Ensure it's an array
+                    if (!Array.isArray(leadsTo)) {
+                        leadsTo = [];
+                    }
+
+                    if (leadsTo.length > 0) {
+                        leadsToHtml = `
+                            <div class="relationship-row">
+                                <span class="relationship-label">
+                                    <i class="fas fa-arrow-right"></i> Leads to:
+                                </span>
+                                ${leadsTo.map(l =>
+                                    `<span class="relationship-item">${l}</span>`
+                                ).join('')}
+                            </div>
+                        `;
+                    }
                 }
 
                 return `

@@ -8,7 +8,15 @@
       "Bash(tree:*)",
       "C:\\Users\\user\\Documents\\GitHub\\QuantumKeyDistribution",
       "Read(//c/Users/user/Documents/GitHub/QuantumKeyDistribution/GUI/**)",
-      "Bash(powershell -Command \"Get-ExecutionPolicy\")"
+      "Bash(powershell -Command \"Get-ExecutionPolicy\")",
+      "Bash(sqlite3 pdf_ingestion_system/nvidia_courses.db \".tables\")",
+      "Bash(sqlite3 pdf_ingestion_system/nvidia_courses.db \"SELECT COUNT(*) as count FROM courses;\")",
+      "Bash(sqlite3 pdf_ingestion_system/nvidia_courses.db \".schema courses\")",
+      "Bash(curl -s http://127.0.0.1:5000/api/courses)",
+      "Bash(timeout 3)",
+      "Bash(powershell -Command \"Start-Sleep -Seconds 2\")",
+      "Bash(curl -s http://127.0.0.1:5000/)",
+      "Bash(curl -s -X POST http://127.0.0.1:5000/api/chat -H \"Content-Type: application/json\" -d \"{\"\"question\"\":\"\"What courses are available for beginners?\"\"}\")"
     ],
     "deny": [],
     "ask": []
