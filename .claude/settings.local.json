@@ -12,7 +12,9 @@
       "Bash(source activate qkd-env)",
       "Bash(npm create:*)",
       "Bash(npm install)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(sqlite3:*)",
+      "Bash(powershell -Command \"(Get-ChildItem -Path web_app/frontend/node_modules -Directory -Depth 0 | Measure-Object).Count\")"
     ],
     "deny": [],
     "ask": []

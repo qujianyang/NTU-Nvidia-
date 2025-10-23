@@ -60,14 +60,47 @@ def get_courses():
     try:
         # Fix: Create a new database connection for thread safety
         import sqlite3
+        import json
         conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM courses ORDER BY title")
-        courses = [dict(row) for row in cursor.fetchall()]
+        courses = []
+
+        for row in cursor.fetchall():
+            course = dict(row)
+
+            # Parse JSON strings into actual arrays
+            # Handle prerequisites field
+            if 'prerequisites' in course and course['prerequisites']:
+                try:
+                    # If it's a string containing JSON, parse it
+                    if isinstance(course['prerequisites'], str):
+                        course['prerequisites'] = json.loads(course['prerequisites'])
+                except (json.JSONDecodeError, TypeError):
+                    # If parsing fails, default to empty array
+                    course['prerequisites'] = []
+            else:
+                course['prerequisites'] = []
+
+            # Handle leads_to field
+            if 'leads_to' in course and course['leads_to']:
+                try:
+                    # If it's a string containing JSON, parse it
+                    if isinstance(course['leads_to'], str):
+                        course['leads_to'] = json.loads(course['leads_to'])
+                except (json.JSONDecodeError, TypeError):
+                    # If parsing fails, default to empty array
+                    course['leads_to'] = []
+            else:
+                course['leads_to'] = []
+
+            courses.append(course)
+
         conn.close()
         return jsonify(courses)
     except Exception as e:
+        print(f"Error in get_courses: {e}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
