@@ -13,7 +13,13 @@ sentence-transformers>=2.2.0  # Local embeddings
 chromadb>=0.4.0           # Vector database
 requests>=2.31.0          # HTTP client for Ollama
 
+# Web Framework and Authentication
+Flask==2.3.3
+Flask-Login==0.6.3        # Session management for user authentication
+Flask-CORS==4.0.0         # Handle cross-origin requests from React frontend
+Werkzeug==3.0.0          # Password hashing utilities
+Flask-SQLAlchemy==3.1.1  # Database ORM for easier database operations
+
 # Optional Dependencies (uncomment if needed)
 # numpy==1.24.3                  # For numerical operations
 # streamlit==1.29.0              # For web UI
-Flask==2.3.3
