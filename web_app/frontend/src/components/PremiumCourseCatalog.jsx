@@ -143,7 +143,7 @@ const GlassCard = ({ course, index }) => {
         </div>
 
         {/* Prerequisites with animation */}
-        {course.prerequisites && course.prerequisites.length > 0 && (
+        {course.prerequisites && Array.isArray(course.prerequisites) && course.prerequisites.length > 0 && (
           <div className="prerequisites">
             <span className="prereq-label">Prerequisites:</span>
             <div className="prereq-tags">

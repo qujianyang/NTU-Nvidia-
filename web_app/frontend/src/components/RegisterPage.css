@@ -1,0 +1,383 @@
+/* Register Page - Premium Multi-Step Design */
+
+.register-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(160deg, #0a0a0a 0%, #16213e 50%, #1a1a2e 100%);
+}
+
+/* Animated Starfield */
+.stars-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* Gradient Mesh Background */
+.gradient-mesh {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0.6;
+}
+
+.mesh-gradient {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  animation: meshFloat 25s infinite ease-in-out;
+}
+
+.gradient-1 {
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(118, 185, 0, 0.2) 0%, transparent 60%);
+  top: -400px;
+  right: -200px;
+  animation-delay: 0s;
+}
+
+.gradient-2 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.2) 0%, transparent 60%);
+  bottom: -300px;
+  left: -100px;
+  animation-delay: 6s;
+}
+
+.gradient-3 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(118, 75, 162, 0.2) 0%, transparent 60%);
+  top: 40%;
+  left: 30%;
+  animation-delay: 12s;
+}
+
+.gradient-4 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(237, 78, 85, 0.15) 0%, transparent 60%);
+  bottom: 20%;
+  right: 20%;
+  animation-delay: 18s;
+}
+
+/* Register Card */
+.register-card {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  padding: 2.5rem;
+  z-index: 10;
+  transform-style: preserve-3d;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  box-shadow:
+    0 20px 60px 0 rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
+    0 0 120px rgba(118, 185, 0, 0.1);
+}
+
+/* Progress Bar */
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 28px 28px 0 0;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #76b900 0%, #8ed600 100%);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(118, 185, 0, 0.5);
+}
+
+/* Header */
+.register-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.nvidia-logo {
+  margin-bottom: 1.5rem;
+  animation: logoPulse 4s ease-in-out infinite;
+}
+
+.logo-text {
+  font-size: 2.8rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #76b900 0%, #8ed600 50%, #76b900 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s linear infinite;
+  letter-spacing: 2px;
+  display: block;
+}
+
+.logo-subtitle {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+  font-weight: 300;
+}
+
+.register-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.register-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+/* Steps Container */
+.steps-container {
+  margin-bottom: 2rem;
+}
+
+.glass-steps .ant-steps-item-icon {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(118, 185, 0, 0.3);
+}
+
+.glass-steps .ant-steps-item-process .ant-steps-item-icon {
+  background: linear-gradient(135deg, #76b900 0%, #8ed600 100%);
+  border: none;
+  box-shadow: 0 4px 20px rgba(118, 185, 0, 0.4);
+}
+
+.glass-steps .ant-steps-item-finish .ant-steps-item-icon {
+  background: rgba(118, 185, 0, 0.2);
+  border-color: #76b900;
+}
+
+.glass-steps .ant-steps-item-title {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.glass-steps .ant-steps-item-process .ant-steps-item-title {
+  color: #ffffff;
+}
+
+/* Form Content */
+.step-content {
+  padding: 1rem 0;
+}
+
+.step-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.register-form {
+  width: 100%;
+}
+
+/* Step Actions */
+.step-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.glass-button-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+.glass-button-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* Form Footer */
+.form-footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.login-link {
+  color: #76b900;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.login-link:hover {
+  color: #8ed600;
+}
+
+.login-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #76b900, #8ed600);
+  transition: width 0.3s ease;
+}
+
+.login-link:hover::after {
+  width: 100%;
+}
+
+/* Floating Shapes */
+.floating-shapes {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(118, 185, 0, 0.1) 0%, transparent 70%);
+  animation: shapeFloat 20s infinite ease-in-out;
+}
+
+.shape-1 {
+  width: 80px;
+  height: 80px;
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 60px;
+  height: 60px;
+  bottom: 15%;
+  right: 15%;
+  animation-delay: 7s;
+}
+
+.shape-3 {
+  width: 100px;
+  height: 100px;
+  top: 60%;
+  left: 80%;
+  animation-delay: 14s;
+}
+
+/* Animations */
+@keyframes meshFloat {
+  0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  25% {
+    transform: translate(50px, -30px) scale(1.1) rotate(90deg);
+  }
+  50% {
+    transform: translate(-30px, 50px) scale(0.9) rotate(180deg);
+  }
+  75% {
+    transform: translate(30px, 30px) scale(1.05) rotate(270deg);
+  }
+}
+
+@keyframes logoPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes shapeFloat {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(30px, -50px);
+  }
+  66% {
+    transform: translate(-40px, 30px);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .register-card {
+    max-width: 90%;
+    padding: 2rem;
+    margin: 1rem;
+  }
+
+  .logo-text {
+    font-size: 2.2rem;
+  }
+
+  .register-title {
+    font-size: 1.8rem;
+  }
+
+  .step-actions {
+    flex-direction: column;
+  }
+
+  .glass-button-secondary {
+    width: 100%;
+  }
+
+  .mesh-gradient {
+    filter: blur(80px);
+  }
+}

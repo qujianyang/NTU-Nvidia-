@@ -185,7 +185,9 @@ const ChatWidget = ({ open, onClose }) => {
       onClose={onClose}
       open={open}
       width={420}
-      bodyStyle={{ padding: 0, display: 'flex', flexDirection: 'column' }}
+      styles={{
+        body: { padding: 0, display: 'flex', flexDirection: 'column' }
+      }}
       extra={
         <Button
           type="text"
