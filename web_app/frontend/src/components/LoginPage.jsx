@@ -1,28 +1,43 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Card, Typography, message, Space, Divider } from 'antd';
+import { Form, Input, Button, Card, Typography, message, Space, Divider, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const { Title, Text } = Typography;
 
 const LoginPage = ({ onLogin }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (values) => {
     setLoading(true);
     try {
       const response = await axios.post('/api/login', {
         email: values.email,
-        password: values.password
+        password: values.password,
+        remember: values.remember || false
       }, {
         withCredentials: true  // Important for cookies/sessions
       });
 
       if (response.data.success) {
         message.success('Login successful!');
-        onLogin(response.data.user);
+
+        // Use the AuthContext login function with token
+        login(
+          response.data.user,
+          response.data.session_token,
+          values.remember || false
+        );
+
+        // Call the legacy onLogin if it exists
+        if (onLogin) {
+          onLogin(response.data.user);
+        }
+
         navigate('/');  // Redirect to main app
       }
     } catch (error) {
@@ -90,6 +105,14 @@ const LoginPage = ({ onLogin }) => {
                 prefix={<LockOutlined />}
                 placeholder="Password"
               />
+            </Form.Item>
+
+            <Form.Item
+              name="remember"
+              valuePropName="checked"
+              initialValue={false}
+            >
+              <Checkbox>Remember me (stay logged in)</Checkbox>
             </Form.Item>
 
             <Form.Item>

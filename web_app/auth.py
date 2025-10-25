@@ -5,10 +5,12 @@ Handles user registration, login, logout, and session management
 
 import sqlite3
 import os
+import secrets
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, LoginManager
-from flask import g
+from flask import g, request
+import json
 
 # Path to the database
 db_path = os.path.join(os.path.dirname(__file__), '..', 'pdf_ingestion_system', 'nvidia_courses.db')
@@ -296,3 +298,239 @@ def get_chat_history(user_id, limit=50):
     conn.close()
 
     return history
+
+
+# ==================== SESSION TOKEN MANAGEMENT ====================
+
+def generate_session_token():
+    """
+    Generate a cryptographically secure session token
+    Returns a 32-byte hex string (64 characters)
+    """
+    return secrets.token_hex(32)
+
+
+def create_user_session(user_id, ip_address=None, user_agent=None):
+    """
+    Create a new session token for a user
+    Returns the session token or None if failed
+    """
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    try:
+        # Generate unique session token
+        session_token = generate_session_token()
+
+        # Set expiration to 24 hours from now
+        expires_at = datetime.now() + timedelta(hours=24)
+
+        # Store additional metadata as JSON
+        metadata = {
+            'ip_address': ip_address or 'unknown',
+            'user_agent': user_agent or 'unknown',
+            'last_activity': datetime.now().isoformat()
+        }
+
+        # Insert session into database
+        cursor.execute("""
+            INSERT INTO user_sessions
+            (user_id, session_token, created_at, expires_at)
+            VALUES (?, ?, ?, ?)
+        """, (user_id, session_token, datetime.now(), expires_at))
+
+        conn.commit()
+        conn.close()
+
+        return session_token
+
+    except Exception as e:
+        conn.rollback()
+        conn.close()
+        print(f"Error creating session: {e}")
+        return None
+
+
+def validate_session_token(token):
+    """
+    Validate a session token and return the associated user
+    Returns user object if valid, None otherwise
+    """
+    if not token:
+        return None
+
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    try:
+        # Check if token exists and is not expired
+        cursor.execute("""
+            SELECT user_id, expires_at
+            FROM user_sessions
+            WHERE session_token = ?
+            AND expires_at > ?
+        """, (token, datetime.now()))
+
+        session_data = cursor.fetchone()
+
+        if session_data:
+            # Update last activity time
+            cursor.execute("""
+                UPDATE user_sessions
+                SET expires_at = ?
+                WHERE session_token = ?
+            """, (datetime.now() + timedelta(hours=24), token))
+            conn.commit()
+
+            # Return the user object
+            user = User.get(session_data['user_id'])
+            conn.close()
+            return user
+
+        conn.close()
+        return None
+
+    except Exception as e:
+        conn.close()
+        print(f"Error validating session: {e}")
+        return None
+
+
+def delete_user_session(token):
+    """
+    Delete a specific session token (logout)
+    """
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            DELETE FROM user_sessions
+            WHERE session_token = ?
+        """, (token,))
+
+        conn.commit()
+        conn.close()
+        return True
+
+    except Exception as e:
+        conn.rollback()
+        conn.close()
+        print(f"Error deleting session: {e}")
+        return False
+
+
+def delete_all_user_sessions(user_id):
+    """
+    Delete all sessions for a user (logout from all devices)
+    """
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            DELETE FROM user_sessions
+            WHERE user_id = ?
+        """, (user_id,))
+
+        conn.commit()
+        conn.close()
+        return True
+
+    except Exception as e:
+        conn.rollback()
+        conn.close()
+        print(f"Error deleting user sessions: {e}")
+        return False
+
+
+def get_user_sessions(user_id):
+    """
+    Get all active sessions for a user
+    """
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT session_token, created_at, expires_at
+        FROM user_sessions
+        WHERE user_id = ? AND expires_at > ?
+        ORDER BY created_at DESC
+    """, (user_id, datetime.now()))
+
+    sessions = [dict(row) for row in cursor.fetchall()]
+    conn.close()
+
+    return sessions
+
+
+def cleanup_expired_sessions():
+    """
+    Remove all expired sessions from the database
+    Should be called periodically (e.g., on app startup or via cron job)
+    """
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            DELETE FROM user_sessions
+            WHERE expires_at <= ?
+        """, (datetime.now(),))
+
+        deleted_count = cursor.rowcount
+        conn.commit()
+        conn.close()
+
+        print(f"Cleaned up {deleted_count} expired sessions")
+        return deleted_count
+
+    except Exception as e:
+        conn.rollback()
+        conn.close()
+        print(f"Error cleaning up sessions: {e}")
+        return 0
+
+
+def token_required(f):
+    """
+    Decorator to require valid session token for routes
+    Use this instead of @login_required for token-based auth
+    """
+    from functools import wraps
+    from flask import request, jsonify
+
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        token = None
+
+        # Check for token in Authorization header
+        auth_header = request.headers.get('Authorization')
+        if auth_header:
+            try:
+                # Format: "Bearer <token>"
+                token = auth_header.split(' ')[1]
+            except IndexError:
+                return jsonify({'error': 'Invalid token format'}), 401
+
+        # Also check for token in cookies (for browser requests)
+        if not token:
+            token = request.cookies.get('session_token')
+
+        if not token:
+            return jsonify({'error': 'No session token provided'}), 401
+
+        # Validate token
+        user = validate_session_token(token)
+        if not user:
+            return jsonify({'error': 'Invalid or expired session token'}), 401
+
+        # Make user available to the route
+        g.current_user = user
+        g.session_token = token
+
+        return f(*args, **kwargs)
+
+    return decorated_function

@@ -17,7 +17,12 @@ from rag_retriever import CourseRAGRetriever
 from auth import (
     init_login_manager, create_user, verify_user,
     update_user_progress, get_user_progress,
-    save_chat_message, get_chat_history
+    save_chat_message, get_chat_history,
+    # New session management functions
+    create_user_session, delete_user_session,
+    delete_all_user_sessions, get_user_sessions,
+    cleanup_expired_sessions, validate_session_token,
+    token_required
 )
 
 app = Flask(__name__)
@@ -169,12 +174,13 @@ def register():
 
 @app.route('/api/login', methods=['POST'])
 def login():
-    """Login an existing user"""
+    """Login an existing user with session token"""
     try:
         data = request.get_json()
 
         email = data.get('email')
         password = data.get('password')
+        remember_me = data.get('remember', False)  # For frontend to decide storage type
 
         if not email or not password:
             return jsonify({'error': 'Email and password are required'}), 400
@@ -183,11 +189,35 @@ def login():
         user = verify_user(email, password)
 
         if user:
-            login_user(user, remember=True)
-            return jsonify({
+            # Create session token
+            ip_address = request.remote_addr
+            user_agent = request.headers.get('User-Agent', 'unknown')
+            session_token = create_user_session(user.id, ip_address, user_agent)
+
+            if not session_token:
+                return jsonify({'error': 'Failed to create session'}), 500
+
+            # Still use Flask-Login for compatibility (optional)
+            login_user(user, remember=remember_me)
+
+            response = jsonify({
                 'success': True,
-                'user': user.to_dict()
+                'user': user.to_dict(),
+                'session_token': session_token,  # Return token to frontend
+                'remember': remember_me
             })
+
+            # Also set token as httpOnly cookie for added security
+            response.set_cookie(
+                'session_token',
+                session_token,
+                max_age=86400 if remember_me else None,  # 24 hours or session
+                httponly=True,
+                secure=False,  # Set to True in production with HTTPS
+                samesite='Lax'
+            )
+
+            return response
         else:
             return jsonify({'error': 'Invalid email or password'}), 401
 
@@ -196,11 +226,38 @@ def login():
         return jsonify({'error': 'Login failed'}), 500
 
 @app.route('/api/logout', methods=['POST'])
-@login_required
 def logout():
-    """Logout the current user"""
-    logout_user()
-    return jsonify({'success': True})
+    """Logout the current user and delete session token"""
+    try:
+        # Get token from header or cookie
+        token = None
+        auth_header = request.headers.get('Authorization')
+
+        if auth_header:
+            try:
+                token = auth_header.split(' ')[1]
+            except IndexError:
+                pass
+
+        if not token:
+            token = request.cookies.get('session_token')
+
+        # Delete session token from database
+        if token:
+            delete_user_session(token)
+
+        # Also logout from Flask-Login
+        logout_user()
+
+        response = jsonify({'success': True})
+        # Clear the cookie
+        response.set_cookie('session_token', '', max_age=0)
+
+        return response
+
+    except Exception as e:
+        print(f"Error in logout: {e}")
+        return jsonify({'error': 'Logout failed'}), 500
 
 @app.route('/api/user', methods=['GET'])
 @login_required
@@ -212,16 +269,39 @@ def get_current_user():
 
 @app.route('/api/check-auth', methods=['GET'])
 def check_auth():
-    """Check if user is authenticated"""
+    """Check if user is authenticated using session token"""
+    # Get token from header or cookie
+    token = None
+    auth_header = request.headers.get('Authorization')
+
+    if auth_header:
+        try:
+            token = auth_header.split(' ')[1]
+        except IndexError:
+            pass
+
+    if not token:
+        token = request.cookies.get('session_token')
+
+    if token:
+        user = validate_session_token(token)
+        if user:
+            return jsonify({
+                'authenticated': True,
+                'user': user.to_dict(),
+                'session_token': token
+            })
+
+    # Fallback to Flask-Login for compatibility
     if current_user.is_authenticated:
         return jsonify({
             'authenticated': True,
             'user': current_user.to_dict()
         })
-    else:
-        return jsonify({
-            'authenticated': False
-        })
+
+    return jsonify({
+        'authenticated': False
+    })
 
 @app.route('/api/user/progress', methods=['GET'])
 @login_required
@@ -262,7 +342,84 @@ def get_my_chat_history():
     history = get_chat_history(current_user.id, limit)
     return jsonify({'history': history})
 
+# ==================== SESSION MANAGEMENT ROUTES ====================
+
+@app.route('/api/user/sessions', methods=['GET'])
+@token_required
+def get_my_sessions():
+    """Get all active sessions for the current user"""
+    try:
+        from flask import g
+        sessions = get_user_sessions(g.current_user.id)
+
+        # Add metadata to sessions
+        for session in sessions:
+            session['is_current'] = session['session_token'] == g.session_token
+            session['created_at'] = session['created_at']
+            session['expires_at'] = session['expires_at']
+
+        return jsonify({'sessions': sessions})
+
+    except Exception as e:
+        print(f"Error getting sessions: {e}")
+        return jsonify({'error': 'Failed to get sessions'}), 500
+
+@app.route('/api/user/sessions/<session_token>', methods=['DELETE'])
+@token_required
+def revoke_session(session_token):
+    """Revoke a specific session"""
+    try:
+        from flask import g
+
+        # Don't allow revoking current session (use logout instead)
+        if session_token == g.session_token:
+            return jsonify({'error': 'Cannot revoke current session. Use logout instead.'}), 400
+
+        # Verify the session belongs to the current user
+        sessions = get_user_sessions(g.current_user.id)
+        session_tokens = [s['session_token'] for s in sessions]
+
+        if session_token not in session_tokens:
+            return jsonify({'error': 'Session not found'}), 404
+
+        # Delete the session
+        if delete_user_session(session_token):
+            return jsonify({'success': True, 'message': 'Session revoked'})
+        else:
+            return jsonify({'error': 'Failed to revoke session'}), 500
+
+    except Exception as e:
+        print(f"Error revoking session: {e}")
+        return jsonify({'error': 'Failed to revoke session'}), 500
+
+@app.route('/api/user/sessions/all', methods=['DELETE'])
+@token_required
+def logout_all_devices():
+    """Logout from all devices except current"""
+    try:
+        from flask import g
+
+        # Get all sessions first
+        sessions = get_user_sessions(g.current_user.id)
+
+        # Delete all sessions except current
+        for session in sessions:
+            if session['session_token'] != g.session_token:
+                delete_user_session(session['session_token'])
+
+        return jsonify({
+            'success': True,
+            'message': 'Logged out from all other devices'
+        })
+
+    except Exception as e:
+        print(f"Error in logout all: {e}")
+        return jsonify({'error': 'Failed to logout from all devices'}), 500
+
 if __name__ == '__main__':
+    # Clean up expired sessions on startup
+    cleanup_expired_sessions()
+
     print("Starting NVIDIA Course Advisor...")
     print(f"Database path: {db_path}")
     print("Server running at http://0.0.0.0:5000")

@@ -20,16 +20,20 @@ import {
 } from '@ant-design/icons';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 const { TextArea } = Input;
 const { Text, Title } = Typography;
 
 const ChatWidget = ({ open, onClose }) => {
+  const { isAuthenticated, user, updateUserProgress } = useAuth();
   const [messages, setMessages] = useState([
     {
       id: 1,
       type: 'bot',
-      content: "Hello! I'm your NVIDIA Course Advisor. Ask me about courses, prerequisites, learning paths, or anything related to your learning journey!",
+      content: isAuthenticated
+        ? `Hello ${user?.full_name || 'there'}! I'm your NVIDIA Course Advisor. Ask me about courses, prerequisites, learning paths, or anything related to your learning journey!`
+        : "Hello! I'm your NVIDIA Course Advisor. Ask me about courses, prerequisites, learning paths, or anything related to your learning journey!",
       timestamp: new Date(),
     }
   ]);
@@ -71,6 +75,14 @@ const ChatWidget = ({ open, onClose }) => {
     };
   }, [onClose]);
 
+  // Function to detect if a course is mentioned
+  const detectCourseInQuestion = (question) => {
+    const courseKeywords = ['course', 'learning', 'training', 'prerequisite', 'deep learning',
+                          'ai', 'machine learning', 'nvidia', 'fundamentals', 'advanced'];
+    const lowerQuestion = question.toLowerCase();
+    return courseKeywords.some(keyword => lowerQuestion.includes(keyword));
+  };
+
   const handleSend = async () => {
     if (!inputValue.trim()) return;
 
@@ -82,12 +94,13 @@ const ChatWidget = ({ open, onClose }) => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputValue; // Store for progress tracking
     setInputValue('');
     setLoading(true);
 
     try {
       const response = await axios.post('/api/chat', {
-        question: inputValue
+        question: currentInput
       });
 
       const botMessage = {
@@ -98,6 +111,24 @@ const ChatWidget = ({ open, onClose }) => {
       };
 
       setMessages(prev => [...prev, botMessage]);
+
+      // Track progress if user is authenticated and asking about courses
+      if (isAuthenticated && detectCourseInQuestion(currentInput)) {
+        // Increment progress for general course exploration
+        const progressIncrement = 5; // 5% for each meaningful interaction
+
+        // You could enhance this to detect specific course IDs from the response
+        // For now, track general learning engagement
+        try {
+          await updateUserProgress(
+            'general-exploration',
+            'Course Exploration & Learning',
+            progressIncrement
+          );
+        } catch (err) {
+          console.log('Could not update progress:', err);
+        }
+      }
     } catch (error) {
       console.error('Chat error:', error);
       antMessage.error('Failed to get response');

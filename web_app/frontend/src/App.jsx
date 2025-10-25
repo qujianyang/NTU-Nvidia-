@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Typography, Spin, message, ConfigProvider, Button, Avatar, Dropdown, Space } from 'antd';
-import { BookOutlined, PartitionOutlined, RobotOutlined, UserOutlined, LogoutOutlined, LoginOutlined } from '@ant-design/icons';
+import { BookOutlined, PartitionOutlined, RobotOutlined, UserOutlined, LogoutOutlined, LoginOutlined, DashboardOutlined } from '@ant-design/icons';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import CourseCatalog from './components/CourseCatalog';
 import LearningPathTree from './components/LearningPathTree';
 import ChatWidget from './components/ChatWidget';
+import UserDashboard from './components/UserDashboard';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -50,6 +51,12 @@ function MainApp() {
       icon: <PartitionOutlined />,
       label: 'Learning Paths',
     },
+    // Add dashboard only for authenticated users
+    ...(isAuthenticated ? [{
+      key: 'dashboard',
+      icon: <DashboardOutlined />,
+      label: 'My Progress',
+    }] : []),
   ];
 
   return (
@@ -131,6 +138,7 @@ function MainApp() {
             <>
               {activeView === 'catalog' && <CourseCatalog courses={courses} />}
               {activeView === 'tree' && <LearningPathTree courses={courses} />}
+              {activeView === 'dashboard' && <UserDashboard />}
             </>
           )}
         </Content>
