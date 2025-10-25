@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - NVIDIA Learning Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .signup-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+        }
+
+        .signup-header {
+            background: linear-gradient(135deg, #76b900 0%, #5e9300 100%);
+            padding: 35px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .signup-header i {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .signup-header h1 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .signup-header p {
+            font-size: 0.9rem;
+            opacity: 0.95;
+        }
+
+        .signup-form {
+            padding: 35px 30px;
+        }
+
+        .form-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #888;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            color: #76b900;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+            flex: 1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .required-star {
+            color: #e74c3c;
+            margin-left: 2px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 11px 12px 11px 38px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #76b900;
+            box-shadow: 0 0 0 3px rgba(118, 185, 0, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: #bbb;
+        }
+
+        .form-control.no-icon {
+            padding-left: 12px;
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Password Strength Indicator */
+        .password-strength {
+            margin-top: 5px;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-weak { background: #e74c3c; width: 33%; }
+        .strength-medium { background: #f39c12; width: 66%; }
+        .strength-strong { background: #27ae60; width: 100%; }
+
+        .strength-text {
+            font-size: 0.8rem;
+            margin-top: 3px;
+            color: #666;
+        }
+
+        /* Experience Level Radio Buttons */
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .radio-item input[type="radio"] {
+            accent-color: #76b900;
+            cursor: pointer;
+        }
+
+        .radio-item label {
+            margin: 0;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+        /* Validation Messages */
+        .validation-message {
+            font-size: 0.8rem;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .validation-message.error {
+            color: #e74c3c;
+            display: block;
+        }
+
+        .validation-message.success {
+            color: #27ae60;
+            display: block;
+        }
+
+        /* Alert Messages */
+        .error-message, .success-message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 0.9rem;
+            border-left: 4px solid;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            border-left-color: #c33;
+        }
+
+        .success-message {
+            background: #efe;
+            color: #3c3;
+            border-left-color: #3c3;
+        }
+
+        .error-message.show, .success-message.show {
+            display: block;
+        }
+
+        /* Submit Button */
+        .btn-signup {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #76b900 0%, #5e9300 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(118, 185, 0, 0.4);
+        }
+
+        .btn-signup:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-signup .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid white;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Links */
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .back-link a {
+            color: #76b900;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: #5e9300;
+        }
+
+        /* Character Counter */
+        .char-counter {
+            font-size: 0.75rem;
+            color: #999;
+            text-align: right;
+            margin-top: 3px;
+        }
+
+        @media (max-width: 480px) {
+            .signup-header {
+                padding: 25px 20px;
+            }
+
+            .signup-form {
+                padding: 25px 20px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <!-- Header -->
+        <div class="signup-header">
+            <i class="fas fa-user-plus"></i>
+            <h1>Create Your Account</h1>
+            <p>Join the NVIDIA Learning Community</p>
+        </div>
+
+        <!-- Signup Form -->
+        <div class="signup-form">
+            <div class="error-message" id="error-message"></div>
+            <div class="success-message" id="success-message"></div>
+
+            <form id="signup-form" onsubmit="handleSignup(event)">
+                <!-- Required Information Section -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-asterisk"></i>
+                        Required Information
+                    </div>
+
+                    <div class="form-group">
+                        <label for="full_name">
+                            Full Name<span class="required-star">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input
+                                type="text"
+                                id="full_name"
+                                name="full_name"
+                                class="form-control"
+                                placeholder="John Doe"
+                                required
+                                minlength="2"
+                                maxlength="100"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">
+                            Email Address<span class="required-star">*</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-control"
+                                placeholder="john.doe@example.com"
+                                required
+                                onblur="validateEmail()"
+                            >
+                        </div>
+                        <span class="validation-message" id="email-validation"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="password">
+                                Password<span class="required-star">*</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock"></i>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    class="form-control"
+                                    placeholder="Min 8 characters"
+                                    required
+                                    minlength="8"
+                                    onkeyup="checkPasswordStrength()"
+                                >
+                            </div>
+                            <div class="password-strength">
+                                <div class="strength-bar" id="strength-bar"></div>
+                            </div>
+                            <div class="strength-text" id="strength-text"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirm_password">
+                                Confirm Password<span class="required-star">*</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-lock"></i>
+                                <input
+                                    type="password"
+                                    id="confirm_password"
+                                    name="confirm_password"
+                                    class="form-control"
+                                    placeholder="Re-enter password"
+                                    required
+                                    onkeyup="checkPasswordMatch()"
+                                >
+                            </div>
+                            <span class="validation-message" id="password-match"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Optional Information Section -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-info-circle"></i>
+                        Optional Information
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role_department">Role / Department</label>
+                        <select id="role_department" name="role_department" class="form-control no-icon">
+                            <option value="">Select your role...</option>
+                            <option value="Student">Student</option>
+                            <option value="Developer">Developer</option>
+                            <option value="Researcher">Researcher</option>
+                            <option value="Educator">Educator</option>
+                            <option value="Engineer">Engineer</option>
+                            <option value="Data Scientist">Data Scientist</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience_level">Experience Level</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="exp_beginner" name="experience_level" value="Beginner">
+                                <label for="exp_beginner">Beginner</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="exp_intermediate" name="experience_level" value="Intermediate">
+                                <label for="exp_intermediate">Intermediate</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="exp_advanced" name="experience_level" value="Advanced">
+                                <label for="exp_advanced">Advanced</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="learning_goals">
+                            Learning Goals
+                            <span style="font-weight: 400; color: #999;">(What do you hope to learn?)</span>
+                        </label>
+                        <textarea
+                            id="learning_goals"
+                            name="learning_goals"
+                            class="form-control no-icon"
+                            placeholder="E.g., I want to learn AI fundamentals and build robotics projects..."
+                            maxlength="500"
+                            onkeyup="updateCharCounter()"
+                        ></textarea>
+                        <div class="char-counter" id="goals-counter">0/500</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-signup" id="signup-btn">
+                    <i class="fas fa-user-plus"></i>
+                    <span id="btn-text">Create Account</span>
+                </button>
+            </form>
+
+            <div class="back-link">
+                Already have an account? <a href="/login">Sign in instead</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password strength checker
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthBar = document.getElementById('strength-bar');
+            const strengthText = document.getElementById('strength-text');
+
+            let strength = 0;
+
+            // Length check
+            if (password.length >= 8) strength++;
+            if (password.length >= 12) strength++;
+
+            // Character variety checks
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+
+            // Update UI
+            strengthBar.className = 'strength-bar';
+            strengthText.textContent = '';
+
+            if (password.length > 0) {
+                if (strength <= 2) {
+                    strengthBar.classList.add('strength-weak');
+                    strengthText.textContent = 'Weak password';
+                    strengthText.style.color = '#e74c3c';
+                } else if (strength <= 4) {
+                    strengthBar.classList.add('strength-medium');
+                    strengthText.textContent = 'Medium strength';
+                    strengthText.style.color = '#f39c12';
+                } else {
+                    strengthBar.classList.add('strength-strong');
+                    strengthText.textContent = 'Strong password';
+                    strengthText.style.color = '#27ae60';
+                }
+            }
+
+            // Also check password match if confirm field has value
+            if (document.getElementById('confirm_password').value) {
+                checkPasswordMatch();
+            }
+        }
+
+        // Password match checker
+        function checkPasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            const matchMessage = document.getElementById('password-match');
+
+            if (confirmPassword.length > 0) {
+                if (password === confirmPassword) {
+                    matchMessage.textContent = 'Passwords match';
+                    matchMessage.className = 'validation-message success';
+                } else {
+                    matchMessage.textContent = 'Passwords do not match';
+                    matchMessage.className = 'validation-message error';
+                }
+            } else {
+                matchMessage.className = 'validation-message';
+            }
+        }
+
+        // Email validation
+        function validateEmail() {
+            const email = document.getElementById('email').value;
+            const emailMessage = document.getElementById('email-validation');
+
+            if (email.length > 0) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (emailRegex.test(email)) {
+                    emailMessage.textContent = '';
+                    emailMessage.className = 'validation-message';
+                } else {
+                    emailMessage.textContent = 'Please enter a valid email address';
+                    emailMessage.className = 'validation-message error';
+                }
+            }
+        }
+
+        // Character counter for learning goals
+        function updateCharCounter() {
+            const goals = document.getElementById('learning_goals').value;
+            const counter = document.getElementById('goals-counter');
+            counter.textContent = `${goals.length}/500`;
+        }
+
+        // Handle form submission
+        async function handleSignup(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const signupBtn = document.getElementById('signup-btn');
+            const btnText = document.getElementById('btn-text');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+
+            // Validate passwords match
+            if (form.password.value !== form.confirm_password.value) {
+                errorMessage.textContent = 'Passwords do not match';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            // Clear messages
+            errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
+
+            // Disable button and show loading
+            signupBtn.disabled = true;
+            btnText.innerHTML = '<span class="spinner"></span> Creating account...';
+
+            // Prepare data
+            const formData = {
+                full_name: form.full_name.value,
+                email: form.email.value,
+                password: form.password.value,
+                role_department: form.role_department.value || null,
+                experience_level: form.experience_level.value || null,
+                learning_goals: form.learning_goals.value || null
+            };
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Success
+                    successMessage.textContent = 'Account created successfully! Redirecting...';
+                    successMessage.classList.add('show');
+
+                    // Redirect to home after short delay
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1000);
+                } else {
+                    // Error
+                    errorMessage.textContent = data.error || 'Registration failed. Please try again.';
+                    errorMessage.classList.add('show');
+
+                    // Re-enable button
+                    signupBtn.disabled = false;
+                    btnText.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+                }
+            } catch (error) {
+                console.error('Signup error:', error);
+                errorMessage.textContent = 'Connection error. Please try again.';
+                errorMessage.classList.add('show');
+
+                // Re-enable button
+                signupBtn.disabled = false;
+                btnText.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+            }
+        }
+
+        // Auto-focus first field
+        document.getElementById('full_name').focus();
+    </script>
+</body>
+</html>

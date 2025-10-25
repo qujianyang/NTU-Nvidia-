@@ -16,7 +16,8 @@
       "Bash(timeout 3)",
       "Bash(powershell -Command \"Start-Sleep -Seconds 2\")",
       "Bash(curl -s http://127.0.0.1:5000/)",
-      "Bash(curl -s -X POST http://127.0.0.1:5000/api/chat -H \"Content-Type: application/json\" -d \"{\"\"question\"\":\"\"What courses are available for beginners?\"\"}\")"
+      "Bash(curl -s -X POST http://127.0.0.1:5000/api/chat -H \"Content-Type: application/json\" -d \"{\"\"question\"\":\"\"What courses are available for beginners?\"\"}\")",
+      "Bash(sqlite3:*)"
     ],
     "deny": [],
     "ask": []
