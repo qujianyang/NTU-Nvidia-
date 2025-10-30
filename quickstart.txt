@@ -1,0 +1,31 @@
+# NTU-NVIDIA Course Advisor Quickstart Guide
+
+
+pip install -r requirements.txt
+```
+
+### Step 2: Install and Start Ollama (AI Model Server)
+```bash
+# Download Ollama from https://ollama.ai
+
+start a terminal and then run ollama serve
+
+# In a new terminal, pull the required model (7GB download)
+ollama pull qwen2:7b-instruct-q4_0
+```
+
+
+
+
+### Step 4: Start the Web Application
+```bash
+# Navigate to web app directory
+cd ../web_app
+
+# Start the Flask server
+python app.py
+
+# The server will start on http://localhost:5000
+# Open this URL in your browser
+```
+
