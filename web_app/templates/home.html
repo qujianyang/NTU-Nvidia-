@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NVIDIA Course Platform - Learning Path Explorer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/style.css">
-    <link rel="stylesheet" href="/static/widget.css">
-    <style>
+{% extends "base.html" %}
+
+{% block title %}Course Catalog - NVIDIA Course Advisor{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/widget.css">
+<style>
         /* Simple course catalog styles */
         .main-content {
             max-width: 1200px;
@@ -199,38 +196,58 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+        }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 30px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #76b900;
+            box-shadow: 0 0 0 3px rgba(118, 185, 0, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 20px;
+            color: #999;
+            font-size: 1.1rem;
+        }
     </style>
-</head>
-<body>
-    <!-- User Navigation Bar -->
-    <div id="user-nav" style="position: fixed; top: 0; right: 0; padding: 15px 30px; z-index: 999; display: flex; align-items: center; gap: 15px;">
-        <!-- User info (shown when logged in) -->
-        <div id="user-info" style="display: none; color: white; background: rgba(118, 185, 0, 0.9); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem;">
-            <i class="fas fa-user-circle"></i>
-            <span id="user-name">Guest</span>
-        </div>
+{% endblock %}
 
-        <!-- Sign Up button (shown when not logged in) -->
-        <a id="signup-btn" href="/signup" style="background: transparent; border: 2px solid #76b900; color: #76b900; padding: 8px 18px; border-radius: 20px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: all 0.3s;">
-            <i class="fas fa-user-plus"></i>
-            <span>Sign Up</span>
-        </a>
-
-        <!-- Login/Logout button -->
-        <a id="auth-btn" href="/login" style="background: linear-gradient(135deg, #76b900, #5e9300); color: white; padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.2s;">
-            <i class="fas fa-sign-in-alt"></i>
-            <span>Login</span>
-        </a>
+{% block content %}
+    <div class="page-header">
+        <h1><i class="fas fa-graduation-cap"></i> NVIDIA Course Catalog</h1>
+        <p>Discover courses and trace your learning journey through robotics and AI</p>
     </div>
 
-    <!-- Main Content Area -->
-    <div class="main-content">
-        <div class="page-header">
-            <h1><i class="fas fa-graduation-cap"></i> NVIDIA Learning Path Explorer</h1>
-            <p>Discover courses and trace your learning journey through robotics and AI</p>
+    <!-- Search Bar -->
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="course-search" placeholder="Search courses by title, ID, or keyword..."
+                   onkeyup="searchCourses(this.value)">
+            <i class="fas fa-search"></i>
         </div>
+    </div>
 
-        <!-- Filter Buttons -->
+    <!-- Filter Buttons -->
         <div class="filters">
             <button class="filter-btn active" onclick="filterCourses('all')">
                 <i class="fas fa-th"></i> All Courses
@@ -246,21 +263,21 @@
             </button>
         </div>
 
-        <!-- Course Grid -->
-        <div id="course-grid" class="course-grid">
-            <div class="loading">
-                <i class="fas fa-spinner"></i>
-                <p>Loading courses...</p>
-            </div>
+    <!-- Course Grid -->
+    <div id="course-grid" class="course-grid">
+        <div class="loading">
+            <i class="fas fa-spinner"></i>
+            <p>Loading courses...</p>
         </div>
     </div>
-    <!-- Floating Chat Widget Toggle Button -->
-    <button id="chat-widget-toggle" class="chat-widget-toggle" onclick="toggleChatWidget()" aria-label="Open chat assistant">
-        <i class="fas fa-robot"></i>
-        <span class="widget-badge" id="widget-badge" style="display: none;">1</span>
-    </button>
 
-    <!-- Floating Chat Widget Container -->
+<!-- Floating Chat Widget Toggle Button -->
+<button id="chat-widget-toggle" class="chat-widget-toggle" onclick="toggleChatWidget()" aria-label="Open chat assistant">
+    <i class="fas fa-robot"></i>
+    <span class="widget-badge" id="widget-badge" style="display: none;">1</span>
+</button>
+
+<!-- Floating Chat Widget Container -->
     <div id="chat-widget-container" class="chat-widget-container" style="display: none;">
         <!-- Resize Handle (Top-Left Corner) -->
         <div class="widget-resize-handle" id="widget-resize-handle" title="Drag to resize">
@@ -326,12 +343,14 @@
             </div>
         </div>
     </div>
+{% endblock %}
 
-    <script src="/static/script.js"></script>
-    <script src="/static/widget.js"></script>
+{% block extra_js %}
+<script src="/static/script.js"></script>
+<script src="/static/widget.js"></script>
 
-    <!-- Course Catalog JavaScript -->
-    <script>
+<!-- Course Catalog JavaScript -->
+<script>
         // Store courses globally for filtering
         let allCourses = [];
 
@@ -502,6 +521,27 @@
             }
         }
 
+        // Search courses by title, ID, or keywords
+        function searchCourses(query) {
+            if (!query || query.trim() === '') {
+                // Show all courses if search is empty
+                displayCourses(allCourses);
+                return;
+            }
+
+            query = query.toLowerCase();
+
+            const filtered = allCourses.filter(course => {
+                const titleMatch = course.title.toLowerCase().includes(query);
+                const idMatch = course.id.toLowerCase().includes(query);
+                const descMatch = course.description && course.description.toLowerCase().includes(query);
+
+                return titleMatch || idMatch || descMatch;
+            });
+
+            displayCourses(filtered);
+        }
+
         // Open chatbot with pre-filled question about a course
         function askAboutCourse(courseId, courseTitle) {
             // Open the chat widget if not already open
@@ -524,48 +564,5 @@
                 }
             }, 300);
         }
-
-        // ==================== USER SESSION CHECK ====================
-        // Check if user is logged in and update UI
-        async function checkUserSession() {
-            try {
-                const response = await fetch('/api/check-session');
-                const data = await response.json();
-
-                const userInfo = document.getElementById('user-info');
-                const userName = document.getElementById('user-name');
-                const authBtn = document.getElementById('auth-btn');
-                const signupBtn = document.getElementById('signup-btn');
-
-                if (data.logged_in && data.user) {
-                    // User is logged in
-                    userInfo.style.display = 'block';
-                    userName.textContent = data.user.full_name || data.user.email;
-
-                    // Hide signup button
-                    signupBtn.style.display = 'none';
-
-                    // Update auth button to logout
-                    authBtn.href = '/logout';
-                    authBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i><span>Logout</span>';
-                } else {
-                    // User is not logged in
-                    userInfo.style.display = 'none';
-
-                    // Show signup button
-                    signupBtn.style.display = 'inline-flex';
-
-                    // Update auth button to login
-                    authBtn.href = '/login';
-                    authBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i><span>Login</span>';
-                }
-            } catch (error) {
-                console.error('Error checking session:', error);
-            }
-        }
-
-        // Check session on page load
-        checkUserSession();
     </script>
-</body>
-</html>
+{% endblock %}

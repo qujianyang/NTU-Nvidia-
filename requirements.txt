@@ -13,7 +13,10 @@ sentence-transformers>=2.2.0  # Local embeddings
 chromadb>=0.4.0           # Vector database
 requests>=2.31.0          # HTTP client for Ollama
 
+# Web Framework Dependencies
+Flask==2.3.3                   # Flask web framework
+Flask-Login==0.6.3             # User session management
+
 # Optional Dependencies (uncomment if needed)
 # numpy==1.24.3                  # For numerical operations
 # streamlit==1.29.0              # For web UI
-Flask==2.3.3

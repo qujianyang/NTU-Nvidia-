@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NVIDIA Course Advisor{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="/">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>NvidiAdvisor</span>
+                </a>
+            </div>
+
+            <nav class="main-nav">
+                <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="/learning-paths" class="nav-link {% if request.path == '/learning-paths' %}active{% endif %}">
+                    <i class="fas fa-sitemap"></i>
+                    <span>Learning Paths</span>
+                </a>
+                {% if current_user.is_authenticated %}
+                <a href="/dashboard" class="nav-link {% if request.path == '/dashboard' %}active{% endif %}">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                {% endif %}
+            </nav>
+
+            <div class="user-menu">
+                {% if current_user.is_authenticated %}
+                <div class="user-info-dropdown">
+                    <button class="user-button" onclick="toggleUserMenu()">
+                        <i class="fas fa-user-circle"></i>
+                        <span>{{ current_user.full_name }}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="user-dropdown">
+                        <div class="dropdown-header">
+                            <strong>{{ current_user.full_name }}</strong>
+                            <small>{{ current_user.email }}</small>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="/dashboard" class="dropdown-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Dashboard
+                        </a>
+                        <a href="#" class="dropdown-item" onclick="viewProfile()">
+                            <i class="fas fa-user-edit"></i>
+                            Profile Settings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/logout" class="dropdown-item logout-item">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="auth-buttons">
+                    <a href="/login" class="btn btn-outline">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </a>
+                    <a href="/signup" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i>
+                        Sign Up
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobile-nav">
+        <a href="/" class="mobile-nav-link">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <a href="/learning-paths" class="mobile-nav-link">
+            <i class="fas fa-sitemap"></i> Learning Paths
+        </a>
+        {% if current_user.is_authenticated %}
+        <a href="/dashboard" class="mobile-nav-link">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+        <a href="/logout" class="mobile-nav-link">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+        {% else %}
+        <a href="/login" class="mobile-nav-link">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </a>
+        <a href="/signup" class="mobile-nav-link">
+            <i class="fas fa-user-plus"></i> Sign Up
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>NVIDIA Course Advisor</h4>
+                <p>Your AI-powered guide to NVIDIA's learning platform</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Course Catalog</a></li>
+                    <li><a href="/learning-paths">Learning Paths</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="https://learn.nvidia.com" target="_blank">NVIDIA Learn</a></li>
+                    <li><a href="https://developer.nvidia.com" target="_blank">NVIDIA Developer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 NVIDIA Course Advisor. Built with AI assistance.</p>
+        </div>
+    </footer>
+
+    <!-- Common Scripts -->
+    <script>
+        // Toggle user dropdown menu
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('user-dropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('user-dropdown');
+            const userButton = document.querySelector('.user-button');
+
+            if (dropdown && !dropdown.contains(e.target) && !userButton.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            const mobileNav = document.getElementById('mobile-nav');
+            const toggle = document.querySelector('.mobile-menu-toggle i');
+            mobileNav.classList.toggle('show');
+
+            // Toggle icon
+            if (mobileNav.classList.contains('show')) {
+                toggle.classList.remove('fa-bars');
+                toggle.classList.add('fa-times');
+            } else {
+                toggle.classList.remove('fa-times');
+                toggle.classList.add('fa-bars');
+            }
+        }
+
+        // View profile (placeholder)
+        function viewProfile() {
+            alert('Profile settings coming soon!');
+        }
+
+        // Check if user is logged in (for dynamic content)
+        async function checkUserSession() {
+            try {
+                const response = await fetch('/api/check-session');
+                const data = await response.json();
+                return data.logged_in;
+            } catch (error) {
+                console.error('Error checking session:', error);
+                return false;
+            }
+        }
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

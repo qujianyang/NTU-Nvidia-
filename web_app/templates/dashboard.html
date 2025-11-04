@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - NVIDIA Course Advisor{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/dashboard.css">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1><i class="fas fa-tachometer-alt"></i> My Dashboard</h1>
+        <p>Track your learning progress and manage your account</p>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="stats-grid" id="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <i class="fas fa-book"></i>
+            </div>
+            <div class="stat-content">
+                <h3 id="stat-total-courses">0</h3>
+                <p>Courses Tracked</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #76b900 0%, #5e9300 100%);">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-content">
+                <h3 id="stat-completed-courses">0</h3>
+                <p>Courses Completed</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="stat-content">
+                <h3 id="stat-avg-progress">0%</h3>
+                <p>Average Progress</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <i class="fas fa-comments"></i>
+            </div>
+            <div class="stat-content">
+                <h3 id="stat-total-questions">0</h3>
+                <p>Questions Asked</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div class="dashboard-grid">
+        <!-- Course Progress Section -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h2><i class="fas fa-graduation-cap"></i> Course Progress</h2>
+                <button class="btn-secondary" onclick="addCourse()">
+                    <i class="fas fa-plus"></i> Add Course
+                </button>
+            </div>
+
+            <div id="progress-loading" class="loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading your progress...</p>
+            </div>
+
+            <div id="progress-empty" class="empty-state" style="display: none;">
+                <i class="fas fa-book-open"></i>
+                <h3>No courses tracked yet</h3>
+                <p>Start tracking your learning journey by adding courses</p>
+                <button class="btn-primary" onclick="addCourse()">
+                    <i class="fas fa-plus"></i> Add Your First Course
+                </button>
+            </div>
+
+            <div id="progress-list" class="progress-list" style="display: none;">
+                <!-- Progress items will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Chat History Section -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h2><i class="fas fa-history"></i> Chat History</h2>
+                <button class="btn-secondary" onclick="clearChatHistory()">
+                    <i class="fas fa-trash"></i> Clear All
+                </button>
+            </div>
+
+            <div id="history-loading" class="loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading chat history...</p>
+            </div>
+
+            <div id="history-empty" class="empty-state" style="display: none;">
+                <i class="fas fa-comments"></i>
+                <h3>No chat history yet</h3>
+                <p>Start chatting with NvidiAdvisor to get course recommendations</p>
+                <a href="/chat" class="btn-primary">
+                    <i class="fas fa-comments"></i> Start Chatting
+                </a>
+            </div>
+
+            <div id="history-list" class="history-list" style="display: none;">
+                <!-- History items will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Session Management Section -->
+    <div class="dashboard-section">
+        <div class="section-header">
+            <h2><i class="fas fa-shield-alt"></i> Active Sessions</h2>
+            <button class="btn-danger" onclick="logoutAllDevices()">
+                <i class="fas fa-sign-out-alt"></i> Logout All Devices
+            </button>
+        </div>
+
+        <div id="sessions-loading" class="loading-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading sessions...</p>
+        </div>
+
+        <div id="sessions-list" class="sessions-list" style="display: none;">
+            <!-- Session items will be inserted here -->
+        </div>
+    </div>
+</div>
+
+<!-- Add Course Modal -->
+<div id="add-course-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-plus-circle"></i> Add Course to Track</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="course-id">Course ID *</label>
+                <input type="text" id="course-id" placeholder="e.g., isaac-sim-001" required>
+            </div>
+            <div class="form-group">
+                <label for="course-title">Course Title *</label>
+                <input type="text" id="course-title" placeholder="e.g., Getting Started with Isaac Sim" required>
+            </div>
+            <div class="form-group">
+                <label for="course-progress">Completion Percentage</label>
+                <input type="number" id="course-progress" min="0" max="100" value="0" placeholder="0-100">
+            </div>
+            <div class="form-group">
+                <label for="course-notes">Notes (Optional)</label>
+                <textarea id="course-notes" rows="3" placeholder="Add your learning notes..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+            <button class="btn-primary" onclick="saveCourse()">
+                <i class="fas fa-save"></i> Save Course
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Notes Modal -->
+<div id="edit-notes-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3><i class="fas fa-edit"></i> Edit Course Notes</h3>
+            <button class="modal-close" onclick="closeEditModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Course</label>
+                <p id="edit-course-title" style="font-weight: 600; color: #333;"></p>
+            </div>
+            <div class="form-group">
+                <label for="edit-completion">Completion Percentage</label>
+                <input type="number" id="edit-completion" min="0" max="100" placeholder="0-100">
+            </div>
+            <div class="form-group">
+                <label for="edit-notes">Notes</label>
+                <textarea id="edit-notes" rows="5" placeholder="Add your learning notes..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+            <button class="btn-primary" onclick="saveEditedNotes()">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/dashboard.js"></script>
+{% endblock %}
