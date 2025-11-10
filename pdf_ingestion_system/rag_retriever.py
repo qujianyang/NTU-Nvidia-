@@ -30,7 +30,7 @@ from course_database import CourseDatabase
 
 # Ollama settings
 OLLAMA_API_URL = "http://localhost:11434"
-OLLAMA_MODEL = "mistral:7b-instruct-v0.3-q4_K_M"
+OLLAMA_MODEL = "qwen2:7b-instruct-q4_0"
 
 # Embedding settings (local, no API key needed)
 EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
@@ -158,7 +158,8 @@ class CourseRAGRetriever:
         vectorstore = Chroma.from_documents(
             documents=child_docs,
             embedding=self.embeddings,
-            collection_name="course_chunks"
+            collection_name="course_chunks",
+            persist_directory=str(Path(__file__).parent / "chroma_db")
         )
 
         return vectorstore, parent_map
