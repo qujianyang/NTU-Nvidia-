@@ -167,6 +167,9 @@ Sessionx.vim
 tags
 [._]*.un~
 
+# Claude Code
+.claude/
+
 # ===== Operating System =====
 # Windows
 Thumbs.db
