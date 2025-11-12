@@ -6,6 +6,12 @@ An intelligent AI-powered learning advisor that transforms NVIDIA's static cours
 ![Flask](https://img.shields.io/badge/flask-2.3.3-green.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
+## Application Screenshot
+
+![NVIDIA Learning Assistant Interface](https://github.com/user-attachments/assets/9a18f48f-da62-4230-8c3a-922ba95bd9d5)
+
+*The NVIDIA Learning Assistant features an interactive course catalog with an AI-powered chat widget for personalized course recommendations and learning path guidance.*
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -300,35 +306,6 @@ http://localhost:5000
 
 You should see the NVIDIA Learning Assistant home page with the course catalog and floating chat widget.
 
-## Configuration
-
-### Environment Variables
-
-Create a `.env` file in the project root:
-
-```bash
-# Flask Configuration
-SECRET_KEY=your-secret-key-change-in-production-xyz123
-FLASK_ENV=development
-FLASK_DEBUG=True
-
-# Database
-DATABASE_PATH=./pdf_ingestion_system/nvidia_courses.db
-
-# Ollama Configuration
-OLLAMA_API_URL=http://localhost:11434
-OLLAMA_MODEL=qwen2:7b-instruct-q4_0
-
-# RAG Configuration
-EMBEDDING_MODEL=sentence-transformers/all-mpnet-base-v2
-TOP_K_CHUNKS=4
-CHUNK_OVERLAP=2
-
-# Session Configuration
-SESSION_COOKIE_SECURE=False  # Set to True in production with HTTPS
-SESSION_COOKIE_HTTPONLY=True
-SESSION_COOKIE_SAMESITE=Lax
-PERMANENT_SESSION_LIFETIME=604800  # 7 days in seconds
 ```
 
 ### RAG System Configuration
