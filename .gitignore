@@ -120,6 +120,10 @@ cython_debug/
 *.db-shm
 *.db-wal
 
+# Vector Database / ChromaDB
+chroma_db/
+*.bin
+
 # ===== Environment & Secrets =====
 .env
 .env.*
