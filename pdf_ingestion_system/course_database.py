@@ -28,6 +28,7 @@ class CourseDatabase:
                 price TEXT,
                 cost_usd REAL,
                 level TEXT,
+                domain TEXT,         -- LLM or Robotics
                 description TEXT,
                 target_audience TEXT,
                 technical_requirements TEXT,
@@ -76,10 +77,10 @@ class CourseDatabase:
         cursor = self.conn.cursor()
         cursor.execute("""
             INSERT OR REPLACE INTO courses
-            (id, title, url, duration, duration_hours, price, cost_usd, level,
+            (id, title, url, duration, duration_hours, price, cost_usd, level, domain,
              description, target_audience, technical_requirements,
              prerequisites, leads_to, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             course['id'],
             course['title'],
@@ -89,6 +90,7 @@ class CourseDatabase:
             course.get('price', ''),
             course.get('cost_usd', 0),
             course.get('level', ''),
+            course.get('domain', 'LLM'),  # Default to LLM if not specified
             course.get('description', ''),
             course.get('target_audience', ''),
             course.get('technical_requirements', ''),

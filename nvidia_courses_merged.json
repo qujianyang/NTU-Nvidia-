@@ -1,0 +1,2642 @@
+{
+  "metadata": {
+    "source": "Merged LLM and Robotics Catalogs",
+    "catalog_name": "NVIDIA Complete Learning Catalog - AI, LLM, and Robotics",
+    "extraction_date": "2025-11-15",
+    "total_courses": 50,
+    "llm_courses": 32,
+    "robotics_courses": 18,
+    "notes": "Unified catalog combining Generative AI/LLM and Robotics learning paths"
+  },
+  "learning_paths": [
+    {
+      "id": "path-foundational-genai",
+      "name": "Foundational Generative AI",
+      "description": "Core concepts and fundamentals of generative AI and deep learning",
+      "courses": [
+        "gen-ai-explained",
+        "brain-10-min",
+        "fundamentals-dl-self",
+        "fundamentals-dl-workshop",
+        "transformer-nlp-intro"
+      ],
+      "total_duration": "~24 Hours",
+      "total_cost": "Free to $500",
+      "domain": "LLM"
+    },
+    {
+      "id": "path-llm-applications",
+      "name": "Build Applications with LLMs",
+      "description": "Learn to build various applications using Large Language Models",
+      "courses": [
+        "transformer-nlp-apps",
+        "conversational-ai",
+        "prompt-engineering-self",
+        "prompt-engineering-workshop",
+        "rapid-llm-dev-self",
+        "rapid-llm-dev-workshop",
+        "multimodal-ai-agents"
+      ],
+      "total_duration": "~48 Hours",
+      "total_cost": "$90 to $500",
+      "domain": "LLM"
+    },
+    {
+      "id": "path-rag",
+      "name": "Retrieval Augmented Generation",
+      "description": "Master RAG techniques for enhancing LLM capabilities",
+      "courses": [
+        "augment-llm-rag",
+        "rag-agents-self",
+        "rag-agents-workshop",
+        "eval-rag-systems",
+        "improving-rag"
+      ],
+      "total_duration": "~24 Hours",
+      "total_cost": "Free to $500",
+      "domain": "LLM"
+    },
+    {
+      "id": "path-data-generation",
+      "name": "Data Generation",
+      "description": "Generate synthetic data using various AI techniques",
+      "courses": [
+        "diffusion-models-self",
+        "diffusion-models-workshop",
+        "digital-health-genai",
+        "bionemo-drug-discovery",
+        "synthetic-tabular-data"
+      ],
+      "total_duration": "~22 Hours",
+      "total_cost": "Free to $500",
+      "domain": "LLM"
+    },
+    {
+      "id": "path-model-customization",
+      "name": "Data Curation & Model Customization",
+      "description": "Learn to curate data and customize LLMs for specific domains",
+      "courses": [
+        "multimodal-data-curation",
+        "domain-adaptive-pretraining",
+        "eval-light-customization",
+        "adding-knowledge-llms",
+        "model-parallelism"
+      ],
+      "total_duration": "~23 Hours",
+      "total_cost": "Free to $500",
+      "domain": "LLM"
+    },
+    {
+      "id": "path-deployment",
+      "name": "Inference and Deployment",
+      "description": "Deploy and optimize LLMs for production environments",
+      "courses": [
+        "nim-microservices-intro",
+        "sizing-llm-inference",
+        "deploying-rag-intro",
+        "deploying-rag-production"
+      ],
+      "total_duration": "~17 Hours",
+      "total_cost": "Free to $500",
+      "domain": "LLM"
+    },
+    {
+      "id": "path-agentic-ai",
+      "name": "Agentic AI",
+      "description": "Build autonomous AI agents using LLMs",
+      "courses": [
+        "agentic-ai-applications"
+      ],
+      "total_duration": "8 Hours",
+      "total_cost": "$500",
+      "domain": "LLM"
+    },
+    {
+      "id": "path-isaac-sim",
+      "name": "Isaac Sim Robotics Simulation Path",
+      "description": "Complete learning path for robotic simulation using Isaac Sim",
+      "courses": [
+        "isaac-sim-001",
+        "isaac-sim-002",
+        "isaac-sim-003",
+        "isaac-sim-004",
+        "isaac-sim-005"
+      ],
+      "total_duration": "8.5 Hours",
+      "total_cost": "Free",
+      "domain": "Robotics"
+    },
+    {
+      "id": "path-isaac-lab",
+      "name": "Isaac Lab Robot Learning Path",
+      "description": "Robot learning and training with Isaac Lab",
+      "courses": [
+        "isaac-lab-001",
+        "isaac-lab-002",
+        "isaac-lab-003",
+        "isaac-lab-004"
+      ],
+      "total_duration": "8 Hours",
+      "total_cost": "Free",
+      "domain": "Robotics"
+    },
+    {
+      "id": "path-jetson",
+      "name": "Jetson Nano AI Path",
+      "description": "Getting started with AI on Jetson Nano hardware",
+      "courses": [
+        "jetson-001",
+        "jetson-002"
+      ],
+      "total_duration": "6-8 Hours",
+      "total_cost": "$90-$500",
+      "domain": "Robotics"
+    }
+  ],
+  "courses": [
+    {
+      "id": "gen-ai-explained",
+      "title": "Generative AI Explained",
+      "short_code": "GENAI-EXPLAINED",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "2 Hours",
+      "duration_hours": 2,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "General Interest",
+      "format": "Self-Paced Course",
+      "category": "Foundational GenAI",
+      "track": "foundational-genai",
+      "prerequisites": [],
+      "leads_to": [
+        "brain-10-min",
+        "fundamentals-dl-self"
+      ],
+      "description": "EDIT_ME - An introductory course explaining the fundamentals of generative AI, its applications, and impact on various industries.",
+      "learning_objectives": [
+        "EDIT_ME - Understand the basic concepts of generative AI",
+        "EDIT_ME - Explore various generative AI models and techniques",
+        "EDIT_ME - Learn about real-world applications"
+      ],
+      "target_audience": "Anyone interested in understanding generative AI, no technical background required",
+      "technical_requirements": "None - browser-based learning",
+      "certificate": true,
+      "skills_taught": [
+        "generative AI",
+        "AI fundamentals",
+        "machine learning basics"
+      ],
+      "related_courses": [
+        "brain-10-min",
+        "fundamentals-dl-self"
+      ],
+      "tags": [
+        "generative-ai",
+        "foundational",
+        "beginner",
+        "free"
+      ],
+      "notes": "Entry-level course suitable for all audiences",
+      "domain": "LLM"
+    },
+    {
+      "id": "brain-10-min",
+      "title": "Building a Brain in 10 Minutes",
+      "short_code": "BRAIN-10MIN",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "10 Minutes",
+      "duration_hours": 0.17,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "General Interest",
+      "format": "Self-Paced Course",
+      "category": "Foundational GenAI",
+      "track": "foundational-genai",
+      "prerequisites": [],
+      "leads_to": [
+        "fundamentals-dl-self",
+        "transformer-nlp-intro"
+      ],
+      "description": "EDIT_ME - A quick introduction to neural networks and how AI 'brains' are built.",
+      "learning_objectives": [
+        "EDIT_ME - Understand basic neural network concepts",
+        "EDIT_ME - Learn how AI models process information"
+      ],
+      "target_audience": "Complete beginners to AI and neural networks",
+      "technical_requirements": "None",
+      "certificate": false,
+      "skills_taught": [
+        "neural networks",
+        "AI basics"
+      ],
+      "related_courses": [
+        "gen-ai-explained",
+        "fundamentals-dl-self"
+      ],
+      "tags": [
+        "neural-networks",
+        "quick-start",
+        "beginner",
+        "free"
+      ],
+      "notes": "Ultra-short introductory content",
+      "domain": "LLM"
+    },
+    {
+      "id": "fundamentals-dl-self",
+      "title": "Fundamentals of Deep Learning",
+      "short_code": "FUND-DL-SELF",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "6 Hours",
+      "duration_hours": 6,
+      "price": "$90",
+      "cost_usd": 90,
+      "level": "Technical - Beginner",
+      "format": "Self-Paced Course",
+      "category": "Foundational GenAI",
+      "track": "foundational-genai",
+      "prerequisites": [
+        "gen-ai-explained"
+      ],
+      "leads_to": [
+        "transformer-nlp-intro",
+        "prompt-engineering-self"
+      ],
+      "description": "EDIT_ME - Comprehensive introduction to deep learning concepts, neural networks, and practical applications.",
+      "learning_objectives": [
+        "EDIT_ME - Master fundamental deep learning concepts",
+        "EDIT_ME - Build and train neural networks",
+        "EDIT_ME - Apply deep learning to real problems"
+      ],
+      "target_audience": "Developers and data scientists beginning their deep learning journey",
+      "technical_requirements": "Basic Python knowledge recommended",
+      "certificate": true,
+      "skills_taught": [
+        "deep learning",
+        "neural networks",
+        "TensorFlow",
+        "PyTorch",
+        "model training"
+      ],
+      "related_courses": [
+        "fundamentals-dl-workshop"
+      ],
+      "tags": [
+        "deep-learning",
+        "fundamentals",
+        "self-paced",
+        "paid"
+      ],
+      "notes": "Self-paced version of the fundamentals course",
+      "domain": "LLM"
+    },
+    {
+      "id": "fundamentals-dl-workshop",
+      "title": "Fundamentals of Deep Learning",
+      "short_code": "FUND-DL-WORKSHOP",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$500",
+      "cost_usd": 500,
+      "level": "Technical - Beginner",
+      "format": "Instructor-Led Workshop",
+      "category": "Foundational GenAI",
+      "track": "foundational-genai",
+      "prerequisites": [
+        "gen-ai-explained"
+      ],
+      "leads_to": [
+        "transformer-nlp-intro",
+        "prompt-engineering-workshop"
+      ],
+      "description": "EDIT_ME - Hands-on workshop with live instruction covering deep learning fundamentals.",
+      "learning_objectives": [
+        "EDIT_ME - Master fundamental deep learning concepts with instructor guidance",
+        "EDIT_ME - Build and train neural networks in a collaborative environment",
+        "EDIT_ME - Get personalized feedback on projects"
+      ],
+      "target_audience": "Developers preferring structured, instructor-led learning",
+      "technical_requirements": "Basic Python knowledge, workshop-provided GPU resources",
+      "certificate": true,
+      "skills_taught": [
+        "deep learning",
+        "neural networks",
+        "TensorFlow",
+        "PyTorch",
+        "hands-on training"
+      ],
+      "related_courses": [
+        "fundamentals-dl-self"
+      ],
+      "tags": [
+        "deep-learning",
+        "fundamentals",
+        "instructor-led",
+        "workshop"
+      ],
+      "notes": "Instructor-led version with live support",
+      "domain": "LLM"
+    },
+    {
+      "id": "transformer-nlp-intro",
+      "title": "Introduction to Transformer-Based Natural Language Processing",
+      "short_code": "TRANSFORMER-INTRO",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$30",
+      "cost_usd": 30,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "Foundational GenAI",
+      "track": "foundational-genai",
+      "prerequisites": [
+        "fundamentals-dl-self"
+      ],
+      "leads_to": [
+        "transformer-nlp-apps",
+        "prompt-engineering-self"
+      ],
+      "description": "EDIT_ME - Deep dive into transformer architecture and its applications in NLP.",
+      "learning_objectives": [
+        "EDIT_ME - Understand transformer architecture",
+        "EDIT_ME - Implement attention mechanisms",
+        "EDIT_ME - Build NLP applications using transformers"
+      ],
+      "target_audience": "Developers with deep learning background wanting to specialize in NLP",
+      "technical_requirements": "Deep learning fundamentals, Python proficiency",
+      "certificate": true,
+      "skills_taught": [
+        "transformers",
+        "attention mechanisms",
+        "BERT",
+        "GPT",
+        "NLP"
+      ],
+      "related_courses": [
+        "transformer-nlp-apps"
+      ],
+      "tags": [
+        "transformers",
+        "NLP",
+        "intermediate",
+        "self-paced"
+      ],
+      "notes": "Foundation for all transformer-based applications",
+      "domain": "LLM"
+    },
+    {
+      "id": "transformer-nlp-apps",
+      "title": "Building Transformer-Based Natural Language Processing Applications",
+      "short_code": "TRANSFORMER-APPS",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$500",
+      "cost_usd": 500,
+      "level": "Technical - Intermediate",
+      "format": "Instructor-Led Workshop",
+      "category": "LLM Applications",
+      "track": "llm-applications",
+      "prerequisites": [
+        "transformer-nlp-intro"
+      ],
+      "leads_to": [
+        "conversational-ai",
+        "rag-agents-workshop"
+      ],
+      "description": "EDIT_ME - Hands-on workshop building production-ready NLP applications with transformers.",
+      "learning_objectives": [
+        "EDIT_ME - Build complete NLP applications",
+        "EDIT_ME - Optimize transformer models for production",
+        "EDIT_ME - Deploy NLP services at scale"
+      ],
+      "target_audience": "Developers ready to build production NLP systems",
+      "technical_requirements": "Transformer knowledge, Python, cloud deployment basics",
+      "certificate": true,
+      "skills_taught": [
+        "NLP applications",
+        "model optimization",
+        "deployment",
+        "production systems"
+      ],
+      "related_courses": [
+        "conversational-ai",
+        "prompt-engineering-workshop"
+      ],
+      "tags": [
+        "transformers",
+        "NLP",
+        "applications",
+        "workshop",
+        "production"
+      ],
+      "notes": "Advanced workshop for production applications",
+      "domain": "LLM"
+    },
+    {
+      "id": "conversational-ai",
+      "title": "Building Conversational AI Applications",
+      "short_code": "CONV-AI",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$500",
+      "cost_usd": 500,
+      "level": "Technical - Intermediate",
+      "format": "Instructor-Led Workshop",
+      "category": "LLM Applications",
+      "track": "llm-applications",
+      "prerequisites": [
+        "transformer-nlp-intro"
+      ],
+      "leads_to": [
+        "multimodal-ai-agents",
+        "agentic-ai-applications"
+      ],
+      "description": "EDIT_ME - Build sophisticated conversational AI systems and chatbots.",
+      "learning_objectives": [
+        "EDIT_ME - Design conversational flows",
+        "EDIT_ME - Implement context management",
+        "EDIT_ME - Build multi-turn dialogue systems"
+      ],
+      "target_audience": "Developers building chatbots and conversational interfaces",
+      "technical_requirements": "NLP fundamentals, Python, API development",
+      "certificate": true,
+      "skills_taught": [
+        "conversational AI",
+        "chatbots",
+        "dialogue systems",
+        "context management"
+      ],
+      "related_courses": [
+        "prompt-engineering-workshop",
+        "multimodal-ai-agents"
+      ],
+      "tags": [
+        "conversational-ai",
+        "chatbots",
+        "workshop",
+        "intermediate"
+      ],
+      "notes": "Focus on dialogue and conversation management",
+      "domain": "LLM"
+    },
+    {
+      "id": "prompt-engineering-self",
+      "title": "Building LLM Applications Using Prompt Engineering",
+      "short_code": "PROMPT-ENG-SELF",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$90",
+      "cost_usd": 90,
+      "level": "Technical - Beginner",
+      "format": "Self-Paced Course",
+      "category": "LLM Applications",
+      "track": "llm-applications",
+      "prerequisites": [
+        "fundamentals-dl-self"
+      ],
+      "leads_to": [
+        "rapid-llm-dev-self",
+        "rag-agents-self"
+      ],
+      "description": "EDIT_ME - Master the art and science of prompt engineering for LLM applications.",
+      "learning_objectives": [
+        "EDIT_ME - Design effective prompts",
+        "EDIT_ME - Implement prompt templates and chains",
+        "EDIT_ME - Optimize prompts for specific tasks"
+      ],
+      "target_audience": "Developers working with LLMs and generative AI",
+      "technical_requirements": "Basic Python, familiarity with APIs",
+      "certificate": true,
+      "skills_taught": [
+        "prompt engineering",
+        "prompt design",
+        "LLM optimization",
+        "few-shot learning"
+      ],
+      "related_courses": [
+        "prompt-engineering-workshop",
+        "rapid-llm-dev-self"
+      ],
+      "tags": [
+        "prompt-engineering",
+        "LLMs",
+        "self-paced",
+        "beginner"
+      ],
+      "notes": "Essential skills for working with LLMs",
+      "domain": "LLM"
+    },
+    {
+      "id": "prompt-engineering-workshop",
+      "title": "Building LLM Applications Using Prompt Engineering",
+      "short_code": "PROMPT-ENG-WORKSHOP",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$500",
+      "cost_usd": 500,
+      "level": "Technical - Beginner",
+      "format": "Instructor-Led Workshop",
+      "category": "LLM Applications",
+      "track": "llm-applications",
+      "prerequisites": [
+        "fundamentals-dl-workshop"
+      ],
+      "leads_to": [
+        "rapid-llm-dev-workshop",
+        "rag-agents-workshop"
+      ],
+      "description": "EDIT_ME - Hands-on workshop mastering prompt engineering with expert guidance.",
+      "learning_objectives": [
+        "EDIT_ME - Design effective prompts with instructor feedback",
+        "EDIT_ME - Build complex prompt chains",
+        "EDIT_ME - Troubleshoot prompt issues"
+      ],
+      "target_audience": "Developers wanting structured prompt engineering training",
+      "technical_requirements": "Basic Python, workshop provides LLM access",
+      "certificate": true,
+      "skills_taught": [
+        "prompt engineering",
+        "prompt optimization",
+        "debugging prompts",
+        "best practices"
+      ],
+      "related_courses": [
+        "prompt-engineering-self",
+        "rapid-llm-dev-workshop"
+      ],
+      "tags": [
+        "prompt-engineering",
+        "LLMs",
+        "workshop",
+        "instructor-led"
+      ],
+      "notes": "Interactive workshop with live demonstrations",
+      "domain": "LLM"
+    },
+    {
+      "id": "rapid-llm-dev-self",
+      "title": "Rapid Application Development Using Large Language Models",
+      "short_code": "RAPID-LLM-SELF",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$90",
+      "cost_usd": 90,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "LLM Applications",
+      "track": "llm-applications",
+      "prerequisites": [
+        "prompt-engineering-self"
+      ],
+      "leads_to": [
+        "rag-agents-self",
+        "multimodal-ai-agents"
+      ],
+      "description": "EDIT_ME - Build LLM applications quickly using modern frameworks and tools.",
+      "learning_objectives": [
+        "EDIT_ME - Use LangChain and similar frameworks",
+        "EDIT_ME - Implement rapid prototyping techniques",
+        "EDIT_ME - Deploy LLM applications quickly"
+      ],
+      "target_audience": "Developers needing to build LLM applications rapidly",
+      "technical_requirements": "Python, API knowledge, prompt engineering basics",
+      "certificate": true,
+      "skills_taught": [
+        "LangChain",
+        "rapid prototyping",
+        "LLM frameworks",
+        "application development"
+      ],
+      "related_courses": [
+        "rapid-llm-dev-workshop",
+        "rag-agents-self"
+      ],
+      "tags": [
+        "rapid-development",
+        "LLMs",
+        "frameworks",
+        "self-paced"
+      ],
+      "notes": "Focus on speed and efficiency in development",
+      "domain": "LLM"
+    },
+    {
+      "id": "rapid-llm-dev-workshop",
+      "title": "Rapid Application Development Using Large Language Models",
+      "short_code": "RAPID-LLM-WORKSHOP",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$500",
+      "cost_usd": 500,
+      "level": "Technical - Intermediate",
+      "format": "Instructor-Led Workshop",
+      "category": "LLM Applications",
+      "track": "llm-applications",
+      "prerequisites": [
+        "prompt-engineering-workshop"
+      ],
+      "leads_to": [
+        "rag-agents-workshop",
+        "multimodal-ai-agents"
+      ],
+      "description": "EDIT_ME - Intensive workshop on rapidly building and deploying LLM applications.",
+      "learning_objectives": [
+        "EDIT_ME - Build complete applications in hours",
+        "EDIT_ME - Use advanced frameworks effectively",
+        "EDIT_ME - Deploy with best practices"
+      ],
+      "target_audience": "Teams needing to quickly prototype and deploy LLM solutions",
+      "technical_requirements": "Python proficiency, API experience, prompt engineering",
+      "certificate": true,
+      "skills_taught": [
+        "rapid development",
+        "LLM frameworks",
+        "deployment",
+        "best practices"
+      ],
+      "related_courses": [
+        "rapid-llm-dev-self",
+        "rag-agents-workshop"
+      ],
+      "tags": [
+        "rapid-development",
+        "LLMs",
+        "workshop",
+        "intensive"
+      ],
+      "notes": "Hands-on rapid application building",
+      "domain": "LLM"
+    },
+    {
+      "id": "multimodal-ai-agents",
+      "title": "Building AI Agents Using Multimodal Foundation Models",
+      "short_code": "MULTIMODAL-AGENTS",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$500",
+      "cost_usd": 500,
+      "level": "Technical - Advanced",
+      "format": "Instructor-Led Workshop",
+      "category": "LLM Applications",
+      "track": "llm-applications",
+      "prerequisites": [
+        "conversational-ai",
+        "rapid-llm-dev-workshop"
+      ],
+      "leads_to": [
+        "agentic-ai-applications"
+      ],
+      "description": "EDIT_ME - Build AI agents that can process text, images, audio, and video.",
+      "learning_objectives": [
+        "EDIT_ME - Integrate multimodal models",
+        "EDIT_ME - Build agents with vision and language",
+        "EDIT_ME - Handle multiple input/output modalities"
+      ],
+      "target_audience": "Advanced developers building sophisticated AI agents",
+      "technical_requirements": "Strong Python, deep learning, experience with multiple modalities",
+      "certificate": true,
+      "skills_taught": [
+        "multimodal AI",
+        "vision-language models",
+        "agent development",
+        "CLIP",
+        "DALL-E"
+      ],
+      "related_courses": [
+        "agentic-ai-applications",
+        "diffusion-models-workshop"
+      ],
+      "tags": [
+        "multimodal",
+        "agents",
+        "advanced",
+        "workshop"
+      ],
+      "notes": "Cutting-edge multimodal agent development",
+      "domain": "LLM"
+    },
+    {
+      "id": "augment-llm-rag",
+      "title": "Augment Your LLM Using Retrieval Augmented Generation",
+      "short_code": "AUGMENT-RAG",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "1 Hour",
+      "duration_hours": 1,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Beginner",
+      "format": "Self-Paced Course",
+      "category": "RAG",
+      "track": "rag",
+      "prerequisites": [
+        "prompt-engineering-self"
+      ],
+      "leads_to": [
+        "rag-agents-self",
+        "eval-rag-systems"
+      ],
+      "description": "EDIT_ME - Introduction to RAG concepts and basic implementation.",
+      "learning_objectives": [
+        "EDIT_ME - Understand RAG architecture",
+        "EDIT_ME - Implement basic RAG pipeline",
+        "EDIT_ME - Connect LLMs with knowledge bases"
+      ],
+      "target_audience": "Developers new to RAG wanting to enhance LLM capabilities",
+      "technical_requirements": "Basic LLM knowledge, Python",
+      "certificate": true,
+      "skills_taught": [
+        "RAG basics",
+        "vector databases",
+        "retrieval",
+        "knowledge augmentation"
+      ],
+      "related_courses": [
+        "rag-agents-self",
+        "eval-rag-systems"
+      ],
+      "tags": [
+        "RAG",
+        "beginner",
+        "free",
+        "introduction"
+      ],
+      "notes": "Quick introduction to RAG concepts",
+      "domain": "LLM"
+    },
+    {
+      "id": "rag-agents-self",
+      "title": "Building RAG Agents with LLMs",
+      "short_code": "RAG-AGENTS-SELF",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "RAG",
+      "track": "rag",
+      "prerequisites": [
+        "augment-llm-rag"
+      ],
+      "leads_to": [
+        "eval-rag-systems",
+        "improving-rag"
+      ],
+      "description": "EDIT_ME - Build sophisticated RAG-powered agents and applications.",
+      "learning_objectives": [
+        "EDIT_ME - Design RAG agent architectures",
+        "EDIT_ME - Implement advanced retrieval strategies",
+        "EDIT_ME - Build production RAG systems"
+      ],
+      "target_audience": "Developers building RAG-based applications",
+      "technical_requirements": "RAG basics, vector databases, Python",
+      "certificate": true,
+      "skills_taught": [
+        "RAG agents",
+        "advanced retrieval",
+        "agent architectures",
+        "production RAG"
+      ],
+      "related_courses": [
+        "rag-agents-workshop",
+        "improving-rag"
+      ],
+      "tags": [
+        "RAG",
+        "agents",
+        "intermediate",
+        "free"
+      ],
+      "notes": "Comprehensive RAG agent development",
+      "domain": "LLM"
+    },
+    {
+      "id": "rag-agents-workshop",
+      "title": "Building RAG Agents with LLMs",
+      "short_code": "RAG-AGENTS-WORKSHOP",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$500",
+      "cost_usd": 500,
+      "level": "Technical - Intermediate",
+      "format": "Instructor-Led Workshop",
+      "category": "RAG",
+      "track": "rag",
+      "prerequisites": [
+        "augment-llm-rag"
+      ],
+      "leads_to": [
+        "eval-rag-systems",
+        "deploying-rag-production"
+      ],
+      "description": "EDIT_ME - Hands-on workshop building production-ready RAG agents.",
+      "learning_objectives": [
+        "EDIT_ME - Build complex RAG pipelines",
+        "EDIT_ME - Optimize retrieval performance",
+        "EDIT_ME - Deploy scalable RAG systems"
+      ],
+      "target_audience": "Teams implementing enterprise RAG solutions",
+      "technical_requirements": "RAG fundamentals, Python, cloud deployment",
+      "certificate": true,
+      "skills_taught": [
+        "production RAG",
+        "optimization",
+        "scalability",
+        "enterprise patterns"
+      ],
+      "related_courses": [
+        "rag-agents-self",
+        "deploying-rag-production"
+      ],
+      "tags": [
+        "RAG",
+        "agents",
+        "workshop",
+        "production"
+      ],
+      "notes": "Enterprise-focused RAG implementation",
+      "domain": "LLM"
+    },
+    {
+      "id": "eval-rag-systems",
+      "title": "Evaluation and Benchmarking of RAG and Semantic Search Systems",
+      "short_code": "EVAL-RAG",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "3 Hours",
+      "duration_hours": 3,
+      "price": "$30",
+      "cost_usd": 30,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "RAG",
+      "track": "rag",
+      "prerequisites": [
+        "rag-agents-self"
+      ],
+      "leads_to": [
+        "improving-rag",
+        "deploying-rag-intro"
+      ],
+      "description": "EDIT_ME - Learn to evaluate and benchmark RAG system performance.",
+      "learning_objectives": [
+        "EDIT_ME - Design evaluation metrics for RAG",
+        "EDIT_ME - Benchmark retrieval quality",
+        "EDIT_ME - Measure end-to-end system performance"
+      ],
+      "target_audience": "Engineers optimizing RAG system performance",
+      "technical_requirements": "RAG implementation experience, statistics basics",
+      "certificate": true,
+      "skills_taught": [
+        "RAG evaluation",
+        "benchmarking",
+        "metrics",
+        "performance testing"
+      ],
+      "related_courses": [
+        "improving-rag",
+        "deploying-rag-intro"
+      ],
+      "tags": [
+        "RAG",
+        "evaluation",
+        "benchmarking",
+        "intermediate"
+      ],
+      "notes": "Critical for RAG system optimization",
+      "domain": "LLM"
+    },
+    {
+      "id": "improving-rag",
+      "title": "Techniques for Improving Retrieval Augmented Generation (RAG) Effectiveness",
+      "short_code": "IMPROVE-RAG",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "4 Hours",
+      "duration_hours": 4,
+      "price": "$30",
+      "cost_usd": 30,
+      "level": "Technical - Advanced",
+      "format": "Self-Paced Course",
+      "category": "RAG",
+      "track": "rag",
+      "prerequisites": [
+        "eval-rag-systems"
+      ],
+      "leads_to": [
+        "deploying-rag-production"
+      ],
+      "description": "EDIT_ME - Advanced techniques for optimizing RAG system performance.",
+      "learning_objectives": [
+        "EDIT_ME - Implement advanced retrieval strategies",
+        "EDIT_ME - Optimize embedding models",
+        "EDIT_ME - Fine-tune RAG components"
+      ],
+      "target_audience": "Engineers optimizing production RAG systems",
+      "technical_requirements": "Strong RAG background, production experience",
+      "certificate": true,
+      "skills_taught": [
+        "RAG optimization",
+        "advanced retrieval",
+        "embedding tuning",
+        "performance improvement"
+      ],
+      "related_courses": [
+        "eval-rag-systems",
+        "deploying-rag-production"
+      ],
+      "tags": [
+        "RAG",
+        "optimization",
+        "advanced",
+        "techniques"
+      ],
+      "notes": "Advanced optimization techniques",
+      "domain": "LLM"
+    },
+    {
+      "id": "diffusion-models-self",
+      "title": "Generative AI with Diffusion Models",
+      "short_code": "DIFFUSION-SELF",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$90",
+      "cost_usd": 90,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "Data Generation",
+      "track": "data-generation",
+      "prerequisites": [
+        "fundamentals-dl-self"
+      ],
+      "leads_to": [
+        "synthetic-tabular-data",
+        "multimodal-ai-agents"
+      ],
+      "description": "EDIT_ME - Master diffusion models for image and data generation.",
+      "learning_objectives": [
+        "EDIT_ME - Understand diffusion model theory",
+        "EDIT_ME - Implement and train diffusion models",
+        "EDIT_ME - Generate high-quality synthetic data"
+      ],
+      "target_audience": "Developers working with generative models and synthetic data",
+      "technical_requirements": "Deep learning experience, Python, GPU access helpful",
+      "certificate": true,
+      "skills_taught": [
+        "diffusion models",
+        "image generation",
+        "DALL-E",
+        "Stable Diffusion",
+        "synthetic data"
+      ],
+      "related_courses": [
+        "diffusion-models-workshop",
+        "synthetic-tabular-data"
+      ],
+      "tags": [
+        "diffusion",
+        "generative",
+        "images",
+        "self-paced"
+      ],
+      "notes": "Core generative AI technology",
+      "domain": "LLM"
+    },
+    {
+      "id": "diffusion-models-workshop",
+      "title": "Generative AI with Diffusion Models",
+      "short_code": "DIFFUSION-WORKSHOP",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$500",
+      "cost_usd": 500,
+      "level": "Technical - Intermediate",
+      "format": "Instructor-Led Workshop",
+      "category": "Data Generation",
+      "track": "data-generation",
+      "prerequisites": [
+        "fundamentals-dl-workshop"
+      ],
+      "leads_to": [
+        "synthetic-tabular-data",
+        "multimodal-ai-agents"
+      ],
+      "description": "EDIT_ME - Hands-on workshop mastering diffusion models with expert guidance.",
+      "learning_objectives": [
+        "EDIT_ME - Build and train diffusion models",
+        "EDIT_ME - Optimize generation quality",
+        "EDIT_ME - Deploy diffusion models"
+      ],
+      "target_audience": "Teams implementing generative AI solutions",
+      "technical_requirements": "Deep learning knowledge, Python, workshop GPUs provided",
+      "certificate": true,
+      "skills_taught": [
+        "diffusion models",
+        "training strategies",
+        "quality optimization",
+        "deployment"
+      ],
+      "related_courses": [
+        "diffusion-models-self",
+        "multimodal-ai-agents"
+      ],
+      "tags": [
+        "diffusion",
+        "generative",
+        "workshop",
+        "hands-on"
+      ],
+      "notes": "Interactive diffusion model training",
+      "domain": "LLM"
+    },
+    {
+      "id": "digital-health-genai",
+      "title": "Getting Started with NVIDIA Tools for Generative AI in Digital Biology",
+      "short_code": "DIGITAL-HEALTH-AI",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "2 Hours",
+      "duration_hours": 2,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "Data Generation",
+      "track": "data-generation",
+      "prerequisites": [
+        "gen-ai-explained"
+      ],
+      "leads_to": [
+        "bionemo-drug-discovery"
+      ],
+      "description": "EDIT_ME - Apply generative AI to digital biology and healthcare applications.",
+      "learning_objectives": [
+        "EDIT_ME - Understand AI in digital biology",
+        "EDIT_ME - Use NVIDIA BioNeMo platform",
+        "EDIT_ME - Build healthcare AI applications"
+      ],
+      "target_audience": "Developers in healthcare and life sciences",
+      "technical_requirements": "Basic AI knowledge, interest in healthcare applications",
+      "certificate": true,
+      "skills_taught": [
+        "digital biology",
+        "healthcare AI",
+        "BioNeMo",
+        "medical applications"
+      ],
+      "related_courses": [
+        "bionemo-drug-discovery"
+      ],
+      "tags": [
+        "healthcare",
+        "biology",
+        "free",
+        "specialized"
+      ],
+      "notes": "Domain-specific generative AI",
+      "domain": "LLM"
+    },
+    {
+      "id": "bionemo-drug-discovery",
+      "title": "Streamlining Drug Discovery Workflows with NVIDIA BioNeMo",
+      "short_code": "BIONEMO-DRUG",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "2 Hours",
+      "duration_hours": 2,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Advanced",
+      "format": "Self-Paced Course",
+      "category": "Data Generation",
+      "track": "data-generation",
+      "prerequisites": [
+        "digital-health-genai"
+      ],
+      "leads_to": [],
+      "description": "EDIT_ME - Accelerate drug discovery using AI-powered molecular generation.",
+      "learning_objectives": [
+        "EDIT_ME - Use BioNeMo for drug discovery",
+        "EDIT_ME - Generate molecular structures",
+        "EDIT_ME - Optimize drug candidates with AI"
+      ],
+      "target_audience": "Computational biologists and pharmaceutical researchers",
+      "technical_requirements": "Biology/chemistry background helpful, Python, AI basics",
+      "certificate": true,
+      "skills_taught": [
+        "drug discovery",
+        "molecular generation",
+        "BioNeMo",
+        "pharmaceutical AI"
+      ],
+      "related_courses": [
+        "digital-health-genai"
+      ],
+      "tags": [
+        "drug-discovery",
+        "biology",
+        "specialized",
+        "free"
+      ],
+      "notes": "Highly specialized pharmaceutical application",
+      "domain": "LLM"
+    },
+    {
+      "id": "synthetic-tabular-data",
+      "title": "Synthetic Tabular Data Generation",
+      "short_code": "SYNTH-TABULAR",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "4 Hours",
+      "duration_hours": 4,
+      "price": "$30",
+      "cost_usd": 30,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "Data Generation",
+      "track": "data-generation",
+      "prerequisites": [
+        "diffusion-models-self"
+      ],
+      "leads_to": [
+        "domain-adaptive-pretraining"
+      ],
+      "description": "EDIT_ME - Generate high-quality synthetic tabular data for training and testing.",
+      "learning_objectives": [
+        "EDIT_ME - Generate synthetic tabular datasets",
+        "EDIT_ME - Preserve statistical properties",
+        "EDIT_ME - Ensure privacy in synthetic data"
+      ],
+      "target_audience": "Data scientists needing synthetic data for development",
+      "technical_requirements": "Statistics, Python, pandas, understanding of data privacy",
+      "certificate": true,
+      "skills_taught": [
+        "synthetic data",
+        "tabular generation",
+        "privacy preservation",
+        "statistical fidelity"
+      ],
+      "related_courses": [
+        "diffusion-models-self"
+      ],
+      "tags": [
+        "synthetic-data",
+        "tabular",
+        "privacy",
+        "intermediate"
+      ],
+      "notes": "Essential for data privacy compliance",
+      "domain": "LLM"
+    },
+    {
+      "id": "multimodal-data-curation",
+      "title": "Introduction to Multi-Modal Data Curation and Pre-Processing for LLMs",
+      "short_code": "MULTIMODAL-CURATION",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "1 Hour",
+      "duration_hours": 1,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "Model Customization",
+      "track": "model-customization",
+      "prerequisites": [
+        "transformer-nlp-intro"
+      ],
+      "leads_to": [
+        "domain-adaptive-pretraining",
+        "eval-light-customization"
+      ],
+      "description": "EDIT_ME - Learn to curate and preprocess multimodal data for LLM training.",
+      "learning_objectives": [
+        "EDIT_ME - Curate multimodal datasets",
+        "EDIT_ME - Preprocess text, image, and audio data",
+        "EDIT_ME - Prepare data for LLM training"
+      ],
+      "target_audience": "ML engineers preparing datasets for model training",
+      "technical_requirements": "Data processing experience, Python, understanding of different modalities",
+      "certificate": false,
+      "skills_taught": [
+        "data curation",
+        "multimodal processing",
+        "dataset preparation",
+        "quality control"
+      ],
+      "related_courses": [
+        "domain-adaptive-pretraining"
+      ],
+      "tags": [
+        "data-curation",
+        "multimodal",
+        "preprocessing",
+        "free"
+      ],
+      "notes": "Foundation for model customization",
+      "domain": "LLM"
+    },
+    {
+      "id": "domain-adaptive-pretraining",
+      "title": "Domain-Adaptive Pre-Training Large Language Models",
+      "short_code": "DOMAIN-PRETRAIN",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "4 Hours",
+      "duration_hours": 4,
+      "price": "$30",
+      "cost_usd": 30,
+      "level": "Technical - Advanced",
+      "format": "Self-Paced Course",
+      "category": "Model Customization",
+      "track": "model-customization",
+      "prerequisites": [
+        "multimodal-data-curation"
+      ],
+      "leads_to": [
+        "eval-light-customization",
+        "adding-knowledge-llms"
+      ],
+      "description": "EDIT_ME - Adapt pre-trained LLMs to specific domains through continued pre-training.",
+      "learning_objectives": [
+        "EDIT_ME - Implement domain-adaptive pre-training",
+        "EDIT_ME - Select and prepare domain data",
+        "EDIT_ME - Optimize training strategies"
+      ],
+      "target_audience": "ML engineers customizing LLMs for specific industries",
+      "technical_requirements": "Strong ML background, distributed training, large-scale computing",
+      "certificate": true,
+      "skills_taught": [
+        "domain adaptation",
+        "continued pre-training",
+        "transfer learning",
+        "optimization"
+      ],
+      "related_courses": [
+        "eval-light-customization",
+        "adding-knowledge-llms"
+      ],
+      "tags": [
+        "domain-adaptation",
+        "pre-training",
+        "advanced",
+        "customization"
+      ],
+      "notes": "Advanced model customization technique",
+      "domain": "LLM"
+    },
+    {
+      "id": "eval-light-customization",
+      "title": "Evaluation and Light Customization of Large Language Models",
+      "short_code": "EVAL-CUSTOM-LLM",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "2 Hours",
+      "duration_hours": 2,
+      "price": "$30",
+      "cost_usd": 30,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "Model Customization",
+      "track": "model-customization",
+      "prerequisites": [
+        "domain-adaptive-pretraining"
+      ],
+      "leads_to": [
+        "adding-knowledge-llms",
+        "model-parallelism"
+      ],
+      "description": "EDIT_ME - Evaluate LLM performance and implement light customization techniques.",
+      "learning_objectives": [
+        "EDIT_ME - Design LLM evaluation suites",
+        "EDIT_ME - Implement parameter-efficient fine-tuning",
+        "EDIT_ME - Use LoRA and similar techniques"
+      ],
+      "target_audience": "Engineers fine-tuning LLMs with limited resources",
+      "technical_requirements": "LLM basics, Python, understanding of fine-tuning",
+      "certificate": true,
+      "skills_taught": [
+        "LLM evaluation",
+        "PEFT",
+        "LoRA",
+        "light customization",
+        "benchmarking"
+      ],
+      "related_courses": [
+        "adding-knowledge-llms",
+        "model-parallelism"
+      ],
+      "tags": [
+        "evaluation",
+        "customization",
+        "PEFT",
+        "intermediate"
+      ],
+      "notes": "Efficient customization methods",
+      "domain": "LLM"
+    },
+    {
+      "id": "adding-knowledge-llms",
+      "title": "Adding Domain-Specific Knowledge to Large Language Models",
+      "short_code": "ADD-KNOWLEDGE-LLM",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$500",
+      "cost_usd": 500,
+      "level": "Technical - Advanced",
+      "format": "Instructor-Led Workshop",
+      "category": "Model Customization",
+      "track": "model-customization",
+      "prerequisites": [
+        "eval-light-customization"
+      ],
+      "leads_to": [
+        "model-parallelism"
+      ],
+      "description": "EDIT_ME - Comprehensive workshop on injecting domain knowledge into LLMs.",
+      "learning_objectives": [
+        "EDIT_ME - Implement knowledge injection techniques",
+        "EDIT_ME - Fine-tune with domain data",
+        "EDIT_ME - Validate knowledge retention"
+      ],
+      "target_audience": "Teams building domain-specific LLM applications",
+      "technical_requirements": "Advanced ML knowledge, distributed training experience",
+      "certificate": true,
+      "skills_taught": [
+        "knowledge injection",
+        "fine-tuning",
+        "domain specialization",
+        "validation"
+      ],
+      "related_courses": [
+        "model-parallelism",
+        "domain-adaptive-pretraining"
+      ],
+      "tags": [
+        "knowledge-injection",
+        "fine-tuning",
+        "workshop",
+        "advanced"
+      ],
+      "notes": "Deep customization for enterprise needs",
+      "domain": "LLM"
+    },
+    {
+      "id": "model-parallelism",
+      "title": "Model Parallelism: Implement Billion Parameter Language Models",
+      "short_code": "MODEL-PARALLEL",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$500",
+      "cost_usd": 500,
+      "level": "Technical - Expert",
+      "format": "Instructor-Led Workshop",
+      "category": "Model Customization",
+      "track": "model-customization",
+      "prerequisites": [
+        "adding-knowledge-llms"
+      ],
+      "leads_to": [
+        "sizing-llm-inference"
+      ],
+      "description": "EDIT_ME - Train and deploy massive language models using parallelization techniques.",
+      "learning_objectives": [
+        "EDIT_ME - Implement tensor and pipeline parallelism",
+        "EDIT_ME - Distribute training across multiple GPUs",
+        "EDIT_ME - Optimize memory and compute efficiency"
+      ],
+      "target_audience": "Engineers working with very large models",
+      "technical_requirements": "Expert-level ML, distributed systems, CUDA knowledge helpful",
+      "certificate": true,
+      "skills_taught": [
+        "model parallelism",
+        "distributed training",
+        "large-scale ML",
+        "optimization"
+      ],
+      "related_courses": [
+        "sizing-llm-inference"
+      ],
+      "tags": [
+        "parallelism",
+        "large-models",
+        "expert",
+        "distributed"
+      ],
+      "notes": "Most advanced training techniques",
+      "domain": "LLM"
+    },
+    {
+      "id": "nim-microservices-intro",
+      "title": "Introduction to Deploying Gen AI Using NVIDIA NIM Microservices",
+      "short_code": "NIM-INTRO",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "2 Hours",
+      "duration_hours": 2,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "Deployment",
+      "track": "deployment",
+      "prerequisites": [
+        "prompt-engineering-self"
+      ],
+      "leads_to": [
+        "sizing-llm-inference",
+        "deploying-rag-intro"
+      ],
+      "description": "EDIT_ME - Deploy generative AI models using NVIDIA NIM microservices architecture.",
+      "learning_objectives": [
+        "EDIT_ME - Understand NIM architecture",
+        "EDIT_ME - Deploy AI models as microservices",
+        "EDIT_ME - Scale and manage deployments"
+      ],
+      "target_audience": "DevOps and ML engineers deploying AI models",
+      "technical_requirements": "Containerization knowledge, basic cloud deployment",
+      "certificate": true,
+      "skills_taught": [
+        "NIM",
+        "microservices",
+        "deployment",
+        "containerization",
+        "scaling"
+      ],
+      "related_courses": [
+        "sizing-llm-inference",
+        "deploying-rag-intro"
+      ],
+      "tags": [
+        "deployment",
+        "NIM",
+        "microservices",
+        "free"
+      ],
+      "notes": "NVIDIA's deployment platform introduction",
+      "domain": "LLM"
+    },
+    {
+      "id": "sizing-llm-inference",
+      "title": "Sizing LLM Inference Systems",
+      "short_code": "SIZE-LLM-INFERENCE",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "3 Hours",
+      "duration_hours": 3,
+      "price": "$30",
+      "cost_usd": 30,
+      "level": "Technical - Advanced",
+      "format": "Self-Paced Course",
+      "category": "Deployment",
+      "track": "deployment",
+      "prerequisites": [
+        "nim-microservices-intro"
+      ],
+      "leads_to": [
+        "deploying-rag-intro"
+      ],
+      "description": "EDIT_ME - Calculate and optimize resource requirements for LLM inference at scale.",
+      "learning_objectives": [
+        "EDIT_ME - Calculate memory and compute requirements",
+        "EDIT_ME - Optimize batch sizes and throughput",
+        "EDIT_ME - Design cost-effective inference systems"
+      ],
+      "target_audience": "Infrastructure engineers planning LLM deployments",
+      "technical_requirements": "Understanding of GPU architectures, system design",
+      "certificate": true,
+      "skills_taught": [
+        "capacity planning",
+        "optimization",
+        "cost analysis",
+        "performance tuning"
+      ],
+      "related_courses": [
+        "deploying-rag-intro",
+        "model-parallelism"
+      ],
+      "tags": [
+        "inference",
+        "sizing",
+        "optimization",
+        "infrastructure"
+      ],
+      "notes": "Critical for production planning",
+      "domain": "LLM"
+    },
+    {
+      "id": "deploying-rag-intro",
+      "title": "Introduction to Deploying Retrieval-Augmented Generation Pipelines for Production",
+      "short_code": "DEPLOY-RAG-INTRO",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "4 Hours",
+      "duration_hours": 4,
+      "price": "$90",
+      "cost_usd": 90,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "Deployment",
+      "track": "deployment",
+      "prerequisites": [
+        "rag-agents-self",
+        "nim-microservices-intro"
+      ],
+      "leads_to": [
+        "deploying-rag-production"
+      ],
+      "description": "EDIT_ME - Learn the fundamentals of deploying RAG pipelines in production environments.",
+      "learning_objectives": [
+        "EDIT_ME - Design production RAG architectures",
+        "EDIT_ME - Implement vector database solutions",
+        "EDIT_ME - Deploy and monitor RAG pipelines"
+      ],
+      "target_audience": "Engineers deploying RAG systems to production",
+      "technical_requirements": "RAG knowledge, cloud deployment, DevOps basics",
+      "certificate": true,
+      "skills_taught": [
+        "RAG deployment",
+        "vector databases",
+        "production systems",
+        "monitoring"
+      ],
+      "related_courses": [
+        "deploying-rag-production",
+        "improving-rag"
+      ],
+      "tags": [
+        "RAG",
+        "deployment",
+        "production",
+        "intermediate"
+      ],
+      "notes": "Bridge from development to production",
+      "domain": "LLM"
+    },
+    {
+      "id": "deploying-rag-production",
+      "title": "Deploying Retrieval-Augmented Generation Pipelines for Production",
+      "short_code": "DEPLOY-RAG-PROD",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$500",
+      "cost_usd": 500,
+      "level": "Technical - Advanced",
+      "format": "Instructor-Led Workshop",
+      "category": "Deployment",
+      "track": "deployment",
+      "prerequisites": [
+        "deploying-rag-intro"
+      ],
+      "leads_to": [
+        "agentic-ai-applications"
+      ],
+      "description": "EDIT_ME - Advanced workshop on enterprise-scale RAG deployment and optimization.",
+      "learning_objectives": [
+        "EDIT_ME - Build scalable RAG infrastructure",
+        "EDIT_ME - Implement high-availability solutions",
+        "EDIT_ME - Optimize for latency and throughput"
+      ],
+      "target_audience": "Teams deploying enterprise RAG solutions",
+      "technical_requirements": "Production deployment experience, distributed systems",
+      "certificate": true,
+      "skills_taught": [
+        "enterprise RAG",
+        "high availability",
+        "scalability",
+        "performance optimization"
+      ],
+      "related_courses": [
+        "improving-rag",
+        "agentic-ai-applications"
+      ],
+      "tags": [
+        "RAG",
+        "production",
+        "enterprise",
+        "workshop"
+      ],
+      "notes": "Enterprise-grade deployment strategies",
+      "domain": "LLM"
+    },
+    {
+      "id": "agentic-ai-applications",
+      "title": "Building Agentic AI Applications with Large Language Models",
+      "short_code": "AGENTIC-AI-APPS",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=EDIT_ME",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$500",
+      "cost_usd": 500,
+      "level": "Technical - Advanced",
+      "format": "Instructor-Led Workshop",
+      "category": "Agentic AI",
+      "track": "agentic-ai",
+      "prerequisites": [
+        "multimodal-ai-agents",
+        "rag-agents-workshop"
+      ],
+      "leads_to": [],
+      "description": "EDIT_ME - Build autonomous AI agents that can plan, reason, and execute complex tasks.",
+      "learning_objectives": [
+        "EDIT_ME - Design agentic architectures",
+        "EDIT_ME - Implement planning and reasoning systems",
+        "EDIT_ME - Build tool-using agents",
+        "EDIT_ME - Deploy autonomous AI systems"
+      ],
+      "target_audience": "Advanced developers building autonomous AI systems",
+      "technical_requirements": "Strong AI/ML background, experience with LLMs and agents",
+      "certificate": true,
+      "skills_taught": [
+        "agentic AI",
+        "autonomous systems",
+        "planning",
+        "reasoning",
+        "tool use"
+      ],
+      "related_courses": [
+        "multimodal-ai-agents",
+        "deploying-rag-production"
+      ],
+      "tags": [
+        "agentic-ai",
+        "autonomous",
+        "advanced",
+        "workshop"
+      ],
+      "notes": "Cutting-edge autonomous AI development",
+      "domain": "LLM"
+    },
+    {
+      "id": "robotics-foundations-001",
+      "title": "A Beginner's Guide to Autonomous Robots",
+      "short_code": "ROBOT-BASICS",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-OV-37+V1",
+      "duration": "1 Hour",
+      "duration_hours": 1,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "General Interest",
+      "format": "Self-Paced Course",
+      "category": "Robotics Foundations",
+      "track": "robotics-foundations",
+      "prerequisites": [],
+      "leads_to": [],
+      "description": "In this introductory-level course, we'll explore the world of autonomous robots and robotic systems. We'll cover the fundamentals of robotic architecture and talk about the high-level structure of autonomy software. Starting with traditional methods, we'll learn about key components such as sensing, perception, mapping, localization, navigation, and control. The course also examines current trends and future directions in robotics technology, including the application of foundation models. This course is designed for software engineers, robotics enthusiasts, and anyone interested in understanding the basics of autonomous robotic systems.",
+      "learning_objectives": [
+        "Identify the key components and types of autonomous robots",
+        "Describe the basic principles of embodied AI in robotics",
+        "Recognize the main elements of robotic systems and architecture",
+        "List the primary sensors and perception techniques used in robotics",
+        "Outline the fundamental concepts of localization and mapping in autonomous navigation",
+        "Recall the basic principles of control systems in robotics",
+        "Identify current trends and challenges in robotics, including the use of foundation models"
+      ],
+      "target_audience": "This course is designed for software engineers, robotics enthusiasts, and anyone interested in understanding the basics of autonomous robotic systems",
+      "technical_requirements": "No prior knowledge of robotics is required, but a general understanding of software frameworks and programming concepts is beneficial",
+      "certificate": true,
+      "skills_taught": [
+        "autonomous robots",
+        "robotics fundamentals",
+        "embodied AI",
+        "robotic architecture",
+        "sensing",
+        "perception",
+        "mapping",
+        "localization",
+        "navigation",
+        "control systems",
+        "foundation models"
+      ],
+      "related_courses": [
+        "isaac-sim-001",
+        "isaac-ros-001"
+      ],
+      "tags": [
+        "robotics",
+        "autonomous",
+        "beginner",
+        "foundations",
+        "general-interest",
+        "embodied-AI"
+      ],
+      "notes": "Entry point for robotics learning - general interest level, no hands-on component",
+      "domain": "Robotics"
+    },
+    {
+      "id": "cosmos-001",
+      "title": "An Introduction to NVIDIA Cosmos for Physical AI",
+      "short_code": "COSMOS-INTRO",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-OV-38+V1",
+      "duration": "2 Hours",
+      "duration_hours": 2,
+      "price": "$30",
+      "cost_usd": 30,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "Synthetic Data Generation",
+      "track": "synthetic-data",
+      "prerequisites": [],
+      "leads_to": [],
+      "description": "In this introductory, hands-on course, learners will explore NVIDIA Cosmos™, a platform of generative world foundation models (WFM), advanced tokenizers, guardrails, and an accelerated data processing and curation pipeline built to accelerate the development of physical AI. This course was originally delivered at GTC in 2025.",
+      "learning_objectives": [
+        "Learn how NVIDIA Omniverse and Cosmos work together to generate physics-based, photorealistic data for training physical AI models",
+        "Learn about different types of Cosmos models, including text-to-world and video-to-world generation models",
+        "Review video preprocessing, data curation, fine-tuning and guardrails"
+      ],
+      "target_audience": "Developers and AI practitioners working with physical AI, generative AI, and world foundation models. Most applicable to those developing AI models for robotics and autonomous systems",
+      "technical_requirements": "An understanding of AI model training, fine-tuning, and deep learning frameworks; Experience with Python programming; Basic experience with 3D software and workflows",
+      "certificate": true,
+      "skills_taught": [
+        "physical AI",
+        "NVIDIA Cosmos",
+        "synthetic data",
+        "world foundation models",
+        "Omniverse",
+        "text-to-world generation",
+        "video-to-world generation",
+        "data curation",
+        "guardrails"
+      ],
+      "related_courses": [
+        "isaac-sim-003"
+      ],
+      "tags": [
+        "physical-ai",
+        "cosmos",
+        "synthetic-data",
+        "intermediate",
+        "generative-ai",
+        "world-foundation-models"
+      ],
+      "notes": "Introduction to Cosmos platform - hands-on course, originally delivered at GTC 2025",
+      "domain": "Robotics"
+    },
+    {
+      "id": "isaac-sim-001",
+      "title": "Getting Started: Simulating Your First Robot in Isaac Sim",
+      "short_code": "ISAAC-SIM-START",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-OV-27+V1",
+      "duration": "1.5 Hours",
+      "duration_hours": 1.5,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Beginner",
+      "format": "Self-Paced Course",
+      "category": "Isaac Sim",
+      "track": "isaac-sim",
+      "prerequisites": [],
+      "leads_to": [
+        "isaac-sim-002"
+      ],
+      "description": "In Getting Started: Simulating Your First Robot in Isaac Sim, we will begin a comprehensive learning path to begin robotics simulation using Isaac Sim. This beginner-friendly course guides you through building a simple robot by assembling key components such as the chassis, wheels, and joints. You'll then apply physics properties to simulate realistic interactions between the robot and its environment. As you progress, you'll design control mechanisms using ROS 2 and OmniGraph to enable dynamic movement of the robot. You'll integrate advanced sensors like RGB and 2D Lidar to enhance the robot's environmental awareness. Next, you'll transmit sensor data from Isaac Sim to ROS 2 for real-time visualization and analysis in RViz. Finally, you'll learn to diagnose and troubleshoot common issues related to simulation, control, and data streaming to ensure smooth operation of the robot.",
+      "learning_objectives": [
+        "Assemble a simple robot model in Isaac Sim using basic prims as key components such as the chassis, wheels, and joints",
+        "Apply physics to simulate realistic interactions between the robot and its environment",
+        "Design control mechanisms using ROS 2 and OmniGraph to enable dynamic movement of the robot",
+        "Integrate advanced sensors like RGB and 2D lidar to enhance the robot's environmental awareness",
+        "Transmit sensor data from Isaac Sim to ROS 2 for real-time visualization and analysis in RViz"
+      ],
+      "target_audience": "Beginners to robotics simulation looking to create dynamic simulations and build foundation for future robotics projects",
+      "technical_requirements": "Basic Python knowledge and familiarity with robotics concepts. A Linux machine meeting Isaac Sim's system requirements is necessary for this course and for properly running simulations",
+      "certificate": true,
+      "skills_taught": [
+        "isaac sim",
+        "robot simulation",
+        "robotics basics",
+        "ROS 2",
+        "OmniGraph",
+        "sensor integration",
+        "RViz"
+      ],
+      "related_courses": [
+        "isaac-sim-002",
+        "isaac-sim-003",
+        "isaac-sim-004",
+        "isaac-sim-005"
+      ],
+      "tags": [
+        "isaac-sim",
+        "simulation",
+        "beginner",
+        "robotics",
+        "ROS-2",
+        "sensors"
+      ],
+      "notes": "First course in Isaac Sim 5-course learning path - essential entry point",
+      "domain": "Robotics"
+    },
+    {
+      "id": "isaac-sim-002",
+      "title": "Ingesting Robot Assets and Simulating Your Robot in Isaac Sim",
+      "short_code": "ISAAC-SIM-ASSETS",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-OV-29+V1",
+      "duration": "1 Hour",
+      "duration_hours": 1,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Beginner",
+      "format": "Self-Paced Course",
+      "category": "Isaac Sim",
+      "track": "isaac-sim",
+      "prerequisites": [
+        "isaac-sim-001"
+      ],
+      "leads_to": [
+        "isaac-sim-003"
+      ],
+      "description": "In Ingesting Robot Assets and Simulating Your Robot in Isaac Sim, we will dive into the process of importing and simulating robots in Isaac Sim. This course builds upon the foundational concepts covered in the first course, which focused on building a basic robot using primitives and setting up physics. Here, we will explore how to import robot assets using the URDF (Unified Robot Description Format) importer. We will then set up control interfaces, including differential controllers and keyboard control, and examine how to add sensors to the robot. The course will end with an introduction to the Isaac Sim robotic assets, providing a hands-on experience with importing and simulating more complex robot models.",
+      "learning_objectives": [
+        "Analyze the structure and components of a URDF file to identify key elements such as joints and links",
+        "Apply the URDF importer in Isaac Sim to successfully import and simulate a robot model",
+        "Design a control system for a robot using differential controllers and keyboard control interfaces",
+        "Evaluate the physics behavior of a simulated robot to identify and resolve issues such as excessive velocity",
+        "Create a simulated environment in Isaac Sim that includes a robot model with appropriate physics and control settings"
+      ],
+      "target_audience": "Developers who have completed the first Isaac Sim course and want to work with more complex robot models and URDF files",
+      "technical_requirements": "This is the second course in the Getting Started With Isaac Sim learning path. Please complete Getting Started: Simulating Your First Robot in Isaac Sim before beginning this course. Basic Python knowledge and familiarity with robotics concepts. A Linux machine meeting Isaac Sim's system requirements is necessary for this course and for properly running simulations",
+      "certificate": true,
+      "skills_taught": [
+        "robot assets",
+        "isaac sim",
+        "simulation",
+        "URDF",
+        "differential controllers",
+        "keyboard control",
+        "sensor integration"
+      ],
+      "related_courses": [
+        "isaac-sim-001",
+        "isaac-sim-003",
+        "isaac-sim-004",
+        "isaac-sim-005"
+      ],
+      "tags": [
+        "isaac-sim",
+        "assets",
+        "simulation",
+        "URDF",
+        "controllers",
+        "beginner"
+      ],
+      "notes": "Second step in Isaac Sim 5-course learning path",
+      "domain": "Robotics"
+    },
+    {
+      "id": "isaac-sim-003",
+      "title": "Synthetic Data Generation for Perception Model Training in Isaac Sim",
+      "short_code": "ISAAC-SIM-SYNTHETIC",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-OV-30+V1",
+      "duration": "2 Hours",
+      "duration_hours": 2,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Beginner",
+      "format": "Self-Paced Course",
+      "category": "Isaac Sim",
+      "track": "isaac-sim",
+      "prerequisites": [
+        "isaac-sim-002"
+      ],
+      "leads_to": [
+        "isaac-sim-004"
+      ],
+      "description": "In this course, you will learn how to train and deploy a perception model using synthetic data generation (SDG) for dynamic robotic tasks. You will analyze the role of perception models, use simulation for SDG, apply domain randomization techniques, and evaluate the effectiveness of a trained model. Through hands-on exercises, you will generate synthetic data, learn how to train a custom AI perception model, and integrate it into a robotic workflow. This course is designed for students familiar with robotics and Isaac Sim, as well as users interested in applying SDG to various robotic disciplines.",
+      "learning_objectives": [
+        "Analyze the role of perception models in dynamic robotic tasks",
+        "Apply domain randomization with Replicator to generate synthetic data",
+        "Evaluate the effectiveness of a trained AI perception model",
+        "Use a workflow for training and deploying a perception model using SDG"
+      ],
+      "target_audience": "Students familiar with robotics and Isaac Sim, as well as users interested in applying synthetic data generation to various robotic disciplines",
+      "technical_requirements": "This is the third course in the Getting Started With Isaac Sim learning path. Please complete Ingesting Robot Assets and Simulating Your Robot in Isaac Sim before beginning this course. Basic Python knowledge and familiarity with robotics concepts. A Linux machine meeting Isaac Sim's system requirements is necessary for this course and for properly running simulations",
+      "certificate": true,
+      "skills_taught": [
+        "synthetic data",
+        "perception models",
+        "isaac sim",
+        "domain randomization",
+        "Replicator",
+        "AI model training"
+      ],
+      "related_courses": [
+        "isaac-sim-001",
+        "isaac-sim-002",
+        "isaac-sim-004",
+        "isaac-sim-005",
+        "cosmos-001"
+      ],
+      "tags": [
+        "synthetic-data",
+        "perception",
+        "isaac-sim",
+        "AI",
+        "domain-randomization",
+        "beginner"
+      ],
+      "notes": "Third step in Isaac Sim 5-course learning path",
+      "domain": "Robotics"
+    },
+    {
+      "id": "isaac-sim-004",
+      "title": "Developing Robots with Software-in-the-Loop (SIL) in Isaac Sim",
+      "short_code": "ISAAC-SIM-SIL",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-OV-31+V1",
+      "duration": "2 Hours",
+      "duration_hours": 2,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Beginner",
+      "format": "Self-Paced Course",
+      "category": "Isaac Sim",
+      "track": "isaac-sim",
+      "prerequisites": [
+        "isaac-sim-003"
+      ],
+      "leads_to": [
+        "isaac-sim-005"
+      ],
+      "description": "In this course, you will learn the fundamentals of Software-in-the-Loop (SIL) and how to apply it in robotics development using NVIDIA Isaac Sim and ROS 2. Through a series of modules, you will explore the concept of SIL, its benefits, and how to integrate it with ROS 2 packages for simulation-based testing. You will also gain hands-on experience with visual programming using OmniGraph and testing an image segmentation application in simulated environments. This course is designed for students who are familiar with Isaac Sim and ROS development. It is an introductory-level course, providing a comprehensive introduction to SIL and its application in robotics development.",
+      "learning_objectives": [
+        "Identify key characteristics and challenges of intelligent robots in dynamic environments",
+        "Understand Software-in-the-Loop (SIL) and its importance in robotics development",
+        "Use OmniGraph to control a robot in Isaac Sim with ROS 2",
+        "Demonstrate image segmentation using ROS 2 on pre-recorded data",
+        "Design and execute a SIL test for image segmentation using Isaac Sim and ROS 2"
+      ],
+      "target_audience": "Students familiar with Isaac Sim and ROS development looking to learn simulation-based testing methodologies",
+      "technical_requirements": "This is the fourth course in the Getting Started With Isaac Sim learning path. Please complete Synthetic Data Generation for Perception Model Training in Isaac Sim before beginning this course. Basic Python knowledge and familiarity with robotics concepts. A Linux machine meeting Isaac Sim's system requirements is necessary for this course and for properly running simulations",
+      "certificate": true,
+      "skills_taught": [
+        "software-in-loop",
+        "SIL testing",
+        "isaac sim",
+        "ROS 2",
+        "OmniGraph",
+        "image segmentation",
+        "simulation testing"
+      ],
+      "related_courses": [
+        "isaac-sim-001",
+        "isaac-sim-002",
+        "isaac-sim-003",
+        "isaac-sim-005",
+        "isaac-sim-006"
+      ],
+      "tags": [
+        "SIL",
+        "testing",
+        "isaac-sim",
+        "ROS-2",
+        "OmniGraph",
+        "beginner"
+      ],
+      "notes": "Fourth step in Isaac Sim 5-course learning path - focuses on SIL testing methodology",
+      "domain": "Robotics"
+    },
+    {
+      "id": "isaac-sim-005",
+      "title": "Leveraging ROS 2 and Hardware-in-the-Loop (HIL) in Isaac Sim",
+      "short_code": "ISAAC-SIM-HIL",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-OV-32+V1",
+      "duration": "2 Hours",
+      "duration_hours": 2,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Beginner",
+      "format": "Self-Paced Course",
+      "category": "Isaac Sim",
+      "track": "isaac-sim",
+      "prerequisites": [
+        "isaac-sim-004"
+      ],
+      "leads_to": [],
+      "description": "In this course, you will learn how to transition robotics applications from simulation to real-world deployment using ROS 2, Isaac Sim, and NVIDIA Jetson. Starting with a software-in-the-loop (SIL) application, you will test it using hardware-in-the-loop (HIL) techniques and deploy it on a Jetson. The course covers setting up Jetson hardware, running image segmentation tasks, and validating results in both simulated and real-world environments. Designed for learners with some familiarity with Isaac Sim or robotics, this course is accessible to beginners and valuable for experienced users. While the Nova Carter AMR is used as an example, the skills and concepts taught are applicable across various robotic systems.",
+      "learning_objectives": [
+        "Describe hardware-in-the-loop systems",
+        "Execute image segmentation tasks",
+        "Apply Isaac ROS in real-world scenarios",
+        "Analyze results from simulation to real-world tests",
+        "Install and configure NVIDIA Jetson"
+      ],
+      "target_audience": "Learners with some familiarity with Isaac Sim or robotics, accessible to beginners and valuable for experienced users looking to deploy on real hardware",
+      "technical_requirements": "This is the fifth course in the Getting Started With Isaac Sim learning path. Please complete Developing Robots with Software-in-the-Loop (SIL) In Isaac Sim before beginning this course. Basic Python knowledge and familiarity with robotics concepts. A Linux machine meeting Isaac Sim's system requirements is necessary for this course and for properly running simulations",
+      "certificate": true,
+      "skills_taught": [
+        "ROS 2",
+        "hardware-in-loop",
+        "HIL testing",
+        "isaac sim",
+        "Jetson deployment",
+        "image segmentation",
+        "sim-to-real transfer"
+      ],
+      "related_courses": [
+        "isaac-sim-001",
+        "isaac-sim-002",
+        "isaac-sim-003",
+        "isaac-sim-004",
+        "isaac-ros-002",
+        "jetson-001"
+      ],
+      "tags": [
+        "ROS-2",
+        "HIL",
+        "testing",
+        "isaac-sim",
+        "Jetson",
+        "deployment",
+        "beginner"
+      ],
+      "notes": "Fifth and final step in Isaac Sim 5-course learning path - bridges simulation to real hardware deployment",
+      "domain": "Robotics"
+    },
+    {
+      "id": "isaac-sim-006",
+      "title": "Software-in-the-loop Testing for Robots with OpenUSD, Isaac SIM, and ROS",
+      "short_code": "ISAAC-SIM-TESTING",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+L-OV-04+V1",
+      "duration": "2 Hours",
+      "duration_hours": 2,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "Isaac Sim",
+      "track": "isaac-sim",
+      "prerequisites": [
+        "isaac-sim-004"
+      ],
+      "leads_to": [],
+      "description": "This lab focuses on software-in-the-loop for testing and validating AI-driven robots in a digital twin environment. Participants will learn to assemble a virtual environment using OpenUSD and NVIDIA Isaac Sim. You'll add virtual robots to the scene and simulate and validate their basic movements with ROS (Robot Operating System) commands. The lab will emphasize data aggregation, environment creation, and initial robot simulation. By the end of this lab, you'll be able to create and leverage a digital twin environment to simulate basic robot movements within it using ROS. This lab is designed for developers interested in digital twin technology and robotics simulation in industrial settings. This course was originally delivered at GTC in 2025.",
+      "learning_objectives": [
+        "Learn how to launch Isaac Sim and integrate it with ROS 2 for seamless communication between your simulation and ROS nodes",
+        "Develop ROS-compatible graphs for sensors like Lidar, control mechanisms like Twist subscribers, and odometry publishers",
+        "Build environment maps that robots can use for navigation and obstacle avoidance",
+        "Use tools like MoveIt2 for manipulation tasks and Nav2 for autonomous navigation",
+        "Combine navigation and manipulation skills to complete a simulated task involving multiple robots"
+      ],
+      "target_audience": "Developers interested in digital twin technology and robotics simulation in industrial settings",
+      "technical_requirements": "Experience with OpenUSD, NVIDIA Omniverse and 3D CAD software. Experience in Python. Basic knowledge of NVIDIA Isaac Sim and Isaac ROS",
+      "certificate": true,
+      "skills_taught": [
+        "SIL testing",
+        "OpenUSD",
+        "ROS",
+        "isaac sim",
+        "digital twin",
+        "MoveIt2",
+        "Nav2",
+        "Lidar",
+        "autonomous navigation"
+      ],
+      "related_courses": [
+        "isaac-sim-004",
+        "isaac-sim-005",
+        "isaac-ros-002"
+      ],
+      "tags": [
+        "testing",
+        "OpenUSD",
+        "ROS",
+        "SIL",
+        "intermediate",
+        "digital-twin",
+        "navigation"
+      ],
+      "notes": "Alternative/parallel path after SIL basics - focuses on digital twin and advanced ROS integration, originally from GTC 2025",
+      "domain": "Robotics"
+    },
+    {
+      "id": "isaac-sim-007",
+      "title": "Develop, Simulate, and Deploy Robot Intelligence with Scaled Foundations",
+      "short_code": "ISAAC-SIM-FOUNDATIONS",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+L-OV-05+V1",
+      "duration": "1 Hour",
+      "duration_hours": 1,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Beginner",
+      "format": "Self-Paced Course",
+      "category": "Isaac Sim",
+      "track": "isaac-sim",
+      "prerequisites": [
+        "isaac-sim-003"
+      ],
+      "leads_to": [],
+      "description": "Robots hold massive potential to automate and scale difficult and repetitive tasks across industries and in our lives. Programming robots to conduct these tasks safely has historically been challenging, costly, and specialized. Robotics simulation enables developers to virtually train, test and validate robots in physics-based digital representations of the real world. In this lab, we'll take you through the end-to-end robotics development process using Scaled Foundations' GRID platform powered by NVIDIA Isaac Sim. Starting with a fully functional robot simulation instance with a robot, sensor, AI model, and environment, you'll create an end-to-end, functional robot solution to perform a task and combine your robot solution with several of the latest robot AI models. Finally, you'll see how you can take your solution from GRID and deploy on a real robot.",
+      "learning_objectives": [
+        "Initiate a fully functional robot simulation instance with robot, sensor, AI model, and environment",
+        "Create an end to end, functional robot solution to perform a task",
+        "Combine your robot solution with several of the latest robot AI models, run this AI solution through simulation, and improve performance",
+        "Take a solution from GRID and see it deployed on a real robot"
+      ],
+      "target_audience": "Developers interested in end-to-end robotics development from simulation to real-world deployment",
+      "technical_requirements": "Basic knowledge of NVIDIA Isaac Sim, robotics fundamentals, and Python",
+      "certificate": true,
+      "skills_taught": [
+        "scaled foundations",
+        "robot intelligence",
+        "deployment",
+        "GRID platform",
+        "AI models",
+        "sim-to-real",
+        "end-to-end robotics"
+      ],
+      "related_courses": [
+        "isaac-sim-003",
+        "isaac-sim-005"
+      ],
+      "tags": [
+        "foundations",
+        "deployment",
+        "beginner",
+        "isaac-sim",
+        "AI",
+        "GRID",
+        "scaled-foundations"
+      ],
+      "notes": "End-to-end robotics development using Scaled Foundations GRID platform - covers simulation to real robot deployment",
+      "domain": "Robotics"
+    },
+    {
+      "id": "isaac-ros-001",
+      "title": "Generating High-Quality Motion Data for Robotics with MobilityGen",
+      "short_code": "MOBILITYGE",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-OV-37+V1",
+      "duration": "1.5 Hours",
+      "duration_hours": 1.5,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "Isaac ROS",
+      "track": "isaac-ros",
+      "prerequisites": [
+        "isaac-sim-001"
+      ],
+      "leads_to": [],
+      "description": "This tutorial introduces MobilityGen, a new toolset built on NVIDIA Isaac Sim for generating high-fidelity motion data to train and evaluate mobile robots. Learn how MobilityGen supports various robot types and data collection methods, including teleoperation and procedural generation, and how it can record and replay robot trajectories with rich ground truth data.",
+      "learning_objectives": [
+        "Understand the importance of high-quality motion data in robotics",
+        "Learn the key components and features of MobilityGen",
+        "Set up and use MobilityGen with NVIDIA Isaac Sim",
+        "Record motion data using teleoperation and procedural generation methods",
+        "Replay trajectories and render sensor data",
+        "Visualize and analyze the collected data using Gradio"
+      ],
+      "target_audience": "Developers interested in robot mobility research and development",
+      "technical_requirements": "Isaac Sim 4.5 and corresponding technical specifications, basic understanding of robotics and simulations",
+      "certificate": true,
+      "skills_taught": [
+        "motion data generation",
+        "MobilityGen",
+        "robot training",
+        "isaac sim"
+      ],
+      "related_courses": [
+        "isaac-sim-001",
+        "isaac-lab-001"
+      ],
+      "tags": [
+        "mobilityGen",
+        "motion-data",
+        "isaac-ros",
+        "intermediate"
+      ],
+      "notes": "Featured course from your example - fully completed as sample",
+      "domain": "Robotics"
+    },
+    {
+      "id": "isaac-ros-002",
+      "title": "An Introduction to AI-Based Robot Development With Isaac ROS",
+      "short_code": "ISAAC-ROS-INTRO",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-OV-31+V1",
+      "duration": "0.5 Hours",
+      "duration_hours": 0.5,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "General Interest",
+      "format": "Self-Paced Course",
+      "category": "Isaac ROS",
+      "track": "isaac-ros",
+      "prerequisites": [],
+      "leads_to": [
+        "isaac-ros-003"
+      ],
+      "description": "The beginner-friendly course provides a foundational understanding of NVIDIA Isaac ROS, a robotics framework built on the open-source Robot Operating System (ROS). The course aims to introduce developers new to robotics to Isaac ROS, explaining what it is, its purpose, and how it leverages NVIDIA acceleration to enable AI-based robots. It covers the importance of ROS and how Isaac ROS packages are designed to work seamlessly with ROS 2.",
+      "learning_objectives": [
+        "Explain the purpose of Isaac and how it enables others in the field of robotics",
+        "Describe Isaac ROS and its components",
+        "Understand the role of ROS 2 and NITROS within the Isaac framework",
+        "Utilize developer resources to accelerate your development with Isaac ROS"
+      ],
+      "target_audience": "Developers new to robotics who want to understand Isaac ROS and how it enables AI-based robot development",
+      "technical_requirements": "No prerequisites are required to take this course",
+      "certificate": true,
+      "skills_taught": [
+        "Isaac ROS",
+        "AI robotics",
+        "robot development",
+        "ROS 2",
+        "NITROS",
+        "robotics framework"
+      ],
+      "related_courses": [
+        "isaac-ros-001",
+        "isaac-ros-003"
+      ],
+      "tags": [
+        "isaac-ros",
+        "AI",
+        "robotics",
+        "beginner",
+        "general-interest",
+        "framework"
+      ],
+      "notes": "Quick intro to Isaac ROS - general interest level, no hands-on component",
+      "domain": "Robotics"
+    },
+    {
+      "id": "isaac-ros-003",
+      "title": "Accelerating ROS 2 with NVIDIA GPU-Powered Libraries and AI Models",
+      "short_code": "ROS2-GPU",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-OV-32+V1",
+      "duration": "3 Hours",
+      "duration_hours": 3,
+      "price": "$30",
+      "cost_usd": 30,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "Isaac ROS",
+      "track": "isaac-ros",
+      "prerequisites": [
+        "isaac-ros-002",
+        "isaac-sim-005"
+      ],
+      "leads_to": [],
+      "description": "Learn how to accelerate ROS 2 workloads using NVIDIA's latest GPU-powered libraries for AI and robotics. This hands-on lab will explore how to leverage Generative AI and GPU-accelerated ROS 2 packages to enhance robotic workloads in real-time. Participants will gain experience with optimizing ROS 2 packages for GPU acceleration, including techniques for improving performance and reducing latency in AI perception, navigation, and more. The session will also demonstrate NVIDIA Isaac's powerful AI and simulation tools, designed for seamless integration with ROS 2. This course was originally delivered at GTC in 2025.",
+      "learning_objectives": [
+        "Learn to utilize NVIDIA's GPU-powered libraries to accelerate ROS 2 workloads, enhancing AI and robotics performance in real-time applications",
+        "Gain experience in leveraging Generative AI and GPU-accelerated ROS 2 packages to optimize robotic workloads, focusing on AI perception and navigation",
+        "Understand techniques for improving performance and reducing latency in ROS 2 packages through GPU acceleration",
+        "Explore the integration of NVIDIA Isaac's AI and simulation tools with ROS 2 for seamless enhancement of robotic applications"
+      ],
+      "target_audience": "Experienced robotics developers and ROS 2 practitioners looking to optimize performance using GPU acceleration and AI models",
+      "technical_requirements": "Experience with OpenUSD, NVIDIA Omniverse and 3D CAD software. Experience in Python. Basic knowledge of NVIDIA Isaac Sim and Isaac ROS",
+      "certificate": true,
+      "skills_taught": [
+        "ROS 2",
+        "GPU acceleration",
+        "AI models",
+        "performance optimization",
+        "Generative AI",
+        "Isaac Sim",
+        "Isaac ROS",
+        "latency reduction",
+        "AI perception",
+        "navigation"
+      ],
+      "related_courses": [
+        "isaac-sim-005",
+        "isaac-ros-002"
+      ],
+      "tags": [
+        "ROS-2",
+        "GPU",
+        "acceleration",
+        "intermediate",
+        "hands-on",
+        "generative-ai"
+      ],
+      "notes": "Advanced paid course for ROS 2 optimization - hands-on lab, originally delivered at GTC 2025",
+      "domain": "Robotics"
+    },
+    {
+      "id": "isaac-lab-001",
+      "title": "An Introduction to Robot Learning and Isaac Lab",
+      "short_code": "ISAAC-LAB-INTRO",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-OV-33+V1",
+      "duration": "3 Hours",
+      "duration_hours": 3,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "General Interest",
+      "format": "Self-Paced Course",
+      "category": "Isaac Lab",
+      "track": "isaac-lab",
+      "prerequisites": [],
+      "leads_to": [
+        "isaac-lab-002"
+      ],
+      "description": "Robot learning is revolutionizing how machines interact with their environments, but have you ever wondered what robot learning really is? This overview will explore the fundamentals of robot learning and introduce NVIDIA's Isaac Lab, a powerful tool for developing robotic applications. By the end, you will understand the basics of robot learning, Isaac Lab's key features, and how this framework fits into the broader robotics landscape. We'll explore available robots and environments within Isaac Lab, as well as peek at the product roadmap.",
+      "learning_objectives": [
+        "Explore the fundamentals of robot learning and the algorithms that drive it",
+        "Discover how Isaac Lab fits into the Isaac Sim ecosystem and its core functionalities",
+        "Identify potential applications and customer bases for Isaac Lab",
+        "Dive into the processes for designing environments, from asset import to policy deployment",
+        "Understand workflows for transitioning simulations to real-world applications"
+      ],
+      "target_audience": "Anyone interested in robot learning - no prior robotics knowledge required, general understanding of software frameworks helpful",
+      "technical_requirements": "No prior knowledge of robotics is required, but a general understanding of software frameworks and programming concepts is beneficial",
+      "certificate": true,
+      "skills_taught": [
+        "robot learning",
+        "Isaac Lab",
+        "reinforcement learning",
+        "simulation",
+        "environment design",
+        "policy deployment",
+        "sim-to-real"
+      ],
+      "related_courses": [
+        "isaac-sim-001",
+        "isaac-lab-002",
+        "isaac-lab-003"
+      ],
+      "tags": [
+        "isaac-lab",
+        "robot-learning",
+        "general-interest",
+        "reinforcement-learning",
+        "simulation"
+      ],
+      "notes": "First course in Isaac Lab learning path - general overview suitable for beginners, no robotics experience required",
+      "domain": "Robotics"
+    },
+    {
+      "id": "isaac-lab-002",
+      "title": "Transferring Robot Learning Policies from Simulation to Reality",
+      "short_code": "ISAAC-LAB-TRANSFER",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-OV-34+V1",
+      "duration": "1 Hour",
+      "duration_hours": 1,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "General Interest",
+      "format": "Self-Paced Course",
+      "category": "Isaac Lab",
+      "track": "isaac-lab",
+      "prerequisites": [
+        "isaac-lab-001"
+      ],
+      "leads_to": [
+        "isaac-lab-003"
+      ],
+      "description": "Welcome to our course on Transferring Robot Learning Policies From Simulation to Reality, which we often refer to as sim-to-real. While this course won't focus specifically on Isaac Lab, the principles we'll cover are important to understand before you start developing robot learning policies in Isaac Lab. Our goal in this course is to teach you about sim-to-real, including best practices and pitfalls to avoid.",
+      "learning_objectives": [
+        "Understand the challenges of reinforcement learning in robotics",
+        "Explain the concept of the 'reality gap' and its characteristics",
+        "Describe various techniques for bridging the reality gap",
+        "Evaluate strategies for leveraging privileged information in robot learning",
+        "Implement best practices for successful sim-to-real transfer in robotics applications"
+      ],
+      "target_audience": "Anyone interested in understanding how simulated robot learning transfers to real-world applications - no hands-on component",
+      "technical_requirements": "This course does not have a hands-on component. No prerequisites are required to take this course",
+      "certificate": true,
+      "skills_taught": [
+        "sim-to-real transfer",
+        "policy learning",
+        "robot deployment",
+        "reality gap",
+        "reinforcement learning",
+        "privileged information"
+      ],
+      "related_courses": [
+        "isaac-lab-001",
+        "isaac-lab-003",
+        "isaac-sim-005"
+      ],
+      "tags": [
+        "sim-to-real",
+        "policy-transfer",
+        "isaac-lab",
+        "general-interest",
+        "theory",
+        "reality-gap"
+      ],
+      "notes": "Theory course bridging simulation and real robots - focuses on sim-to-real principles, not Isaac Lab specifics. No hands-on component",
+      "domain": "Robotics"
+    },
+    {
+      "id": "isaac-lab-003",
+      "title": "Train Your First Robot in Isaac Lab",
+      "short_code": "ISAAC-LAB-TRAIN1",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-OV-35+V1",
+      "duration": "3 Hours",
+      "duration_hours": 3,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Beginner",
+      "format": "Self-Paced Course",
+      "category": "Isaac Lab",
+      "track": "isaac-lab",
+      "prerequisites": [
+        "isaac-lab-002"
+      ],
+      "leads_to": [
+        "isaac-lab-004"
+      ],
+      "description": "Step into the world of intelligent robotics with Train Your First Robot with Isaac Lab—a hands-on course designed to launch your journey into reinforcement learning and physical AI. Using NVIDIA's Isaac Sim and Isaac Lab, you'll discover how to teach robots new skills through reinforcement learning and simulation—no prior robotics experience required. You'll gain practical experience building, training, and evaluating robot behaviors in a virtual environment, setting the stage for real-world applications and the future of adaptable, autonomous machines.",
+      "learning_objectives": [
+        "Learn about Physical AI, and how it's changing the ways robots learn and perform tasks",
+        "Describe the core principles of reinforcement learning (RL) and their relevance to robotics using Isaac Lab and Isaac Sim",
+        "Identify and configure the essential components of an RL task within Isaac Lab",
+        "Apply an Isaac Lab workflow to train, evaluate, and refine a robot control policy in simulation, using the cartpole",
+        "Analyze training results of learned policies"
+      ],
+      "target_audience": "Anyone interested in robot learning - no prior robotics experience required, hands-on learners ready to build their first RL robot",
+      "technical_requirements": "Basic familiarity with Python, the command line, and robotics concepts",
+      "certificate": true,
+      "skills_taught": [
+        "robot training",
+        "Isaac Lab",
+        "hands-on training",
+        "reinforcement learning",
+        "Physical AI",
+        "policy training",
+        "cartpole",
+        "Isaac Sim"
+      ],
+      "related_courses": [
+        "isaac-lab-001",
+        "isaac-lab-002",
+        "isaac-lab-004"
+      ],
+      "tags": [
+        "training",
+        "hands-on",
+        "isaac-lab",
+        "beginner",
+        "reinforcement-learning",
+        "physical-AI"
+      ],
+      "notes": "First hands-on training course - uses cartpole example to teach RL fundamentals. Duration updated to 3 hours per website",
+      "domain": "Robotics"
+    },
+    {
+      "id": "isaac-lab-004",
+      "title": "Train Your Second Robot in Isaac Lab",
+      "short_code": "ISAAC-LAB-TRAIN2",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-OV-36+V1",
+      "duration": "2 Hours",
+      "duration_hours": 2,
+      "price": "Free",
+      "cost_usd": 0,
+      "level": "Technical - Intermediate",
+      "format": "Self-Paced Course",
+      "category": "Isaac Lab",
+      "track": "isaac-lab",
+      "prerequisites": [
+        "isaac-lab-003"
+      ],
+      "leads_to": [],
+      "description": "In this course we'll go deeper into Isaac Lab, with a hands-on activity to configure and train a UR10 robot to perform a task you'll design. In our first training course you were introduced to the task workflow and the robot you were training was completely configured. Now it's time for you to configure your own robot, design your own training task, develop reward functions, and configure training hyperparameters. By the end of this course you will be able to configure new robots in Isaac Lab and create and train reinforcement learning tasks.",
+      "learning_objectives": [
+        "Configure a custom robot in Isaac Lab to prepare it for training",
+        "Design a reinforcement learning task tailored to specific objectives",
+        "Develop reward functions to guide robot learning and task performance",
+        "Train a robot to perform a task using reinforcement learning techniques",
+        "Evaluate and compare the performance of different trained policies"
+      ],
+      "target_audience": "This course is designed for developers, roboticists, and AI practitioners interested in reinforcement learning and robot training in simulation. It is most applicable to those working with physical AI and robotics applications",
+      "technical_requirements": "Basic Python programming skills, familiarity with command line interfaces, and an understanding of fundamental robotics concepts are recommended",
+      "certificate": true,
+      "skills_taught": [
+        "robot configuration",
+        "RL task design",
+        "reward function development",
+        "policy training",
+        "policy evaluation",
+        "Isaac Lab",
+        "UR10 robot"
+      ],
+      "related_courses": [
+        "isaac-lab-001",
+        "isaac-lab-002",
+        "isaac-lab-003"
+      ],
+      "tags": [
+        "training",
+        "hands-on",
+        "isaac-lab",
+        "intermediate",
+        "reinforcement-learning",
+        "robot-configuration"
+      ],
+      "notes": "Second hands-on training course - more advanced than 003, focuses on custom robot configuration and task design with UR10",
+      "domain": "Robotics"
+    },
+    {
+      "id": "jetson-001",
+      "title": "Getting Started with AI on Jetson Nano",
+      "short_code": "JETSON-SELFPACED",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+S-RX-02+V2",
+      "duration": "8 Hours",
+      "duration_hours": 8,
+      "price": "$90",
+      "cost_usd": 90,
+      "level": "Technical - Beginner",
+      "format": "Self-Paced Course",
+      "category": "Jetson Nano",
+      "track": "jetson-nano",
+      "prerequisites": [],
+      "leads_to": [],
+      "description": "The power of AI is now in the hands of makers, self-taught developers, and embedded technology enthusiasts everywhere with the NVIDIA Jetson developer kits. This easy-to-use, powerful computer lets you run multiple neural networks in parallel for applications like image classification, object detection, segmentation, and speech processing. In this course, you'll use Jupyter iPython notebooks on your own Jetson to build a deep learning classification project with computer vision models. You'll learn how to set up your NVIDIA Jetson Nano and camera, collect and annotate image data, train neural networks on your data to create your own models, and run inference on the Jetson Nano with the models you create.",
+      "learning_objectives": [
+        "Set up your NVIDIA Jetson Nano and camera",
+        "Collect image data for classification models",
+        "Annotate image data for regression models",
+        "Train a neural network on your data to create your own models",
+        "Run inference on the NVIDIA Jetson Nano with the models you create",
+        "Create deep learning classification and regression models with Jetson Nano"
+      ],
+      "target_audience": "Makers, self-taught developers, and embedded technology enthusiasts interested in running AI on edge devices",
+      "technical_requirements": "Supported Jetson Developer Kit (Orin Nano, AGX Orin, Jetson Nano, or 2GB Nano). High-performance microSD card (32-64GB). 5V 4A power supply for Nano. Logitech C270 USB Webcam or similar. Computer with internet connection and ability to flash microSD card. Basic familiarity with Python (helpful, not required)",
+      "certificate": true,
+      "skills_taught": [
+        "Jetson Nano",
+        "AI",
+        "embedded systems",
+        "PyTorch",
+        "image classification",
+        "computer vision",
+        "CNN",
+        "ResNet-18",
+        "regression models"
+      ],
+      "related_courses": [
+        "jetson-002"
+      ],
+      "tags": [
+        "jetson",
+        "AI",
+        "embedded",
+        "self-paced",
+        "deep-learning",
+        "computer-vision",
+        "PyTorch"
+      ],
+      "notes": "Self-paced 8-hour course requiring Jetson hardware - covers setup, image classification, and regression projects",
+      "domain": "Robotics"
+    },
+    {
+      "id": "jetson-002",
+      "title": "Getting Started with AI on Jetson Nano",
+      "short_code": "JETSON-INSTRUCTOR",
+      "url": "https://learn.nvidia.com/courses/course-detail?course_id=course-v1:DLI+C-RX-02+V1",
+      "duration": "6 Hours",
+      "duration_hours": 6,
+      "price": "$500",
+      "cost_usd": 500,
+      "level": "Introductory",
+      "format": "Instructor-Led Workshop",
+      "category": "Jetson Nano",
+      "track": "jetson-nano",
+      "prerequisites": [],
+      "leads_to": [],
+      "description": "The power of AI is now in the hands of makers, self-taught developers, and embedded technology enthusiasts everywhere with the NVIDIA Jetson developer kits. This easy-to-use, powerful computer lets you run multiple neural networks in parallel for applications like image classification, object detection, segmentation, and speech processing. In this instructor-led workshop, you'll use Jupyter iPython notebooks on your own Jetson to build a deep learning classification project with computer vision models. This interactive format provides live instructor guidance and support as you work through hands-on projects.",
+      "learning_objectives": [
+        "Set up your NVIDIA Jetson Nano and camera",
+        "Collect image data for classification models",
+        "Annotate image data for regression models",
+        "Train a neural network on your data to create your own models",
+        "Run inference on the NVIDIA Jetson Nano with the models you create",
+        "Create deep learning classification and regression models with Jetson Nano"
+      ],
+      "target_audience": "Makers, self-taught developers, and embedded technology enthusiasts who prefer live instructor guidance while learning to run AI on edge devices",
+      "technical_requirements": "Supported Jetson Developer Kit (Orin Nano, AGX Orin, Jetson Nano, or 2GB Nano). High-performance microSD card (32-64GB). 5V 4A power supply for Nano. Logitech C270 USB Webcam or similar. Computer with internet connection and ability to flash microSD card. Basic familiarity with Python (helpful, not required)",
+      "certificate": true,
+      "skills_taught": [
+        "Jetson Nano",
+        "AI",
+        "embedded systems",
+        "PyTorch",
+        "image classification",
+        "computer vision",
+        "CNN",
+        "ResNet-18",
+        "regression models"
+      ],
+      "related_courses": [
+        "jetson-001"
+      ],
+      "tags": [
+        "jetson",
+        "AI",
+        "embedded",
+        "instructor-led",
+        "workshop",
+        "deep-learning",
+        "computer-vision"
+      ],
+      "notes": "Instructor-led 6-hour workshop version - same content as self-paced but with live instructor support and interactive sessions",
+      "domain": "Robotics"
+    }
+  ]
+}

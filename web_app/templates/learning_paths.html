@@ -16,6 +16,21 @@
     <!-- Control Panel -->
     <div class="control-panel">
         <div class="control-group">
+            <label><i class="fas fa-layer-group"></i> Filter by Domain:</label>
+            <div class="filter-buttons">
+                <button class="domain-filter-btn active" onclick="filterByDomain('all')">
+                    All Domains
+                </button>
+                <button class="domain-filter-btn" onclick="filterByDomain('LLM')">
+                    <i class="fas fa-brain"></i> LLM & GenAI
+                </button>
+                <button class="domain-filter-btn" onclick="filterByDomain('Robotics')">
+                    <i class="fas fa-robot"></i> Robotics
+                </button>
+            </div>
+        </div>
+
+        <div class="control-group">
             <label><i class="fas fa-filter"></i> Filter by Level:</label>
             <div class="filter-buttons">
                 <button class="filter-btn active" onclick="filterByLevel('all')">

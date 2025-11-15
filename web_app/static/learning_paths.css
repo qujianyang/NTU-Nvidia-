@@ -93,6 +93,35 @@
     margin-right: 6px;
 }
 
+/* Domain Filter Buttons */
+.domain-filter-btn {
+    padding: 10px 20px;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.domain-filter-btn:hover {
+    border-color: #1890ff;
+    color: #1890ff;
+    background: rgba(24, 144, 255, 0.05);
+}
+
+.domain-filter-btn.active {
+    background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+    border-color: #1890ff;
+    color: white;
+}
+
+.domain-filter-btn i {
+    margin-right: 6px;
+}
+
 /* Search Input */
 #search-input {
     width: 100%;

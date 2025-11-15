@@ -7,6 +7,7 @@
 let cy = null;
 let allCourses = [];
 let currentFilter = 'all';
+let currentDomainFilter = 'all';
 let currentLayout = 'hierarchical';
 
 // Initialize on page load
@@ -265,6 +266,22 @@ function getLayoutOptions(layout) {
     }
 }
 
+// Filter by domain
+function filterByDomain(domain) {
+    if (!cy) return;
+
+    currentDomainFilter = domain;
+
+    // Update active button
+    document.querySelectorAll('.domain-filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+
+    // Apply both domain and level filters
+    applyFilters();
+}
+
 // Filter by level
 function filterByLevel(level) {
     if (!cy) return;
@@ -277,20 +294,41 @@ function filterByLevel(level) {
     });
     event.target.classList.add('active');
 
-    // Filter nodes
-    if (level === 'all') {
-        cy.nodes().show();
-    } else {
-        cy.nodes().forEach(node => {
-            const course = node.data('courseData');
-            const courseLevel = getLevelFromCourse(course);
-            if (courseLevel.toLowerCase().includes(level)) {
-                node.show();
-            } else {
-                node.hide();
+    // Apply both domain and level filters
+    applyFilters();
+}
+
+// Apply both domain and level filters
+function applyFilters() {
+    if (!cy) return;
+
+    cy.nodes().forEach(node => {
+        const course = node.data('courseData');
+        const courseLevel = getLevelFromCourse(course);
+        const courseDomain = course.domain || 'LLM';
+
+        let showNode = true;
+
+        // Check domain filter
+        if (currentDomainFilter !== 'all') {
+            if (courseDomain !== currentDomainFilter) {
+                showNode = false;
             }
-        });
-    }
+        }
+
+        // Check level filter
+        if (currentFilter !== 'all') {
+            if (!courseLevel.toLowerCase().includes(currentFilter)) {
+                showNode = false;
+            }
+        }
+
+        if (showNode) {
+            node.show();
+        } else {
+            node.hide();
+        }
+    });
 
     cy.fit(cy.nodes(':visible'), 50);
 }
@@ -343,13 +381,20 @@ function resetView() {
     if (!cy) return;
 
     currentFilter = 'all';
+    currentDomainFilter = 'all';
     document.getElementById('search-input').value = '';
 
-    // Update filter buttons
+    // Update level filter buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     document.querySelector('.filter-btn').classList.add('active');
+
+    // Update domain filter buttons
+    document.querySelectorAll('.domain-filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector('.domain-filter-btn').classList.add('active');
 
     // Show all nodes
     cy.nodes().show();
@@ -383,12 +428,16 @@ function createCourseInfoHTML(course) {
     const level = course.level || 'General Interest';
     const duration = course.duration || 'N/A';
     const price = course.price || 'Free';
+    const domain = course.domain || 'LLM';
     const isFree = price.toLowerCase() === 'free';
 
     let html = `
         <div class="course-info-header">
             <h3>${escapeHtml(course.title)}</h3>
             <div>
+                <span class="course-badge domain" style="background: ${domain === 'Robotics' ? '#722ed1' : '#1890ff'};">
+                    <i class="fas fa-${domain === 'Robotics' ? 'robot' : 'brain'}"></i> ${escapeHtml(domain)}
+                </span>
                 <span class="course-badge level">${escapeHtml(level)}</span>
                 <span class="course-badge duration">
                     <i class="fas fa-clock"></i> ${escapeHtml(duration)}
