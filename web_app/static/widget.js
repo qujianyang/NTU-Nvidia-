@@ -98,6 +98,97 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// Export chat to PDF using jsPDF (client-side)
+window.exportChatPDF = function() {
+    try {
+        const messages = document.querySelectorAll('#chat-messages .message');
+
+        if (messages.length === 0) {
+            alert('No chat messages to export yet. Start a conversation first!');
+            return;
+        }
+
+        // Check if jsPDF is loaded
+        if (typeof window.jspdf === 'undefined') {
+            alert('PDF library not loaded. Please refresh the page and try again.');
+            return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Set up the document
+        const pageWidth = doc.internal.pageSize.width;
+        const margin = 15;
+        const maxLineWidth = pageWidth - (margin * 2);
+        let yPosition = 20;
+
+        // Title
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.text('NvidiAdvisor Chat Transcript', pageWidth / 2, yPosition, { align: 'center' });
+        yPosition += 10;
+
+        // Timestamp
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(128, 128, 128);
+        const timestamp = new Date().toLocaleString();
+        doc.text(`Exported on ${timestamp}`, pageWidth / 2, yPosition, { align: 'center' });
+        yPosition += 15;
+        doc.setTextColor(0, 0, 0);
+
+        // Extract and add messages
+        messages.forEach(msgEl => {
+            const isUser = msgEl.classList.contains('user-message');
+            const sender = isUser ? 'You' : 'NvidiAdvisor';
+
+            // Get text content
+            const textEl = msgEl.querySelector('.message-text') || msgEl;
+            let text = textEl.innerText || textEl.textContent || '';
+            text = text.trim();
+
+            if (!text) return;
+
+            // Check if we need a new page
+            if (yPosition > 270) {
+                doc.addPage();
+                yPosition = 20;
+            }
+
+            // Sender name (bold)
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'bold');
+            doc.text(sender, margin, yPosition);
+            yPosition += 6;
+
+            // Message text (wrapped)
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            const lines = doc.splitTextToSize(text, maxLineWidth);
+
+            lines.forEach(line => {
+                if (yPosition > 270) {
+                    doc.addPage();
+                    yPosition = 20;
+                }
+                doc.text(line, margin, yPosition);
+                yPosition += 5;
+            });
+
+            yPosition += 5; // Space between messages
+        });
+
+        // Save the PDF
+        const filename = `nvidiAdvisor-chat-${new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-')}.pdf`;
+        doc.save(filename);
+
+    } catch (error) {
+        console.error('Export error:', error);
+        alert('Failed to export chat. Please try again.');
+    }
+};
+
 // Resize functionality
 document.addEventListener('DOMContentLoaded', function() {
     const widget = document.getElementById('chat-widget-container');
