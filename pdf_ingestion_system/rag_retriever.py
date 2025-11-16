@@ -36,7 +36,7 @@ OLLAMA_MODEL = "qwen2:7b-instruct-q4_0"
 EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
 
 # Retrieval settings
-TOP_K_CHUNKS = 4  # Number of child chunks to retrieve
+TOP_K_CHUNKS = 6  # Number of child chunks to retrieve
 CHUNK_OVERLAP = 2  # Number of parent docs to return
 
 # LLM generation settings
@@ -270,12 +270,14 @@ COURSE INFORMATION:
 
 USER QUESTION: {question}
 
-IMPORTANT: Always include course URLs when mentioning courses.
+CRITICAL INSTRUCTIONS:
+1. Only recommend courses listed in COURSE INFORMATION above
+2. NEVER create or guess URLs - only use the EXACT URLs from "AVAILABLE COURSE LINKS" section
+3. Copy URLs exactly as shown - do NOT modify them
+4. Format: "I recommend [Course Title] which teaches..."
+5. Do NOT include URLs in the main answer - they will be added automatically
 
-Example format:
-"I recommend Taking Isaac Sim (https://learn.nvidia.com/...) which teaches..."
-
-Answer the question using the course information above. Include URLs for all mentioned courses.
+Answer the question using only the course information above.
 
 ANSWER:"""
 
