@@ -59,6 +59,28 @@
             border-color: #76b900;
         }
 
+        .filter-dropdown {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .filter-dropdown:hover {
+            border-color: #76b900;
+            background: rgba(118, 185, 0, 0.05);
+        }
+
+        .filter-dropdown:focus {
+            border-color: #76b900;
+            box-shadow: 0 0 0 3px rgba(118, 185, 0, 0.1);
+        }
+
         .course-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -249,18 +271,25 @@
 
     <!-- Filter Buttons -->
         <div class="filters">
-            <button class="filter-btn active" onclick="filterCourses('all')">
+            <button class="filter-btn level-filter active" onclick="filterCourses('all')" data-level="all">
                 <i class="fas fa-th"></i> All Courses
             </button>
-            <button class="filter-btn" onclick="filterCourses('beginner')">
+            <button class="filter-btn level-filter" onclick="filterCourses('beginner')" data-level="beginner">
                 <i class="fas fa-seedling"></i> Beginner
             </button>
-            <button class="filter-btn" onclick="filterCourses('intermediate')">
+            <button class="filter-btn level-filter" onclick="filterCourses('intermediate')" data-level="intermediate">
                 <i class="fas fa-chart-line"></i> Intermediate
             </button>
-            <button class="filter-btn" onclick="filterCourses('advanced')">
+            <button class="filter-btn level-filter" onclick="filterCourses('advanced')" data-level="advanced">
                 <i class="fas fa-rocket"></i> Advanced
             </button>
+
+            <!-- Domain Dropdown Filter -->
+            <select class="filter-dropdown" id="domain-filter" onchange="filterByDomain(this.value)">
+                <option value="all">All Domains</option>
+                <option value="LLM">LLM & Gen AI</option>
+                <option value="Robotics">Robotics</option>
+            </select>
         </div>
 
     <!-- Course Grid -->
@@ -334,6 +363,16 @@
                     placeholder="Ask about courses..."
                     maxlength="500"
                 >
+                <button
+                    type="button"
+                    class="export-btn"
+                    id="export-chat-btn"
+                    onclick="exportChatPDF()"
+                    title="Download chat as PDF"
+                    aria-label="Download chat transcript"
+                >
+                    <i class="fas fa-file-arrow-down"></i>
+                </button>
                 <button onclick="sendMessage()" id="send-btn">
                     <i class="fas fa-paper-plane"></i>
                 </button>
@@ -353,6 +392,10 @@
 <script>
         // Store courses globally for filtering
         let allCourses = [];
+
+        // Track current filter state
+        let currentDomainFilter = 'all';
+        let currentLevelFilter = 'all';
 
         // Load courses on page load
         document.addEventListener('DOMContentLoaded', function() {
@@ -462,7 +505,7 @@
                 }
 
                 return `
-                    <div class="course-card" data-level="${course.level || ''}" data-id="${course.id}">
+                    <div class="course-card" data-level="${course.level || ''}" data-domain="${course.domain || 'Unknown'}" data-id="${course.id}">
                         <h3>${course.title}</h3>
 
                         <div class="course-meta">
@@ -494,31 +537,54 @@
             }).join('');
         }
 
-        // Filter courses by level
+        // Filter courses by difficulty level
         function filterCourses(level) {
-            // Update active button
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
+            currentLevelFilter = level;
 
-            // Filter and display
-            if (level === 'all') {
-                displayCourses(allCourses);
-            } else {
-                const filtered = allCourses.filter(course => {
+            // Update active button
+            document.querySelectorAll('.level-filter').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.level === level) {
+                    btn.classList.add('active');
+                }
+            });
+
+            applyFilters();
+        }
+
+        // Filter courses by domain (dropdown)
+        function filterByDomain(domain) {
+            currentDomainFilter = domain;
+            applyFilters();
+        }
+
+        // Apply combined filters (domain AND level)
+        function applyFilters() {
+            let filtered = allCourses;
+
+            // Apply domain filter
+            if (currentDomainFilter !== 'all') {
+                filtered = filtered.filter(course =>
+                    course.domain === currentDomainFilter
+                );
+            }
+
+            // Apply level filter
+            if (currentLevelFilter !== 'all') {
+                filtered = filtered.filter(course => {
                     const courseLevel = (course.level || '').toLowerCase();
-                    if (level === 'beginner') {
+                    if (currentLevelFilter === 'beginner') {
                         return courseLevel.includes('beginner');
-                    } else if (level === 'intermediate') {
+                    } else if (currentLevelFilter === 'intermediate') {
                         return courseLevel.includes('intermediate');
-                    } else if (level === 'advanced') {
+                    } else if (currentLevelFilter === 'advanced') {
                         return courseLevel.includes('advanced');
                     }
                     return false;
                 });
-                displayCourses(filtered);
             }
+
+            displayCourses(filtered);
         }
 
         // Search courses by title, ID, or keywords
