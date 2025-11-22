@@ -9,9 +9,11 @@ import sys
 import os
 import sqlite3
 from datetime import datetime, timedelta
-import secrets
 import re
 import json
+
+# Import configuration
+from config import config
 
 # Add parent directory to path to use existing RAG system
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'pdf_ingestion_system'))
@@ -27,17 +29,22 @@ from auth import (
 
 app = Flask(__name__)
 
-# Session configuration
-app.secret_key = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production-' + secrets.token_hex(16))
-app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
+# Session configuration from environment
+app.secret_key = config.SECRET_KEY
+app.config['SESSION_COOKIE_HTTPONLY'] = config.SESSION_COOKIE_HTTPONLY
+app.config['SESSION_COOKIE_SAMESITE'] = config.SESSION_COOKIE_SAMESITE
+app.config['SESSION_COOKIE_SECURE'] = config.SESSION_COOKIE_SECURE
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=config.SESSION_LIFETIME_DAYS)
+
+# Log configuration warnings on startup
+for warning in config.validate():
+    print(warning)
 
 # Initialize Flask-Login
 login_manager = init_login_manager(app)
 
 # Lazy initialization - only load RAG system on first request
-db_path = os.path.join(os.path.dirname(__file__), '..', 'pdf_ingestion_system', 'nvidia_courses.db')
+db_path = config.DATABASE_PATH
 retriever = None
 
 def get_retriever():
@@ -445,7 +452,13 @@ def logout_all_devices():
 if __name__ == '__main__':
     print("Starting NVIDIA Course Advisor...")
     print(f"Database path: {db_path}")
-    print("Server running at http://0.0.0.0:5000")
+    print(f"Server running at http://{config.HOST}:{config.PORT}")
+    print(f"Debug mode: {config.DEBUG}")
     print("Note: Auto-reloader disabled to prevent model loading interruptions")
     # Disable reloader to prevent interruptions during embeddings model loading
-    app.run(debug=True, host='0.0.0.0', port=5000, use_reloader=False)
+    app.run(
+        debug=config.DEBUG,
+        host=config.HOST,
+        port=config.PORT,
+        use_reloader=False
+    )

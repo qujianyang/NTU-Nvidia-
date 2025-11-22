@@ -9,6 +9,8 @@ import requests
 import time
 import sqlite3
 import torch
+import sys
+import os
 
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
@@ -25,23 +27,27 @@ except ImportError:
 from course_database import CourseDatabase
 
 # ============================================================================
-# CONFIGURATION - Edit these settings
+# CONFIGURATION - Loaded from environment via config module
 # ============================================================================
 
+# Add web_app to path to import config
+sys.path.insert(0, str(Path(__file__).parent.parent / 'web_app'))
+from config import config
+
 # Ollama settings
-OLLAMA_API_URL = "http://localhost:11434"
-OLLAMA_MODEL = "qwen2:7b-instruct-q4_0"
+OLLAMA_API_URL = config.OLLAMA_API_URL
+OLLAMA_MODEL = config.OLLAMA_MODEL
 
 # Embedding settings (local, no API key needed)
-EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
+EMBEDDING_MODEL = config.EMBEDDING_MODEL
 
 # Retrieval settings
-TOP_K_CHUNKS = 6  # Number of child chunks to retrieve
-CHUNK_OVERLAP = 2  # Number of parent docs to return
+TOP_K_CHUNKS = config.TOP_K_CHUNKS  # Number of child chunks to retrieve
+CHUNK_OVERLAP = config.CHUNK_OVERLAP  # Number of parent docs to return
 
 # LLM generation settings
-LLM_TEMPERATURE = 0.2
-LLM_TIMEOUT = 120
+LLM_TEMPERATURE = config.LLM_TEMPERATURE
+LLM_TIMEOUT = config.LLM_TIMEOUT
 
 # ============================================================================
 

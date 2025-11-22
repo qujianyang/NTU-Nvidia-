@@ -13,8 +13,11 @@ from functools import wraps
 from flask import session, jsonify
 import json
 
-# Path to the database
-db_path = os.path.join(os.path.dirname(__file__), '..', 'pdf_ingestion_system', 'nvidia_courses.db')
+# Import configuration
+from config import config
+
+# Path to the database from config
+db_path = config.DATABASE_PATH
 
 
 class User(UserMixin):
