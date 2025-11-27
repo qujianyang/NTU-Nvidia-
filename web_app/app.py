@@ -5,6 +5,8 @@ Enhanced with user dashboard, learning path visualization, and progress tracking
 
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import sys
 import os
 import sqlite3
@@ -42,6 +44,24 @@ for warning in config.validate():
 
 # Initialize Flask-Login
 login_manager = init_login_manager(app)
+
+# Initialize rate limiter
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=[config.RATELIMIT_DEFAULT] if config.RATELIMIT_ENABLED else [],
+    storage_uri=config.RATELIMIT_STORAGE_URI,
+    enabled=config.RATELIMIT_ENABLED
+)
+
+# Custom error handler for rate limit exceeded
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    """Handle rate limit exceeded errors."""
+    return jsonify({
+        'error': 'Too many requests. Please try again later.',
+        'retry_after': e.description
+    }), 429
 
 # Lazy initialization - only load RAG system on first request
 db_path = config.DATABASE_PATH
@@ -91,6 +111,7 @@ def login_page():
     return render_template('login.html')
 
 @app.route('/api/login', methods=['POST'])
+@limiter.limit(config.RATELIMIT_LOGIN)
 def login():
     """Handle login POST request"""
     try:
@@ -159,6 +180,7 @@ def signup_page():
     return render_template('signup.html')
 
 @app.route('/api/register', methods=['POST'])
+@limiter.limit(config.RATELIMIT_REGISTER)
 def register():
     """Handle user registration"""
     try:
@@ -233,6 +255,7 @@ def check_session():
 # ==================== CHAT AND COURSE ROUTES ====================
 
 @app.route('/api/chat', methods=['POST'])
+@limiter.limit(config.RATELIMIT_CHAT)
 def chat():
     """Handle chat messages and return RAG responses"""
     try:

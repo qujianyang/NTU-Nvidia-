@@ -92,6 +92,27 @@ class Config:
     MAX_LOGIN_ATTEMPTS = get_env_int('MAX_LOGIN_ATTEMPTS', 5)
     LOGIN_LOCKOUT_MINUTES = get_env_int('LOGIN_LOCKOUT_MINUTES', 15)
 
+    # ==========================================================================
+    # Rate Limiting Settings
+    # ==========================================================================
+    RATELIMIT_ENABLED = get_env_bool('RATELIMIT_ENABLED', True)
+    RATELIMIT_STORAGE_URI = get_env('RATELIMIT_STORAGE_URI', 'memory://')
+    RATELIMIT_DEFAULT = get_env('RATELIMIT_DEFAULT', '100 per minute')
+    RATELIMIT_LOGIN = get_env('RATELIMIT_LOGIN', '5 per minute')
+    RATELIMIT_REGISTER = get_env('RATELIMIT_REGISTER', '3 per minute')
+    RATELIMIT_CHAT = get_env('RATELIMIT_CHAT', '20 per minute')
+
+    # ==========================================================================
+    # Gunicorn Production Server Settings
+    # ==========================================================================
+    GUNICORN_WORKERS = get_env_int('GUNICORN_WORKERS', 4)
+    GUNICORN_WORKER_CLASS = get_env('GUNICORN_WORKER_CLASS', 'gevent')
+    GUNICORN_TIMEOUT = get_env_int('GUNICORN_TIMEOUT', 180)
+    GUNICORN_BIND = get_env('GUNICORN_BIND', '0.0.0.0:5000')
+    GUNICORN_ACCESS_LOG = get_env('GUNICORN_ACCESS_LOG', '-')  # stdout
+    GUNICORN_ERROR_LOG = get_env('GUNICORN_ERROR_LOG', '-')    # stderr
+    GUNICORN_LOGLEVEL = get_env('GUNICORN_LOGLEVEL', 'info')
+
     @classmethod
     def is_production(cls) -> bool:
         """Check if running in production mode."""

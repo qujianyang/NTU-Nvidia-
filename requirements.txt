@@ -16,7 +16,12 @@ requests>=2.31.0          # HTTP client for Ollama
 # Web Framework Dependencies
 Flask==2.3.3                   # Flask web framework
 Flask-Login==0.6.3             # User session management
+Flask-Limiter==3.5.0           # Rate limiting for API endpoints
 fpdf2==2.7.9                   # PDF export for chat transcripts
+
+# Production Server Dependencies
+gunicorn==21.2.0               # Production WSGI server
+gevent==23.9.1                 # Async worker for I/O-bound tasks
 
 # Optional Dependencies (uncomment if needed)
 # numpy==1.24.3                  # For numerical operations
