@@ -1,0 +1,99 @@
+# NVIDIA Learn Course Scraper Configuration
+
+urls:
+  base: "https://learn.nvidia.com"
+  catalog: "https://learn.nvidia.com/catalog"
+  search: "https://learn.nvidia.com/catalog?q="
+  course_detail: "https://learn.nvidia.com/courses/course-detail?course_id={course_id}"
+
+browser:
+  headless: true                     # Set to false for debugging (see browser)
+  timeout: 30000                     # Page load timeout (milliseconds)
+  wait_for_selector: "a.Rectangle-1, .course_slider"  # UPDATED - wait for course cards to load
+  viewport:
+    width: 1920
+    height: 1080
+
+scraping:
+  # Politeness settings - be respectful to NVIDIA's servers
+  delay_between_requests:
+    min: 2.0                         # Minimum seconds between requests
+    max: 5.0                         # Maximum seconds (random in range)
+
+  delay_after_scroll:
+    min: 1.0
+    max: 2.0
+
+  # Retry settings
+  max_retries: 3
+  retry_delay: 10.0                  # Wait 10s before retry
+
+  # Safety limits
+  max_courses: 100                   # Maximum courses to scrape (safety limit)
+  timeout_per_course: 60             # Max seconds per course page
+
+anti_detection:
+  rotate_user_agents: true
+  stealth_mode: true
+  block_images: false                # Set true to speed up (may trigger detection)
+  block_css: false
+  random_viewport: false             # Randomly vary viewport size
+
+# CSS Selectors - These need to be tuned after inspecting actual HTML
+# Multiple selectors separated by commas will be tried in order
+parsing:
+  catalog:
+    # Course cards in catalog - UPDATED FROM ACTUAL INSPECTION ✓
+    course_card: "a.Rectangle-1, a[data-id]"
+    course_title: "div.name, .name"
+    course_url: "a.Rectangle-1, a[href*='course-detail']"
+    course_id_pattern: "course_id=([^&]+)"
+
+    # Optional fields from catalog
+    course_format: "span.Platform-Overview, span[data-type]"
+    course_level: ".level, .difficulty, [data-level], [class*='level']"
+    course_duration: ".duration, .course-duration, [class*='duration']"
+    course_price: ".price, .cost, [class*='price'], [class*='cost']"
+    load_more_button: "button[class*='load'], button[class*='more'], .load-more"
+
+  course_detail:
+    # Main course information - UPDATED FROM ACTUAL INSPECTION ✓
+    title: "h1.display_name, h1.text-block-2, h1"  # ✓ CONFIRMED from screenshot
+    description: "section#about, section.about.overview, .about.desc-block"  # ✓ CONFIRMED
+
+    # Learning objectives - UPDATED ✓
+    learning_objectives: "section#objectives ul li, .objectives ul li, section.objectives ul li"
+    objectives_section: "section#objectives, .objectives.objective-block"
+
+    # Course metadata - UPDATED FROM ACTUAL INSPECTION ✓
+    duration: "span.duration_span, .duration_span, .text-block-3.duration"
+    price: ".text-block-3.price, div.price"
+    level: "span.level_span, .level_span, .text-block-3.level"
+    format: "span.Platform-Overview, span[data-type]"  # From catalog
+    subject: "span.subject_span, .subject_span"
+
+    # Prerequisites - UPDATED ✓
+    prerequisites: "span.course_prereq_span ul li, .course_prereq_span ul li"
+    prerequisites_section: ".text-block-3.course-prereq, div.course-prereq"
+
+    # Additional information - UPDATED ✓
+    target_audience: ".audience, .who-should-attend, [class*='audience']"
+    technical_requirements: ".text-block-3.system_requirements, div.system_requirements"
+    certificate: ".text-block-3.certificate, div.certificate"
+    skills: ".skills li, .tags li, [class*='skill'] li"
+    tools: ".text-block-3.tools, div.tools"
+
+    # Instructor and course details
+    instructor: ".instructor, [class*='instructor'], .author"
+    topics: ".topics li, [class*='topic'] li, .modules li"
+
+output:
+  json_file: "../nvidia_courses_scraped.json"
+  backup_dir: "./scraper_backups"
+  log_dir: "./scraper_logs"
+
+monitoring:
+  save_screenshots_on_error: true
+  save_html_on_error: true
+  log_level: "INFO"                  # DEBUG, INFO, WARNING, ERROR
+  progress_interval: 5               # Log progress every N courses
