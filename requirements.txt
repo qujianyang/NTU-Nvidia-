@@ -13,6 +13,9 @@ sentence-transformers>=2.2.0  # Local embeddings
 chromadb>=0.4.0           # Vector database
 requests>=2.31.0          # HTTP client for Ollama
 
+# Graph & Data Science Dependencies
+networkx>=3.0             # For knowledge graph creation and analysis
+
 # Web Framework Dependencies
 Flask==2.3.3                   # Flask web framework
 Flask-Login==0.6.3             # User session management

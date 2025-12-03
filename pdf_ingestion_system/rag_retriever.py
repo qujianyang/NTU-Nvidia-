@@ -9,6 +9,7 @@ import requests
 import time
 import sqlite3
 import torch
+import sys
 
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
@@ -22,26 +23,31 @@ except ImportError:
     except ImportError:
         from langchain.embeddings import HuggingFaceEmbeddings
 
-from course_database import CourseDatabase
+# Add current directory to path for local imports like course_database
+sys.path.insert(0, str(Path(__file__).parent))
+
+# Add web_app to path to import config
+sys.path.insert(0, str(Path(__file__).parent.parent / 'web_app'))
+from config import config
 
 # ============================================================================
-# CONFIGURATION - Edit these settings
+# CONFIGURATION - Loaded from environment via config module
 # ============================================================================
 
 # Ollama settings
-OLLAMA_API_URL = "http://localhost:11434"
-OLLAMA_MODEL = "qwen2:7b-instruct-q4_0"
+OLLAMA_API_URL = config.OLLAMA_API_URL
+OLLAMA_MODEL = config.OLLAMA_MODEL
 
 # Embedding settings (local, no API key needed)
-EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
+EMBEDDING_MODEL = config.EMBEDDING_MODEL
 
 # Retrieval settings
-TOP_K_CHUNKS = 6  # Number of child chunks to retrieve
-CHUNK_OVERLAP = 2  # Number of parent docs to return
+TOP_K_CHUNKS = config.TOP_K_CHUNKS  # Number of child chunks to retrieve
+CHUNK_OVERLAP = config.CHUNK_OVERLAP  # Number of parent docs to return
 
 # LLM generation settings
-LLM_TEMPERATURE = 0.2
-LLM_TIMEOUT = 120
+LLM_TEMPERATURE = config.LLM_TEMPERATURE
+LLM_TIMEOUT = config.LLM_TIMEOUT
 
 # ============================================================================
 
@@ -55,7 +61,7 @@ class CourseRAGRetriever:
     - Generates answers using Ollama
     """
 
-    def __init__(self, db_path: str = "nvidia_courses.db"):
+    def __init__(self, db_path: str = config.DATABASE_PATH):
         self.db_path = db_path
         # Fix 2: Don't keep a persistent database connection (threading issue)
         # Create connections as needed instead
@@ -203,6 +209,24 @@ class CourseRAGRetriever:
         print(f"Retrieved {len(parent_docs)} parent documents")
         return parent_docs
 
+    def get_candidate_courses(self, question: str, top_k: int = 10) -> List[str]:
+        """
+        Performs a semantic search and returns a list of candidate course IDs.
+        """
+        print(f"\nSearching for candidate courses related to: '{question}'")
+        child_docs = self.vectorstore.similarity_search(question, k=top_k)
+        
+        course_ids = set()
+        for doc in child_docs:
+            parent_id = doc.metadata.get('parent_id')
+            if parent_id and parent_id in self.parent_map:
+                course_id = self.parent_map[parent_id].get('course_id')
+                if course_id:
+                    course_ids.add(course_id)
+        
+        print(f"Found {len(course_ids)} candidate courses.")
+        return list(course_ids)
+
     def answer_question(self, question: str) -> str:
         """
         Answer a question using RAG.
@@ -347,6 +371,15 @@ def test_retriever():
             print("\n⚠ No URLs found in response - LLM may need different prompting")
 
         print("="*60)
+        
+    # Test the new method
+    print("\n" + "="*60)
+    print("TEST CANDIDATE COURSE RETRIEVAL")
+    print("="*60)
+    candidate_question = "I want to learn about robotics and Isaac Sim"
+    candidate_courses = retriever.get_candidate_courses(candidate_question)
+    print(f"Candidate courses for '{candidate_question}': {candidate_courses}")
+    assert len(candidate_courses) > 0, "Should find at least one candidate course"
 
     retriever.close()
 

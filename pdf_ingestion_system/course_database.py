@@ -2,12 +2,18 @@ import sqlite3
 from pathlib import Path
 from typing import List, Dict, Any
 from datetime import datetime
+import sys
+import os
+
+# Add web_app to path to import config
+sys.path.insert(0, str(Path(__file__).parent.parent / 'web_app'))
+from config import config
 
 
 class CourseDatabase:
     """Simple SQLite database for course data with parent-child RAG structure."""
 
-    def __init__(self, db_path: str = "nvidia_courses.db"):
+    def __init__(self, db_path: str = config.DATABASE_PATH):
         self.db_path = db_path
         self.conn = sqlite3.connect(db_path)
         self.conn.row_factory = sqlite3.Row
@@ -36,7 +42,8 @@ class CourseDatabase:
                 leads_to TEXT,       -- JSON array of next course IDs
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
-        """)
+        """
+        )
 
         # Parent documents table - full context for RAG
         cursor.execute("""
@@ -47,7 +54,8 @@ class CourseDatabase:
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (course_id) REFERENCES courses(id)
             )
-        """)
+        """
+        )
 
         # Child chunks table - searchable pieces
         cursor.execute("""
@@ -62,7 +70,8 @@ class CourseDatabase:
                 FOREIGN KEY (parent_id) REFERENCES parent_documents(id),
                 FOREIGN KEY (course_id) REFERENCES courses(id)
             )
-        """)
+        """
+        )
 
         # Indexes for fast queries
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_parent_course ON parent_documents(course_id)")

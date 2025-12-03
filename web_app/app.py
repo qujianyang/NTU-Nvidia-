@@ -16,6 +16,7 @@ import json
 # Add parent directory to path to use existing RAG system
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'pdf_ingestion_system'))
 from rag_retriever import CourseRAGRetriever
+from learning_path_generator import LearningPathGenerator # NEW IMPORT
 
 # Import authentication module
 from auth import (
@@ -38,7 +39,10 @@ login_manager = init_login_manager(app)
 
 # Lazy initialization - only load RAG system on first request
 db_path = os.path.join(os.path.dirname(__file__), '..', 'pdf_ingestion_system', 'nvidia_courses.db')
+courses_json_path = os.path.join(os.path.dirname(__file__), '..', 'nvidia_courses_merged.json') # New line
+
 retriever = None
+learning_path_generator = None # New global variable
 
 def get_retriever():
     """Get or initialize the RAG retriever (lazy loading)."""
@@ -47,6 +51,15 @@ def get_retriever():
         print("Initializing RAG retriever on first request...")
         retriever = CourseRAGRetriever(db_path)
     return retriever
+
+def get_learning_path_generator(): # New function for lazy loading
+    """Get or initialize the LearningPathGenerator (lazy loading)."""
+    global learning_path_generator
+    if learning_path_generator is None:
+        print("Initializing LearningPathGenerator on first request...")
+        learning_path_generator = LearningPathGenerator(courses_file_path=courses_json_path)
+    return learning_path_generator
+
 
 # ==================== HELPER FUNCTIONS ====================
 
@@ -247,6 +260,25 @@ def chat():
     except Exception as e:
         print(f"Error in chat: {e}")
         return jsonify({'error': 'Sorry, I encountered an error. Please try again.'}), 500
+
+@app.route('/api/generate_learning_path', methods=['POST'])
+def generate_learning_path_api():
+    """Generate a learning path based on a user's goal."""
+    try:
+        data = request.get_json()
+        user_goal = data.get('user_goal', '')
+
+        if not user_goal:
+            return jsonify({'error': 'No user goal provided'}), 400
+        
+        generator = get_learning_path_generator()
+        learning_path = generator.generate_path(user_goal)
+
+        return jsonify({'learning_path': learning_path})
+
+    except Exception as e:
+        print(f"Error generating learning path: {e}")
+        return jsonify({'error': 'An error occurred while generating the learning path. Please try again.'}), 500
 
 @app.route('/api/courses', methods=['GET'])
 def get_courses():

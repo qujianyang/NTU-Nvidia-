@@ -9,8 +9,22 @@
 {% block content %}
 <div class="learning-paths-container">
     <div class="learning-paths-header">
-        <h1><i class="fas fa-sitemap"></i> Learning Path Visualization</h1>
-        <p>Interactive graph showing course prerequisites and learning paths</p>
+        <h1><i class="fas fa-sitemap"></i> Dynamic Learning Path Generator</h1>
+        <p>Enter your career goal or learning objective to generate a personalized course path.</p>
+    </div>
+
+    <!-- Goal Input Panel -->
+    <div class="goal-input-panel">
+        <label for="user-goal-input"><i class="fas fa-bullseye"></i> Your Learning Goal:</label>
+        <textarea id="user-goal-input" placeholder="e.g., 'Become a robotics engineer specializing in perception and control using ROS and Isaac Sim' or 'Master Generative AI for medical imaging.'"></textarea>
+        <button id="generate-path-btn" class="btn-primary">
+            <i class="fas fa-magic"></i> Generate My Learning Path
+        </button>
+        <div id="path-loading" class="loading-container" style="display: none;">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Generating personalized path...</p>
+        </div>
+        <div id="path-error" class="error-message" style="display: none;"></div>
     </div>
 
     <!-- Control Panel -->
