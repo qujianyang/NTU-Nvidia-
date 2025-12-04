@@ -67,10 +67,15 @@ class Config:
     DATABASE_PATH = get_env('DATABASE_PATH', _default_db_path)
 
     # ==========================================================================
-    # Ollama / LLM Settings
+    # NVIDIA NIM / LLM Settings
     # ==========================================================================
-    OLLAMA_API_URL = get_env('OLLAMA_API_URL', 'http://localhost:11434')
-    OLLAMA_MODEL = get_env('OLLAMA_MODEL', 'qwen2:7b-instruct-q4_0')
+    # Switch to NVIDIA's hosted API
+    OLLAMA_API_URL = get_env('OLLAMA_API_URL', 'https://integrate.api.nvidia.com/v1')
+    OLLAMA_MODEL = get_env('OLLAMA_MODEL', 'meta/llama3-8b-instruct')
+    
+    # NVIDIA API Key
+    NVIDIA_API_KEY = get_env('NVIDIA_API_KEY', )
+    
     LLM_TEMPERATURE = get_env_float('LLM_TEMPERATURE', 0.2)
     LLM_TIMEOUT = get_env_int('LLM_TIMEOUT', 120)
 
