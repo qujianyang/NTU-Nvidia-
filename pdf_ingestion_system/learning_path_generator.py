@@ -4,15 +4,7 @@ import networkx as nx
 from typing import List, Dict, Any, Set
 import os
 import sys
-import io
 
-# Optional cudf import for GPU acceleration
-try:
-    import cudf
-    IS_CUDA_AVAILABLE = True
-except ImportError:
-    IS_CUDA_AVAILABLE = False
-    
 # Add parent directory to path for imports
 sys.path.insert(0, str(os.path.dirname(__file__)))
 from rag_retriever import CourseRAGRetriever
@@ -28,42 +20,12 @@ class LearningPathGenerator:
         self.retriever = CourseRAGRetriever()
 
     def _load_courses(self, file_path: str) -> Dict[str, Any]:
-        """Loads course data from a JSON file using the Hybrid (CPU/GPU) Approach."""
-        print("Loading courses data...")
-
-        # 1. CPU: Open the full file safely (Handles the nesting)
+        """Loads course data from a JSON file."""
         with open(file_path, 'r', encoding='utf-8') as f:
-            full_data = json.load(f)
-
-        # 2. Extract ONLY the list of courses. Assumes "courses" is a list of dicts.
-        courses_list = full_data.get("courses", [])
-        if not courses_list:
-            return {}
-
-        # Attempt to use GPU (cudf) if available
-        if IS_CUDA_AVAILABLE:
-            try:
-                print("Attempting to load with GPU (cudf)...")
-                # 3. Convert that list to a JSON string for cudf
-                courses_json_str = json.dumps(courses_list)
-                
-                # 4. GPU: Now cudf can read it because it's a perfectly flat list
-                gdf = cudf.read_json(io.StringIO(courses_json_str))
-                print(f"✅ GPU Loaded {len(gdf)} courses!")
-                
-                # Convert cuDF DataFrame back to the dictionary format the class expects
-                courses_records = gdf.to_pandas().to_dict('records')
-
-            except Exception as e:
-                print(f"⚠️ GPU (cudf) loading failed: {e}. Falling back to CPU (json).")
-                # Fallback to pure python if cudf fails for any reason
-                courses_records = courses_list
-        else:
-            print("GPU (cudf) not available. Loading with CPU (json).")
-            courses_records = courses_list
-
-        # 5. Create a dictionary for quick lookup by course ID
-        courses_dict = {course['id']: course for course in courses_records}
+            data = json.load(f)
+        
+        # Create a dictionary for quick lookup by course ID
+        courses_dict = {course['id']: course for course in data.get('courses', [])}
         return courses_dict
 
     def _build_course_graph(self) -> nx.DiGraph:
