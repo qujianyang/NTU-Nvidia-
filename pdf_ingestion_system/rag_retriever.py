@@ -14,7 +14,6 @@ import os
 
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
-from nemoguardrails import LLMRails, RailsConfig
 
 # Fix 1: Use the updated import to avoid deprecation warning
 try:
@@ -134,12 +133,6 @@ class CourseRAGRetriever:
             api_key=API_KEY,
             timeout=LLM_TIMEOUT
         )
-
-        # Initialize NeMo Guardrails
-        print("Initializing NeMo Guardrails...")
-        rails_config_path = Path(__file__).parent / "guardrails"
-        self.rails_config = RailsConfig.from_path(str(rails_config_path))
-        self.rails = LLMRails(self.rails_config)
         
         # Fix 2: Don't keep a persistent database connection (threading issue)
         # Create connections as needed instead
@@ -309,16 +302,15 @@ class CourseRAGRetriever:
 
     def answer_question(self, question: str) -> str:
         """
-        Answer a question using RAG, protected by NeMo Guardrails.
+        Answer a question using RAG, protected by a Regex Guardrail.
 
         Args:
             question: User's question
 
         Returns:
-            Generated answer from LLM Client or refusal from Guardrails
+            Generated answer from LLM Client or refusal from Guardrail
         """
-        # Step 1: Check Guardrails (Regex fallback for speed/reliability)
-        # This is the "Deterministic Override" we discussed
+        # Step 1: Check Guardrails (Regex based)
         competitor_keywords = ["amd", "intel", "radeon", "ryzen"]
         if any(keyword in question.lower() for keyword in competitor_keywords):
             print("Regex Guardrail triggered! Returning refusal.")
@@ -349,11 +341,6 @@ class CourseRAGRetriever:
                 course_info_list.append((course_title, course_url))
 
         context = "\n---\n".join(context_parts)
-
-        # Add course URLs section to help LLM include them
-        if course_info_list:
-            course_urls_section = "\nAVAILABLE COURSE LINKS:\n" + "\n".join([f"{title}: {url}" for title, url in course_info_list])
-            context = context + "\n\n" + course_urls_section
 
         # Build system prompt
         system_message = """You are a helpful assistant for NVIDIA courses.
@@ -427,7 +414,7 @@ def test_retriever():
 
         print("="*60)
 
-    # Test NeMo Guardrail for competitor question
+    # Test Guardrail for competitor question (now Regex based)
     print("\n" + "="*60)
     print("TEST GUARDRAIL - COMPETITOR QUESTION")
     print("="*60)
