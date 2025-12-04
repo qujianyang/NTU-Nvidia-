@@ -12,7 +12,7 @@ import torch
 import sys
 import os
 
-from langchain_chroma import Chroma
+from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 
 # Fix 1: Use the updated import to avoid deprecation warning
@@ -232,14 +232,24 @@ class CourseRAGRetriever:
             )
             child_docs.append(doc)
 
+        # Define FAISS index path
+        faiss_index_path = Path(__file__).parent / "faiss_index.bin"
+
         # Create vector store for child chunks
         print("Creating vector store...")
-        vectorstore = Chroma.from_documents(
-            documents=child_docs,
-            embedding=self.embeddings,
-            collection_name="course_chunks",
-            persist_directory=str(Path(__file__).parent / "chroma_db")
-        )
+        if faiss_index_path.exists():
+            print(f"Loading existing FAISS index from {faiss_index_path}...")
+            vectorstore = FAISS.load_local(str(faiss_index_path), self.embeddings, allow_dangerous_deserialization=True)
+            print("FAISS index loaded.")
+        else:
+            print("Creating new FAISS index from documents...")
+            vectorstore = FAISS.from_documents(
+                documents=child_docs,
+                embedding=self.embeddings
+            )
+            print("FAISS index created. Saving to disk...")
+            vectorstore.save_local(str(faiss_index_path))
+            print(f"FAISS index saved to {faiss_index_path}.")
 
         return vectorstore, parent_map
 

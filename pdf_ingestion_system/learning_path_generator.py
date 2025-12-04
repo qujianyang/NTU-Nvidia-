@@ -29,8 +29,8 @@ class LearningPathGenerator:
         return courses_dict
 
     def _build_course_graph(self) -> nx.DiGraph:
-        """Builds a directed graph of courses and their prerequisites."""
-        graph = nx.DiGraph()
+        """Builds a directed graph of courses and their prerequisites using cugraph backend."""
+        graph = nx.DiGraph(backend='cugraph')
         for course_id, course_data in self.courses.items():
             # Add each course as a node
             graph.add_node(course_id, **course_data)
@@ -85,10 +85,35 @@ class LearningPathGenerator:
         
         return learning_path
 
+    def get_popular_courses(self, top_n: int = 5) -> List[Dict[str, Any]]:
+        """
+        Calculates PageRank on the course graph to identify popular courses
+        and returns the top N most popular courses.
+        Leverages GPU acceleration via cugraph backend.
+        """
+        if not self.course_graph:
+            return []
+
+        print(f"Calculating PageRank for {len(self.course_graph.nodes)} courses...")
+        # nx.pagerank will automatically use cugraph if backend is set
+        pagerank_scores = nx.pagerank(self.course_graph, alpha=0.85)
+
+        # Sort courses by PageRank score in descending order
+        sorted_courses = sorted(pagerank_scores.items(), key=lambda item: item[1], reverse=True)
+
+        popular_courses_info = []
+        for course_id, score in sorted_courses[:top_n]:
+            if course_id in self.courses:
+                course_data = self.courses[course_id].copy()
+                course_data['popularity_score'] = score
+                popular_courses_info.append(course_data)
+        
+        return popular_courses_info
+
 if __name__ == '__main__':
     # Example usage for testing
     # Note: This will initialize the RAG retriever, which can take a moment.
-    generator = LearningPathGenerator(courses_file_path='nvidia_courses_merged.json')
+    generator = LearningPathGenerator(courses_file_path='../nvidia_courses_merged.json')
     
     # Test path generation with a real goal
     test_goal = "I want to learn about robotics and how to use Isaac Sim."
@@ -102,3 +127,15 @@ if __name__ == '__main__':
             print(f"{i+1}. {course['title']} (Level: {course['level']})")
     else:
         print("Could not generate a learning path for the given goal.")
+
+    # Test popular courses feature
+    print("\n" + "="*60)
+    print("TOP POPULAR COURSES (GPU-accelerated PageRank)")
+    print("="*60)
+    popular_courses = generator.get_popular_courses(top_n=3)
+    if popular_courses:
+        for i, course in enumerate(popular_courses):
+            print(f"{i+1}. {course['title']} (Score: {course['popularity_score']:.4f})")
+    else:
+        print("Could not retrieve popular courses.")
+

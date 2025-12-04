@@ -5,7 +5,7 @@ This is necessary after importing new courses or updating course data.
 IMPORTANT: Stop your web application before running this script!
 The chroma_db files must not be locked by another process.
 """
-import shutil
+
 from pathlib import Path
 import sys
 import os
@@ -18,7 +18,8 @@ try:
 except ImportError as e:
     print(f"\n[ERROR] Missing dependencies: {e}")
     print("\nPlease install required packages:")
-    print("  pip install langchain langchain-chroma langchain-huggingface chromadb sentence-transformers")
+    print("  pip install langchain langchain-huggingface faiss-cpu sentence-transformers")
+    print("  (or pip install faiss-gpu for GPU support)")
     sys.exit(1)
 
 
@@ -30,18 +31,18 @@ def rebuild_vector_store():
     print("=" * 60)
 
     # Path to vector store
-    chroma_path = Path(__file__).parent / "pdf_ingestion_system" / "chroma_db"
+    faiss_index_path = Path(__file__).parent / "faiss_index.bin"
 
-    # Delete old vector store if it exists
-    if chroma_path.exists():
-        print(f"\n[DELETE] Removing old vector store: {chroma_path}")
-        shutil.rmtree(chroma_path)
-        print("[OK] Old vector store deleted")
+    # Delete old FAISS index if it exists
+    if faiss_index_path.exists():
+        print(f"\n[DELETE] Removing old FAISS index: {faiss_index_path}")
+        os.remove(faiss_index_path)
+        print("[OK] Old FAISS index deleted")
     else:
-        print(f"\n[INFO] No existing vector store found at {chroma_path}")
+        print(f"\n[INFO] No existing FAISS index found at {faiss_index_path}")
 
     # Rebuild vector store
-    print("\n[BUILD] Creating new vector store from current database...")
+    print("\n[BUILD] Creating new FAISS index from current database...")
     print("-" * 60)
 
     db_path = Path(__file__).parent / "pdf_ingestion_system" / "nvidia_courses.db"
@@ -50,7 +51,7 @@ def rebuild_vector_store():
     retriever = CourseRAGRetriever(str(db_path))
 
     print("\n" + "-" * 60)
-    print("[SUCCESS] Vector store rebuilt successfully!")
+    print("[SUCCESS] FAISS index rebuilt successfully!")
     print("=" * 60)
 
     # Test with the user's question

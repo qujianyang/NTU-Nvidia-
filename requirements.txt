@@ -1,3 +1,35 @@
+# ==============================================================================
+# INSTALLATION GUIDE
+# ==============================================================================
+# This project uses a mix of standard Python packages and GPU-accelerated
+# libraries from the NVIDIA RAPIDS ecosystem. Due to complex dependencies,
+# it is STRONGLY recommended to use the Conda package manager for setup.
+#
+# Follow these steps to create a clean and correct environment:
+#
+# 1. Create a new Conda environment:
+#    conda create -n nvidia_stack python=3.10
+#
+# 2. Activate the environment:
+#    conda activate nvidia_stack
+#
+# 3. Install the core GPU stack (RAPIDS, FAISS, PyTorch) using Conda.
+#    This is the most critical step. This command installs versions that are
+#    compatible with each other and the required CUDA toolkit.
+#
+#    conda install -c rapidsai -c conda-forge -c nvidia -c pytorch \
+#      cudf cugraph faiss-gpu nx-cugraph \
+#      pytorch torchvision torchaudio pytorch-cuda=12.1 --yes
+#
+# 4. Install the remaining application packages from this file using pip:
+#    pip install -r requirements.txt
+#
+# If you encounter dependency conflicts in the future, it is best to recreate
+# the environment by following these steps.
+# ==============================================================================
+
+# --- Application-Specific Python Packages (Install with PIP) ---
+
 # Core Dependencies
 pymupdf4llm==0.0.17
 pymupdf==1.24.10
@@ -9,25 +41,17 @@ langchain>=0.2.0,<0.4.0
 langchain-community>=0.2.0,<0.4.0
 langchain-core>=0.2.0,<0.4.0
 langchain-huggingface>=0.0.1,<1.0.0
-langchain-chroma>=0.1.0,<0.2.0
+# Note: langchain-chroma and chromadb were removed as FAISS is used.
 langchain-openai<0.2.0
 langchain-anthropic<0.2.0
 langsmith<0.2.0
 
 sentence-transformers>=2.2.0
-chromadb>=0.4.0
 requests>=2.31.0
-
-# Graph & Data Science Dependencies
-networkx>=3.0
 
 # Web Framework Dependencies
 Flask==2.3.3
 Flask-Login==0.6.3
 fpdf2==2.7.9
 
-# Optional Dependencies
-# numpy==1.24.3
-# streamlit==1.29.0
-
-#pip install --force-reinstall -r requirements.txt
+# Note: networkx is installed as a dependency of nx-cugraph via conda.
