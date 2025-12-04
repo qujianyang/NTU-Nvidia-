@@ -1,6 +1,6 @@
 """
 RAG Retriever with Parent Document Retriever Pattern
-Integrates with Ollama LLM for answering questions about NVIDIA courses
+Integrates with NVIDIA NIM (via OpenAI API standard) for answering questions about NVIDIA courses
 """
 
 from typing import List, Dict, Any
@@ -10,9 +10,11 @@ import time
 import sqlite3
 import torch
 import sys
+import os
 
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
+from nemoguardrails import LLMRails, RailsConfig
 
 # Fix 1: Use the updated import to avoid deprecation warning
 try:
@@ -34,9 +36,10 @@ from config import config
 # CONFIGURATION - Loaded from environment via config module
 # ============================================================================
 
-# Ollama settings
-OLLAMA_API_URL = config.OLLAMA_API_URL
-OLLAMA_MODEL = config.OLLAMA_MODEL
+# API settings
+API_BASE_URL = config.OLLAMA_API_URL
+MODEL_NAME = config.OLLAMA_MODEL
+API_KEY = config.NVIDIA_API_KEY
 
 # Embedding settings (local, no API key needed)
 EMBEDDING_MODEL = config.EMBEDDING_MODEL
@@ -51,6 +54,66 @@ LLM_TIMEOUT = config.LLM_TIMEOUT
 
 # ============================================================================
 
+class LLMClient:
+    """
+    Standardized API Client for LLM interactions.
+    Designed to be compatible with OpenAI API format (Ollama, NVIDIA NIM, vLLM).
+    """
+    def __init__(self, base_url: str, model: str, api_key: str = None, timeout: int = 120):
+        self.base_url = base_url.rstrip('/')
+        self.model = model
+        self.api_key = api_key
+        self.timeout = timeout
+
+    def chat_completion(self, messages: List[Dict[str, str]], temperature: float = 0.2) -> str:
+        """
+        Generate a chat completion using the standard /chat/completions endpoint.
+        """
+        # Handle URL construction carefully
+        if self.base_url.endswith('/v1'):
+            url = f"{self.base_url}/chat/completions"
+        else:
+            url = f"{self.base_url}/v1/chat/completions"
+        
+        headers = {
+            "Content-Type": "application/json"
+        }
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
+        
+        payload = {
+            "model": self.model,
+            "messages": messages,
+            "temperature": temperature,
+            "stream": False,
+            "max_tokens": 1024
+        }
+
+        print(f"Generating answer with LLM ({self.model})...")
+        start = time.time()
+
+        try:
+            response = requests.post(url, json=payload, headers=headers, timeout=self.timeout)
+            response.raise_for_status()
+            data = response.json()
+            
+            # Extract content from standard OpenAI response format
+            answer = data['choices'][0]['message']['content']
+
+            elapsed = time.time() - start
+            print(f"Answer generated in {elapsed:.2f}s")
+
+            return answer.strip()
+
+        except requests.RequestException as e:
+            print(f"Error calling LLM API: {e}")
+            if hasattr(e, 'response') and e.response:
+                 print(f"Response: {e.response.text}")
+            return f"Error generating answer: {e}"
+        except KeyError as e:
+            print(f"Error parsing LLM response: {e}. Data: {data}")
+            return "Error parsing model response."
+
 
 class CourseRAGRetriever:
     """
@@ -58,11 +121,26 @@ class CourseRAGRetriever:
 
     - Searches child chunks for relevance
     - Returns full parent documents for context
-    - Generates answers using Ollama
+    - Generates answers using LLM Client
     """
 
     def __init__(self, db_path: str = config.DATABASE_PATH):
         self.db_path = db_path
+        
+        # Initialize LLM Client (NIM-Ready)
+        self.llm_client = LLMClient(
+            base_url=API_BASE_URL,
+            model=MODEL_NAME,
+            api_key=API_KEY,
+            timeout=LLM_TIMEOUT
+        )
+
+        # Initialize NeMo Guardrails
+        print("Initializing NeMo Guardrails...")
+        rails_config_path = Path(__file__).parent / "guardrails"
+        self.rails_config = RailsConfig.from_path(str(rails_config_path))
+        self.rails = LLMRails(self.rails_config)
+        
         # Fix 2: Don't keep a persistent database connection (threading issue)
         # Create connections as needed instead
 
@@ -124,7 +202,8 @@ class CourseRAGRetriever:
             SELECT id, course_id, content
             FROM parent_documents
             ORDER BY id
-        """)
+        """
+        )
         parent_rows = cursor.fetchall()
 
         # Get all child chunks
@@ -132,7 +211,8 @@ class CourseRAGRetriever:
             SELECT id, parent_id, content, chunk_index
             FROM child_chunks
             ORDER BY parent_id, chunk_index
-        """)
+        """
+        )
         child_rows = cursor.fetchall()
 
         conn.close()
@@ -229,14 +309,22 @@ class CourseRAGRetriever:
 
     def answer_question(self, question: str) -> str:
         """
-        Answer a question using RAG.
+        Answer a question using RAG, protected by NeMo Guardrails.
 
         Args:
             question: User's question
 
         Returns:
-            Generated answer from Ollama
+            Generated answer from LLM Client or refusal from Guardrails
         """
+        # Step 1: Check Guardrails (Regex fallback for speed/reliability)
+        # This is the "Deterministic Override" we discussed
+        competitor_keywords = ["amd", "intel", "radeon", "ryzen"]
+        if any(keyword in question.lower() for keyword in competitor_keywords):
+            print("Regex Guardrail triggered! Returning refusal.")
+            return "As an NVIDIA Learning Assistant, I focus exclusively on NVIDIA technologies like Isaac Sim, Omniverse, and ROS integration. I cannot provide comparisons with other manufacturers."
+
+        # Step 2: Proceed with RAG
         # Retrieve relevant documents
         parent_docs = self.query(question)
 
@@ -267,11 +355,31 @@ class CourseRAGRetriever:
             course_urls_section = "\nAVAILABLE COURSE LINKS:\n" + "\n".join([f"{title}: {url}" for title, url in course_info_list])
             context = context + "\n\n" + course_urls_section
 
-        # Build prompt
-        prompt = self._build_prompt(question, context)
+        # Build system prompt
+        system_message = """You are a helpful assistant for NVIDIA courses.
+CRITICAL INSTRUCTIONS:
+1. Only recommend courses listed in COURSE INFORMATION provided by the user.
+2. NEVER create or guess URLs - only use the EXACT URLs from 'AVAILABLE COURSE LINKS' section.
+3. Copy URLs exactly as shown - do NOT modify them.
+4. Format: \"I recommend [Course Title] which teaches...\"
+5. Do NOT include URLs in the main answer - they will be added automatically.
+Answer the question using only the course information provided."""
 
-        # Generate answer with Ollama
-        answer = self._call_ollama(prompt)
+        # Build user message with context
+        user_message = f"""COURSE INFORMATION:
+{context}
+
+USER QUESTION: {question}
+
+ANSWER:"""
+
+        # Generate answer with LLM Client (NIM-Ready)
+        messages = [
+            {"role": "system", "content": system_message},
+            {"role": "user", "content": user_message}
+        ]
+        
+        answer = self.llm_client.chat_completion(messages, temperature=LLM_TEMPERATURE)
 
         # KISS Fix: Post-process to ensure URLs are included if missing
         # Check if any course URLs are in the response
@@ -284,59 +392,6 @@ class CourseRAGRetriever:
                 answer += f"- {title}: {url}\n"
 
         return answer
-
-    def _build_prompt(self, question: str, context: str) -> str:
-        """Build prompt for LLM."""
-        return f"""You are a helpful assistant for NVIDIA courses.
-
-COURSE INFORMATION:
-{context}
-
-USER QUESTION: {question}
-
-CRITICAL INSTRUCTIONS:
-1. Only recommend courses listed in COURSE INFORMATION above
-2. NEVER create or guess URLs - only use the EXACT URLs from "AVAILABLE COURSE LINKS" section
-3. Copy URLs exactly as shown - do NOT modify them
-4. Format: "I recommend [Course Title] which teaches..."
-5. Do NOT include URLs in the main answer - they will be added automatically
-
-Answer the question using only the course information above.
-
-ANSWER:"""
-
-    def _call_ollama(self, prompt: str) -> str:
-        """Call Ollama API to generate answer."""
-        url = f"{OLLAMA_API_URL}/api/generate"
-        payload = {
-            "model": OLLAMA_MODEL,
-            "prompt": prompt,
-            "stream": False,
-            "options": {
-                "temperature": LLM_TEMPERATURE,
-                "top_p": 0.8,
-                "top_k": 20,
-                "num_ctx": 4096,
-            }
-        }
-
-        print("Generating answer with Ollama...")
-        start = time.time()
-
-        try:
-            response = requests.post(url, json=payload, timeout=LLM_TIMEOUT)
-            response.raise_for_status()
-            data = response.json()
-            answer = data.get("response", "")
-
-            elapsed = time.time() - start
-            print(f"Answer generated in {elapsed:.2f}s")
-
-            return answer.strip()
-
-        except requests.RequestException as e:
-            print(f"Error calling Ollama: {e}")
-            return f"Error generating answer: {e}"
 
     def close(self):
         """Close database connection."""
@@ -359,7 +414,7 @@ def test_retriever():
         print("TEST QUERY")
         print("="*60)
         print(f"Question: {question}")
-
+        
         # Get answer
         answer = retriever.answer_question(question)
         print(f"\nAnswer:\n{answer}")
@@ -371,6 +426,18 @@ def test_retriever():
             print("\n⚠ No URLs found in response - LLM may need different prompting")
 
         print("="*60)
+
+    # Test NeMo Guardrail for competitor question
+    print("\n" + "="*60)
+    print("TEST GUARDRAIL - COMPETITOR QUESTION")
+    print("="*60)
+    competitor_question = "is amd better than nvidia?"
+    guardrailed_answer = retriever.answer_question(competitor_question)
+    print(f"\nQuestion: {competitor_question}")
+    print(f"Answer:\n{guardrailed_answer}")
+    assert "cannot provide comparisons with other manufacturers" in guardrailed_answer, \
+           "Guardrail for competitor question failed!"
+    print("✓ Guardrail successfully blocked competitor question.")
         
     # Test the new method
     print("\n" + "="*60)

@@ -1,26 +1,41 @@
-# Core Dependencies
-pymupdf4llm==0.0.17      # Fast PDF to markdown conversion
-pymupdf==1.24.10          # PDF processing fallback
-pydantic==2.5.0           # Data validation and schemas
-python-dotenv==1.0.0      # Environment configuration
+# --- Core Application Dependencies ---
+pymupdf4llm==0.0.17
+pymupdf==1.24.10
+pydantic==2.5.0
+python-dotenv==1.0.0
+Flask==2.3.3
+Flask-Login==0.6.3
+fpdf2==2.7.9
+requests>=2.31.0
+networkx>=3.0
 
-# RAG System Dependencies
-langchain>=0.1.0          # LangChain framework
-langchain-community>=0.1.0  # LangChain community integrations
-langchain-chroma>=0.1.0   # Chroma vector store integration
-langchain-huggingface>=0.0.1  # HuggingFace embeddings (replaces deprecated import)
-sentence-transformers>=2.2.0  # Local embeddings
-chromadb>=0.4.0           # Vector database
-requests>=2.31.0          # HTTP client for Ollama
+# --- RAG & AI System (The "Safe" 0.2.x Stack) ---
+# We strictly pin these to avoid the v0.3.0/v1.0.0 breaking changes
+# that are incompatible with NeMo Guardrails 0.18.0.
 
-# Graph & Data Science Dependencies
-networkx>=3.0             # For knowledge graph creation and analysis
+# 1. The Core Framework
+langchain>=0.2.17,<0.3.0
+langchain-core>=0.2.38,<0.3.0
+langchain-community>=0.2.16,<0.3.0
 
-# Web Framework Dependencies
-Flask==2.3.3                   # Flask web framework
-Flask-Login==0.6.3             # User session management
-fpdf2==2.7.9                   # PDF export for chat transcripts
+# 2. The Guardrails
+nemoguardrails==0.18.0
 
-# Optional Dependencies (uncomment if needed)
-# numpy==1.24.3                  # For numerical operations
-# streamlit==1.29.0              # For web UI
+# 3. Model Integrations (Must be 0.1.x to match LangChain 0.2.x)
+langchain-openai>=0.1.0,<0.2.0
+langchain-anthropic>=0.1.0,<0.2.0
+langchain-huggingface>=0.0.1,<1.0.0
+
+# 4. Vector Database Integration
+langchain-chroma>=0.1.0,<0.2.0
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
+
+# 5. Monitoring (Must be older than 0.2.0 for this stack)
+langsmith<0.2.0
+
+# Optional Dependencies
+# numpy==1.24.3
+# streamlit==1.29.0
+
+#pip install --force-reinstall -r requirements.txt
