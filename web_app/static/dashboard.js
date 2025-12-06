@@ -1,10 +1,7 @@
 /**
- * Dashboard JavaScript
- * Handles user statistics, progress tracking, chat history, and session management
+ * NVIDIA Competency Hub - JavaScript
+ * Handles AI Learning Stream and Roadmap Interactions
  */
-
-// Global variables
-let currentEditingCourse = null;
 
 // Initialize dashboard on page load
 document.addEventListener('DOMContentLoaded', function() {
@@ -14,107 +11,140 @@ document.addEventListener('DOMContentLoaded', function() {
 // Main function to load all dashboard data
 async function loadDashboard() {
     try {
+        // Load default role (or previously selected if we had local storage, but keeping it simple)
         await Promise.all([
-            loadStatistics(),
-            loadProgress(),
-            loadChatHistory(),
-            loadSessions()
+            loadCompetencyHub('robotics'), // Default role
+            loadLearningStream()
         ]);
+        console.log('AI Competency Hub loaded successfully.');
     } catch (error) {
         console.error('Error loading dashboard:', error);
     }
 }
 
-// Load user statistics
-async function loadStatistics() {
-    try {
-        const response = await fetch('/api/user/statistics');
-        const stats = await response.json();
-
-        document.getElementById('stat-total-courses').textContent = stats.total_courses;
-        document.getElementById('stat-completed-courses').textContent = stats.completed_courses;
-        document.getElementById('stat-avg-progress').textContent = stats.avg_progress + '%';
-        document.getElementById('stat-total-questions').textContent = stats.total_questions;
-
-        // Animate the numbers
-        animateValue('stat-total-courses', 0, stats.total_courses, 1000);
-        animateValue('stat-completed-courses', 0, stats.completed_courses, 1000);
-        animateValue('stat-avg-progress', 0, stats.avg_progress, 1000, '%');
-        animateValue('stat-total-questions', 0, stats.total_questions, 1000);
-    } catch (error) {
-        console.error('Error loading statistics:', error);
-    }
+// Handle Role Switching
+async function changeRole(role) {
+    // Show loading state logic if needed, but it's fast enough
+    await loadCompetencyHub(role);
 }
 
-// Load course progress
-async function loadProgress() {
-    const loadingEl = document.getElementById('progress-loading');
-    const emptyEl = document.getElementById('progress-empty');
-    const listEl = document.getElementById('progress-list');
-
+// Load Competency Data (Roadmap, Readiness, Next Move)
+async function loadCompetencyHub(role) {
     try {
-        const response = await fetch('/api/user/progress');
-        const progress = await response.json();
+        const response = await fetch(`/api/competency-hub?role=${role}`);
+        const data = await response.json();
 
-        loadingEl.style.display = 'none';
-
-        if (progress.length === 0) {
-            emptyEl.style.display = 'block';
-            listEl.style.display = 'none';
-        } else {
-            emptyEl.style.display = 'none';
-            listEl.style.display = 'block';
-            listEl.innerHTML = progress.map(item => createProgressItem(item)).join('');
+        if (data.error) {
+            console.error('Competency API Error:', data.error);
+            return;
         }
+
+        // 1. Update Readiness Score
+        updateReadiness(data.readiness_percent);
+
+        // 2. Update Roadmap
+        renderRoadmap(data.roadmap_nodes);
+
+        // 3. Update Next Best Move
+        updateNextMove(data.next_move);
+        
+        // 4. Update Role Icon (Visual flair)
+        updateRoleIcon(data.role_key);
+
     } catch (error) {
-        console.error('Error loading progress:', error);
-        loadingEl.innerHTML = '<p style="color: #d32f2f;">Error loading progress</p>';
+        console.error('Error loading competency data:', error);
     }
 }
 
-// Create progress item HTML
-function createProgressItem(item) {
-    const percentage = item.completion_percentage || 0;
-    const lastAccessed = item.last_accessed ? formatDate(item.last_accessed) : 'Never';
-
-    return `
-        <div class="progress-item">
-            <div class="progress-item-header">
-                <div class="progress-item-title">
-                    <h4>${escapeHtml(item.course_title)}</h4>
-                    <small>${escapeHtml(item.course_id)}</small>
-                </div>
-                <div class="progress-item-actions">
-                    <button class="icon-btn" onclick="editProgress('${escapeHtml(item.course_id)}')" title="Edit">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="icon-btn delete" onclick="deleteProgress('${escapeHtml(item.course_id)}')" title="Delete">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="progress-bar-container">
-                <div class="progress-bar-label">
-                    <span>Progress</span>
-                    <strong>${percentage}%</strong>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-bar-fill" style="width: ${percentage}%"></div>
-                </div>
-            </div>
-
-            ${item.notes ? `<div class="progress-notes">${escapeHtml(item.notes)}</div>` : ''}
-
-            <div class="progress-meta">
-                <span><i class="fas fa-clock"></i>Last accessed: ${lastAccessed}</span>
-            </div>
-        </div>
-    `;
+function updateRoleIcon(roleKey) {
+    const icon = document.querySelector('.career-goal-icon i');
+    if (icon) {
+        if (roleKey === 'ai-engineer') {
+            icon.className = 'fas fa-brain';
+        } else {
+            icon.className = 'fas fa-robot';
+        }
+    }
 }
 
-// Load chat history
-async function loadChatHistory() {
+// Update Readiness UI
+function updateReadiness(percent) {
+    const bar = document.querySelector('.readiness-bar-fill');
+    const score = document.querySelector('.readiness-score');
+    
+    if (bar && score) {
+        // Animate width
+        setTimeout(() => {
+            bar.style.width = `${percent}%`;
+        }, 100); 
+        
+        // Animate number
+        animateValue(score, 0, percent, 1000, '%');
+    }
+}
+
+// Render Visual Roadmap
+function renderRoadmap(nodes) {
+    const container = document.querySelector('.roadmap-placeholder');
+    if (!container) return;
+
+    container.innerHTML = ''; // Clear placeholder
+
+    if (!nodes || nodes.length === 0) return;
+
+    const totalNodes = nodes.length;
+    const spacing = 85 / (totalNodes - 1); // Distribute across 85% width
+
+    nodes.forEach((node, index) => {
+        // Create Node
+        const nodeDiv = document.createElement('div');
+        nodeDiv.className = `roadmap-node ${node.status}`;
+        nodeDiv.textContent = node.title.replace('Fundamentals', '').replace('Basics', ''); // Shorten titles
+        nodeDiv.style.top = '50%';
+        nodeDiv.style.left = `${10 + (index * spacing)}%`;
+        nodeDiv.title = node.title;
+
+        container.appendChild(nodeDiv);
+
+        // Create Connecting Line
+        if (index < totalNodes - 1) {
+            const lineDiv = document.createElement('div');
+            lineDiv.className = `roadmap-line ${node.status}`; 
+            lineDiv.style.top = '50%';
+            lineDiv.style.left = `${10 + (index * spacing)}%`;
+            lineDiv.style.width = `${spacing}%`;
+            container.appendChild(lineDiv);
+        }
+    });
+}
+
+// Update Next Best Move Card
+function updateNextMove(nextMove) {
+    const card = document.querySelector('.next-move-card');
+    if (!card) return;
+
+    if (nextMove) {
+        const icon = card.querySelector('.next-move-icon i');
+        const title = card.querySelector('.next-move-content h3');
+        const desc = card.querySelector('.next-move-content p');
+        
+        if (icon) icon.className = nextMove.icon || 'fas fa-play-circle';
+        if (title) title.textContent = nextMove.title;
+        if (desc) desc.textContent = `Recommended step to master ${nextMove.title} based on your role targets.`;
+    } else {
+        // All completed state
+        const contentDiv = card.querySelector('.next-move-content');
+        if (contentDiv) {
+             contentDiv.innerHTML = `
+                <h3>All Milestones Completed!</h3>
+                <p>You have mastered the core path for this role. Check the AI Stream for advanced topics.</p>
+            `;
+        }
+    }
+}
+
+// Load AI Learning Stream (Chat History)
+async function loadLearningStream() {
     const loadingEl = document.getElementById('history-loading');
     const emptyEl = document.getElementById('history-empty');
     const listEl = document.getElementById('history-list');
@@ -131,22 +161,22 @@ async function loadChatHistory() {
         } else {
             emptyEl.style.display = 'none';
             listEl.style.display = 'block';
-            listEl.innerHTML = history.map(item => createHistoryItem(item)).join('');
+            listEl.innerHTML = history.map(item => createStreamItem(item)).join('');
         }
     } catch (error) {
-        console.error('Error loading chat history:', error);
-        loadingEl.innerHTML = '<p style="color: #d32f2f;">Error loading chat history</p>';
+        console.error('Error loading learning stream:', error);
+        loadingEl.innerHTML = '<p style="color: #d32f2f;">Error syncing neural stream.</p>';
     }
 }
 
-// Create history item HTML
-function createHistoryItem(item) {
+// Create stream item HTML
+function createStreamItem(item) {
     const time = formatDate(item.created_at);
 
     return `
         <div class="history-item">
             <div class="history-item-question">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-user-astronaut"></i>
                 <span>${escapeHtml(item.question)}</span>
             </div>
             <div class="history-item-answer">
@@ -159,202 +189,9 @@ function createHistoryItem(item) {
     `;
 }
 
-// Load active sessions
-async function loadSessions() {
-    const loadingEl = document.getElementById('sessions-loading');
-    const listEl = document.getElementById('sessions-list');
-
-    try {
-        const response = await fetch('/api/user/sessions');
-        const sessions = await response.json();
-
-        loadingEl.style.display = 'none';
-        listEl.style.display = 'block';
-
-        if (sessions.length === 0) {
-            listEl.innerHTML = '<div class="empty-state"><p>No active sessions</p></div>';
-        } else {
-            listEl.innerHTML = sessions.map(session => createSessionItem(session)).join('');
-        }
-    } catch (error) {
-        console.error('Error loading sessions:', error);
-        loadingEl.innerHTML = '<p style="color: #d32f2f;">Error loading sessions</p>';
-    }
-}
-
-// Create session item HTML
-function createSessionItem(session) {
-    const createdAt = formatDate(session.created_at);
-    const expiresAt = formatDate(session.expires_at);
-    const isCurrent = session.is_current;
-
-    return `
-        <div class="session-item ${isCurrent ? 'current' : ''}">
-            <div class="session-info">
-                <div class="session-info-header">
-                    <span class="session-badge ${isCurrent ? 'current' : 'other'}">
-                        ${isCurrent ? 'Current Session' : 'Other Device'}
-                    </span>
-                </div>
-                <p><i class="fas fa-calendar"></i> Created: ${createdAt}</p>
-                <small><i class="fas fa-clock"></i> Expires: ${expiresAt}</small>
-            </div>
-            ${!isCurrent ? `
-                <button class="btn-danger" onclick="revokeSession(${session.id})">
-                    <i class="fas fa-sign-out-alt"></i> Revoke
-                </button>
-            ` : ''}
-        </div>
-    `;
-}
-
-// Add course modal
-function addCourse() {
-    document.getElementById('add-course-modal').classList.add('show');
-    document.getElementById('course-id').value = '';
-    document.getElementById('course-title').value = '';
-    document.getElementById('course-progress').value = '0';
-    document.getElementById('course-notes').value = '';
-}
-
-function closeModal() {
-    document.getElementById('add-course-modal').classList.remove('show');
-}
-
-async function saveCourse() {
-    const courseId = document.getElementById('course-id').value.trim();
-    const courseTitle = document.getElementById('course-title').value.trim();
-    const progress = parseInt(document.getElementById('course-progress').value) || 0;
-    const notes = document.getElementById('course-notes').value.trim();
-
-    if (!courseId || !courseTitle) {
-        alert('Please fill in Course ID and Title');
-        return;
-    }
-
-    if (progress < 0 || progress > 100) {
-        alert('Progress must be between 0 and 100');
-        return;
-    }
-
-    try {
-        const response = await fetch('/api/user/progress', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                course_id: courseId,
-                course_title: courseTitle,
-                completion_percentage: progress,
-                notes: notes || null
-            })
-        });
-
-        if (response.ok) {
-            closeModal();
-            await loadProgress();
-            await loadStatistics();
-        } else {
-            const error = await response.json();
-            alert('Error saving course: ' + (error.error || 'Unknown error'));
-        }
-    } catch (error) {
-        console.error('Error saving course:', error);
-        alert('Error saving course');
-    }
-}
-
-// Edit progress
-async function editProgress(courseId) {
-    try {
-        const response = await fetch('/api/user/progress');
-        const allProgress = await response.json();
-        const item = allProgress.find(p => p.course_id === courseId);
-
-        if (item) {
-            currentEditingCourse = item;
-            document.getElementById('edit-course-title').textContent = item.course_title;
-            document.getElementById('edit-completion').value = item.completion_percentage || 0;
-            document.getElementById('edit-notes').value = item.notes || '';
-            document.getElementById('edit-notes-modal').classList.add('show');
-        }
-    } catch (error) {
-        console.error('Error loading course for edit:', error);
-    }
-}
-
-function closeEditModal() {
-    document.getElementById('edit-notes-modal').classList.remove('show');
-    currentEditingCourse = null;
-}
-
-async function saveEditedNotes() {
-    if (!currentEditingCourse) return;
-
-    const completion = parseInt(document.getElementById('edit-completion').value) || 0;
-    const notes = document.getElementById('edit-notes').value.trim();
-
-    if (completion < 0 || completion > 100) {
-        alert('Progress must be between 0 and 100');
-        return;
-    }
-
-    try {
-        const response = await fetch('/api/user/progress', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                course_id: currentEditingCourse.course_id,
-                course_title: currentEditingCourse.course_title,
-                completion_percentage: completion,
-                notes: notes || null
-            })
-        });
-
-        if (response.ok) {
-            closeEditModal();
-            await loadProgress();
-            await loadStatistics();
-        } else {
-            const error = await response.json();
-            alert('Error updating progress: ' + (error.error || 'Unknown error'));
-        }
-    } catch (error) {
-        console.error('Error updating progress:', error);
-        alert('Error updating progress');
-    }
-}
-
-// Delete progress
-async function deleteProgress(courseId) {
-    if (!confirm('Are you sure you want to remove this course from your progress?')) {
-        return;
-    }
-
-    try {
-        const response = await fetch(`/api/user/progress/${courseId}`, {
-            method: 'DELETE'
-        });
-
-        if (response.ok) {
-            await loadProgress();
-            await loadStatistics();
-        } else {
-            const error = await response.json();
-            alert('Error deleting progress: ' + (error.error || 'Unknown error'));
-        }
-    } catch (error) {
-        console.error('Error deleting progress:', error);
-        alert('Error deleting progress');
-    }
-}
-
-// Clear chat history
+// Clear AI Stream
 async function clearChatHistory() {
-    if (!confirm('Are you sure you want to clear all chat history? This cannot be undone.')) {
+    if (!confirm('Clear your AI learning stream? This action cannot be undone.')) {
         return;
     }
 
@@ -364,62 +201,14 @@ async function clearChatHistory() {
         });
 
         if (response.ok) {
-            await loadChatHistory();
-            await loadStatistics();
+            await loadLearningStream();
         } else {
             const error = await response.json();
-            alert('Error clearing chat history: ' + (error.error || 'Unknown error'));
+            alert('Error clearing stream: ' + (error.error || 'Unknown error'));
         }
     } catch (error) {
-        console.error('Error clearing chat history:', error);
-        alert('Error clearing chat history');
-    }
-}
-
-// Revoke session
-async function revokeSession(sessionId) {
-    if (!confirm('Are you sure you want to revoke this session?')) {
-        return;
-    }
-
-    try {
-        const response = await fetch(`/api/user/sessions/${sessionId}`, {
-            method: 'DELETE'
-        });
-
-        if (response.ok) {
-            await loadSessions();
-        } else {
-            const error = await response.json();
-            alert('Error revoking session: ' + (error.error || 'Unknown error'));
-        }
-    } catch (error) {
-        console.error('Error revoking session:', error);
-        alert('Error revoking session');
-    }
-}
-
-// Logout all devices
-async function logoutAllDevices() {
-    if (!confirm('Are you sure you want to logout from all devices? You will be logged out from this device as well.')) {
-        return;
-    }
-
-    try {
-        const response = await fetch('/api/user/logout-all', {
-            method: 'POST'
-        });
-
-        if (response.ok) {
-            alert('Logged out from all devices. Redirecting to login...');
-            window.location.href = '/login';
-        } else {
-            const error = await response.json();
-            alert('Error logging out: ' + (error.error || 'Unknown error'));
-        }
-    } catch (error) {
-        console.error('Error logging out:', error);
-        alert('Error logging out');
+        console.error('Error clearing stream:', error);
+        alert('Error clearing stream');
     }
 }
 
@@ -437,8 +226,8 @@ function formatDate(dateString) {
     const diffDays = Math.floor(diffMs / 86400000);
 
     if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
-    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    if (diffMins < 60) return `${diffMins} min ago`;
+    if (diffHours < 24) return `${diffHours} hr ago`;
     if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
 
     return date.toLocaleDateString('en-US', {
@@ -458,34 +247,16 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-// Animate number counting
-function animateValue(id, start, end, duration, suffix = '') {
-    const element = document.getElementById(id);
-    if (!element) return;
-
-    const range = end - start;
-    const increment = range / (duration / 16);
-    let current = start;
-
-    const timer = setInterval(() => {
-        current += increment;
-        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-            current = end;
-            clearInterval(timer);
+// Animate Value Helper
+function animateValue(obj, start, end, duration, suffix='') {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        obj.innerHTML = Math.floor(progress * (end - start) + start) + suffix;
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
         }
-        element.textContent = Math.round(current) + suffix;
-    }, 16);
+    };
+    window.requestAnimationFrame(step);
 }
-
-// Close modals when clicking outside
-window.addEventListener('click', function(event) {
-    const addModal = document.getElementById('add-course-modal');
-    const editModal = document.getElementById('edit-notes-modal');
-
-    if (event.target === addModal) {
-        closeModal();
-    }
-    if (event.target === editModal) {
-        closeEditModal();
-    }
-});
