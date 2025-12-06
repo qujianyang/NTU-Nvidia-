@@ -17,6 +17,7 @@ import json
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'pdf_ingestion_system'))
 from rag_retriever import CourseRAGRetriever
 from learning_path_generator import LearningPathGenerator # NEW IMPORT
+from career_paths import CAREER_PATHS # Core progression data
 
 # Import authentication module
 from auth import (
@@ -472,6 +473,96 @@ def logout_all_devices():
         return jsonify({'success': True, 'message': 'Logged out from all devices'})
     except Exception as e:
         print(f"Error logging out from all devices: {e}")
+        return jsonify({'error': str(e)}), 500
+
+# ==================== COMPETENCY HUB LOGIC ====================
+
+def calculate_user_state(user_completed_course_ids, path):
+    """
+    Inputs: 
+        user_completed_course_ids: List of IDs the user has finished
+        path: The career path definition (list of nodes)
+    Outputs: Roadmap status, Readiness score, and Next recommendation
+    """
+    roadmap = []
+    active_found = False
+    next_recommendation = None
+
+    # 1. Calculate Logic for Each Node
+    for node in path:
+        # Logic simplified for Demo: We mostly respect the hardcoded status in career_paths.py
+        # But we *could* override it if we had real data.
+        # For the demo, we want the hardcoded status to WIN to ensure the story is perfect.
+        # So we blindly pass through the node data.
+        
+        # However, we DO want to calculate the Readiness Score properly based on "completed" nodes.
+        pass 
+
+        # Add visual logic for the frontend
+        roadmap.append({
+            "id": node["id"],
+            "title": node["title"],
+            "icon": node["icon"],
+            "status": node.get("status", "future"), 
+            "description": node.get("description", ""),
+            "progress": node.get("progress", 0),
+            "courses_text": node.get("courses_text", "") # Pass specific details
+        })
+        
+        if node.get("status") == "active" and not next_recommendation:
+            next_recommendation = node
+
+    # 2. Calculate Readiness Score
+    # Count nodes where status is 'completed'
+    total_steps = len(path)
+    completed_steps = len([n for n in roadmap if n['status'] == 'completed'])
+    
+    # Force specific scores for the demo story if needed, or calculate
+    # Robotics: 1 Done (Foundations) / 4 Total = 25%? 
+    # Wait, career_paths has 4 nodes. 1 is completed. 
+    # Let's stick to the calculation:
+    readiness_score = int((completed_steps / total_steps) * 100) if total_steps > 0 else 0
+
+    return {
+        "readiness": readiness_score,
+        "roadmap": roadmap,
+        "recommendation": next_recommendation
+    }
+
+@app.route('/api/competency-hub', methods=['GET'])
+@login_required
+def get_competency_data():
+    """Get dynamic competency data for the dashboard"""
+    try:
+        # Get role from query param, default to robotics
+        role_key = request.args.get('role', 'robotics')
+        
+        # Select path based on role
+        if role_key not in CAREER_PATHS:
+            role_key = 'robotics' # Fallback
+            
+        selected_path = CAREER_PATHS[role_key]
+        role_title = "Robotics Engineer" if role_key == 'robotics' else "AI Engineer"
+
+        # 1. Fetch user history from DB (Ignored for this demo logic, as we use hardcoded path status)
+        user_completed_ids = [] 
+
+        # 2. Run the Logic Engine with the selected path
+        data = calculate_user_state(user_completed_ids, selected_path)
+
+        # 3. Return JSON for the UI
+        return jsonify({
+            "role": role_title,
+            "role_key": role_key, # Send back key for UI state
+            "readiness_percent": data["readiness"],
+            "roadmap_nodes": data["roadmap"],
+            "next_move": data["recommendation"],
+            "recent_insights": [
+                {"type": "info", "msg": f"{role_title}s are in high demand."}
+            ]
+        })
+    except Exception as e:
+        print(f"Error in competency hub: {e}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':

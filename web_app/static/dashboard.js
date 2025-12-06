@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // Main function to load all dashboard data
 async function loadDashboard() {
     try {
-        // Load default role (or previously selected if we had local storage, but keeping it simple)
         await Promise.all([
             loadCompetencyHub('robotics'), // Default role
             loadLearningStream()
@@ -24,7 +23,6 @@ async function loadDashboard() {
 
 // Handle Role Switching
 async function changeRole(role) {
-    // Show loading state logic if needed, but it's fast enough
     await loadCompetencyHub(role);
 }
 
@@ -48,7 +46,7 @@ async function loadCompetencyHub(role) {
         // 3. Update Next Best Move
         updateNextMove(data.next_move);
         
-        // 4. Update Role Icon (Visual flair)
+        // 4. Update Role Icon
         updateRoleIcon(data.role_key);
 
     } catch (error) {
@@ -73,13 +71,10 @@ function updateReadiness(percent) {
     const score = document.querySelector('.readiness-score');
     
     if (bar && score) {
-        // Animate width
         setTimeout(() => {
             bar.style.width = `${percent}%`;
-        }, 100); 
-        
-        // Animate number
-        animateValue(score, 0, percent, 1000, '%');
+        }, 100);
+        score.textContent = `${percent}%`;
     }
 }
 
@@ -93,16 +88,34 @@ function renderRoadmap(nodes) {
     if (!nodes || nodes.length === 0) return;
 
     const totalNodes = nodes.length;
-    const spacing = 85 / (totalNodes - 1); // Distribute across 85% width
+    const spacing = 85 / (totalNodes - 1); 
 
     nodes.forEach((node, index) => {
-        // Create Node
+        // Create Node Container
         const nodeDiv = document.createElement('div');
         nodeDiv.className = `roadmap-node ${node.status}`;
-        nodeDiv.textContent = node.title.replace('Fundamentals', '').replace('Basics', ''); // Shorten titles
         nodeDiv.style.top = '50%';
         nodeDiv.style.left = `${10 + (index * spacing)}%`;
-        nodeDiv.title = node.title;
+        nodeDiv.title = node.description || node.title;
+
+        // Icon
+        const icon = document.createElement('i');
+        icon.className = node.icon;
+        nodeDiv.appendChild(icon);
+
+        // Label
+        const label = document.createElement('span');
+        label.className = 'node-label';
+        label.textContent = node.title;
+        nodeDiv.appendChild(label);
+
+        // Progress Ring (if active)
+        if (node.status === 'active' && node.progress) {
+            const badge = document.createElement('div');
+            badge.className = 'node-progress-badge';
+            badge.textContent = `${node.progress}%`;
+            nodeDiv.appendChild(badge);
+        }
 
         container.appendChild(nodeDiv);
 
@@ -124,26 +137,37 @@ function updateNextMove(nextMove) {
     if (!card) return;
 
     if (nextMove) {
-        const icon = card.querySelector('.next-move-icon i');
-        const title = card.querySelector('.next-move-content h3');
-        const desc = card.querySelector('.next-move-content p');
-        
-        if (icon) icon.className = nextMove.icon || 'fas fa-play-circle';
-        if (title) title.textContent = nextMove.title;
-        if (desc) desc.textContent = `Recommended step to master ${nextMove.title} based on your role targets.`;
+        card.innerHTML = `
+            <div class="next-move-icon">
+                <i class="${nextMove.icon || 'fas fa-play-circle'}"></i>
+            </div>
+            <div class="next-move-content">
+                <h3>${nextMove.title}</h3>
+                <p>${nextMove.description}</p>
+                ${nextMove.courses_text ? `<div class="next-move-detail"><i class="fas fa-list-ul"></i> ${nextMove.courses_text}</div>` : ''}
+                <div class="next-move-meta">
+                    <span><i class="fas fa-clock"></i> 4 Hours</span>
+                    <span><i class="fas fa-signal"></i> ${nextMove.status === 'active' ? 'In Progress' : 'Start Now'}</span>
+                </div>
+                <a href="#" class="btn-primary btn-large">
+                    Continue Learning <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        `;
     } else {
-        // All completed state
-        const contentDiv = card.querySelector('.next-move-content');
-        if (contentDiv) {
-             contentDiv.innerHTML = `
+        card.innerHTML = `
+            <div class="next-move-icon" style="background: rgba(118, 185, 0, 0.2); color: #76b900;">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="next-move-content">
                 <h3>All Milestones Completed!</h3>
                 <p>You have mastered the core path for this role. Check the AI Stream for advanced topics.</p>
-            `;
-        }
+            </div>
+        `;
     }
 }
 
-// Load AI Learning Stream (Chat History)
+// Load AI Learning Stream
 async function loadLearningStream() {
     const loadingEl = document.getElementById('history-loading');
     const emptyEl = document.getElementById('history-empty');
@@ -169,10 +193,8 @@ async function loadLearningStream() {
     }
 }
 
-// Create stream item HTML
 function createStreamItem(item) {
     const time = formatDate(item.created_at);
-
     return `
         <div class="history-item">
             <div class="history-item-question">
@@ -189,74 +211,36 @@ function createStreamItem(item) {
     `;
 }
 
-// Clear AI Stream
 async function clearChatHistory() {
     if (!confirm('Clear your AI learning stream? This action cannot be undone.')) {
         return;
     }
-
     try {
-        const response = await fetch('/api/user/chat-history', {
-            method: 'DELETE'
-        });
-
+        const response = await fetch('/api/user/chat-history', { method: 'DELETE' });
         if (response.ok) {
             await loadLearningStream();
         } else {
-            const error = await response.json();
-            alert('Error clearing stream: ' + (error.error || 'Unknown error'));
+            alert('Error clearing stream');
         }
     } catch (error) {
-        console.error('Error clearing stream:', error);
         alert('Error clearing stream');
     }
 }
 
-// Utility Functions
-
-// Format date
 function formatDate(dateString) {
     if (!dateString) return 'N/A';
-
     const date = new Date(dateString);
     const now = new Date();
     const diffMs = now - date;
     const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
     if (diffMins < 1) return 'Just now';
     if (diffMins < 60) return `${diffMins} min ago`;
-    if (diffHours < 24) return `${diffHours} hr ago`;
-    if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
-// Escape HTML
 function escapeHtml(text) {
     if (!text) return '';
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
-}
-
-// Animate Value Helper
-function animateValue(obj, start, end, duration, suffix='') {
-    let startTimestamp = null;
-    const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        obj.innerHTML = Math.floor(progress * (end - start) + start) + suffix;
-        if (progress < 1) {
-            window.requestAnimationFrame(step);
-        }
-    };
-    window.requestAnimationFrame(step);
 }

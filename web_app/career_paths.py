@@ -1,86 +1,80 @@
 """
-Defines the 'Golden Paths' for career roles.
-This acts as the source of truth for the progression logic.
+Defines the 'Golden Paths' for career roles (SKILL BASED).
+Hardcoded for Demo Presentation to ensure perfect storytelling.
 """
 
-ROBOTICS_ENGINEER_PATH = [
+ROBOTICS_SKILL_MAP = [
     {
-        "id": "python-basics",
-        "title": "Python Basics",
-        "type": "foundation",
-        "icon": "fab fa-python",
-        "prerequisites": []
+        "id": "skill-foundations",
+        "title": "Compute Foundations",
+        "icon": "fas fa-laptop-code",
+        "status": "completed",
+        "description": "Mastery of Linux environment and Python scripting.",
+        "progress": 100
     },
     {
-        "id": "linux-fundamentals",
-        "title": "Linux Fundamentals",
-        "type": "foundation",
-        "icon": "fab fa-linux",
-        "prerequisites": ["python-basics"]
-    },
-    {
-        "id": "isaac-sim-001",
-        "title": "Isaac Sim 001",
-        "type": "core",
+        "id": "skill-simulation",
+        "title": "Robotics Simulation",
         "icon": "fas fa-cube",
-        "prerequisites": ["python-basics", "linux-fundamentals"]
+        "status": "active",
+        "description": "Building and testing digital twins in Isaac Sim.",
+        "progress": 65 
     },
     {
-        "id": "ros2-basics",
-        "title": "ROS 2 Basics",
-        "type": "core",
+        "id": "skill-ros",
+        "title": "Robot Operating System",
         "icon": "fas fa-robot",
-        "prerequisites": ["isaac-sim-001"]
+        "status": "future",
+        "description": "Middleware for hardware control and communication.",
+        "progress": 0
     },
     {
-        "id": "capstone-project",
-        "title": "Capstone Project",
-        "type": "milestone",
-        "icon": "fas fa-flag-checkered",
-        "prerequisites": ["ros2-basics"]
+        "id": "skill-ai-deployment",
+        "title": "Edge AI Deployment",
+        "icon": "fas fa-microchip",
+        "status": "locked",
+        "description": "Deploying models to Jetson Orin devices.",
+        "progress": 0
     }
 ]
 
-AI_ENGINEER_PATH = [
+AI_SKILL_MAP = [
     {
-        "id": "python-basics",
-        "title": "Python Basics",
-        "type": "foundation",
-        "icon": "fab fa-python",
-        "prerequisites": []
-    },
-    {
-        "id": "math-for-ai",
-        "title": "Math for AI",
-        "type": "foundation",
+        "id": "skill-math",
+        "title": "Mathematics for AI",
         "icon": "fas fa-calculator",
-        "prerequisites": []
+        "status": "completed",
+        "description": "Linear Algebra, Calculus, and Probability.",
+        "progress": 100
     },
     {
-        "id": "deep-learning-fundamentals",
-        "title": "Deep Learning Fundamentals",
-        "type": "core",
+        "id": "skill-dl",
+        "title": "Deep Learning",
         "icon": "fas fa-brain",
-        "prerequisites": ["python-basics", "math-for-ai"]
+        "status": "completed",
+        "description": "Neural Networks, Backprop, and Optimization.",
+        "progress": 100
     },
     {
-        "id": "transformers-llm",
-        "title": "Transformers & LLMs",
-        "type": "core",
+        "id": "skill-llm",
+        "title": "LLMs & Transformers",
         "icon": "fas fa-language",
-        "prerequisites": ["deep-learning-fundamentals"]
+        "status": "active",
+        "description": "Attention mechanisms and GPT architectures.",
+        "progress": 40
     },
     {
-        "id": "rag-agent-dev",
-        "title": "RAG & Agent Development",
-        "type": "milestone",
-        "icon": "fas fa-robot",
-        "prerequisites": ["transformers-llm"]
+        "id": "skill-rag",
+        "title": "RAG Systems",
+        "icon": "fas fa-database",
+        "status": "future",
+        "description": "Retrieval Augmented Generation pipelines.",
+        "progress": 0
     }
 ]
 
 # Map role IDs to their path constants
 CAREER_PATHS = {
-    "robotics": ROBOTICS_ENGINEER_PATH,
-    "ai-engineer": AI_ENGINEER_PATH
+    "robotics": ROBOTICS_SKILL_MAP,
+    "ai-engineer": AI_SKILL_MAP
 }

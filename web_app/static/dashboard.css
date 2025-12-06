@@ -24,7 +24,6 @@
     overflow: hidden;
 }
 
-/* Decorative glow */
 .career-goal-banner::before {
     content: '';
     position: absolute;
@@ -46,7 +45,7 @@
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    color: #76b900; /* NVIDIA Green */
+    color: #76b900;
     font-weight: 700;
     margin-bottom: 10px;
     display: block;
@@ -62,23 +61,20 @@
 .goal-title-select {
     font-size: 3rem;
     font-weight: 800;
-    color: white; /* Fallback */
+    color: white;
     background: transparent;
     border: none;
     outline: none;
     appearance: none;
     cursor: pointer;
-    padding-right: 40px; /* Space for icon */
+    padding-right: 40px;
     font-family: inherit;
     line-height: 1.1;
-    
-    /* Gradient Text Effect */
     background-image: linear-gradient(90deg, #ffffff, #e0e0e0);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    
-    border-bottom: 2px dashed rgba(255,255,255,0.3); /* Indicate interaction */
+    border-bottom: 2px dashed rgba(255,255,255,0.3);
     transition: border-color 0.3s;
 }
 
@@ -87,7 +83,7 @@
 }
 
 .goal-title-select option {
-    color: #333; /* Dark text for dropdown options */
+    color: #333;
     background: white;
     font-size: 1.2rem;
     font-weight: 600;
@@ -134,6 +130,7 @@
     background: #76b900;
     border-radius: 4px;
     box-shadow: 0 0 10px rgba(118, 185, 0, 0.5);
+    transition: width 1s ease-out;
 }
 
 .readiness-score {
@@ -193,12 +190,11 @@
 }
 
 .roadmap-container {
-    height: 300px;
+    height: 350px;
     background: #f8f9fa;
     border-radius: var(--border-radius);
     position: relative;
     overflow: hidden;
-    /* Grid pattern background */
     background-image: radial-gradient(#ddd 1px, transparent 1px);
     background-size: 20px 20px;
 }
@@ -209,50 +205,99 @@
     position: relative;
 }
 
-/* Nodes */
+/* Nodes (Skill Style) */
 .roadmap-node {
     position: absolute;
     transform: translate(-50%, -50%);
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-weight: 700;
-    font-size: 0.9rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
     z-index: 2;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+    background: white;
+    border: 3px solid #e0e0e0;
+    color: #999;
 }
 
 .roadmap-node:hover {
-    transform: translate(-50%, -50%) scale(1.05);
+    transform: translate(-50%, -50%) scale(1.1);
     z-index: 3;
+    cursor: pointer;
 }
 
 .roadmap-node.completed {
     background: #e8f5e9;
     color: #2e7d32;
-    border: 2px solid #2e7d32;
+    border-color: #2e7d32;
 }
 
 .roadmap-node.active {
-    background: #1a1a1a;
+    background: #fff;
     color: #76b900;
-    border: 2px solid #76b900;
-    box-shadow: 0 0 15px rgba(118, 185, 0, 0.4);
-    transform: translate(-50%, -50%) scale(1.1);
+    border-color: #76b900;
+    box-shadow: 0 0 20px rgba(118, 185, 0, 0.3);
+    width: 70px;
+    height: 70px; /* Larger active node */
 }
 
 .roadmap-node.future {
-    background: white;
-    color: #999;
+    background: #f5f5f5;
+    color: #ccc;
     border: 2px dashed #ccc;
+}
+
+.roadmap-node.locked {
+    background: #f0f0f0;
+    color: #aaa;
+    border: 2px solid #ddd;
+}
+
+/* Node Label */
+.node-label {
+    position: absolute;
+    top: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #555;
+    background: rgba(255,255,255,0.9);
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.roadmap-node.active .node-label {
+    color: #76b900;
+    font-weight: 800;
+}
+
+/* Node Progress Badge */
+.node-progress-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #76b900;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 /* Connecting Lines */
 .roadmap-line {
     position: absolute;
-    height: 3px;
+    height: 4px;
     transform: translateY(-50%);
     z-index: 1;
+    border-radius: 2px;
 }
 
 .roadmap-line.completed {
@@ -263,14 +308,14 @@
     background: linear-gradient(90deg, #2e7d32 0%, #76b900 100%);
 }
 
-.roadmap-line.future {
+.roadmap-line.future, .roadmap-line.locked {
     background: #e0e0e0;
 }
 
 /* 3. Dashboard Grid Layout */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr; /* Recommendation takes priority */
+    grid-template-columns: 1.2fr 0.8fr;
     gap: 30px;
     margin-bottom: 40px;
 }
@@ -280,7 +325,7 @@
     background: white;
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-md);
-    padding: 0; /* Padding handled by children */
+    padding: 0;
     overflow: hidden;
     border: 1px solid #e0e0e0;
 }
@@ -320,7 +365,22 @@
 .next-move-content p {
     color: #666;
     line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.next-move-detail {
+    background: #f9f9f9;
+    padding: 10px 15px;
+    border-radius: 8px;
     margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: #555;
+    border-left: 3px solid #76b900;
+}
+
+.next-move-detail i {
+    color: #76b900;
+    margin-right: 8px;
 }
 
 .next-move-meta {
@@ -357,7 +417,7 @@
     border: 1px solid #e0e0e0;
     display: flex;
     flex-direction: column;
-    height: 100%; /* Match height of next-move section */
+    height: 100%;
 }
 
 .learning-stream-section .section-header {
@@ -406,7 +466,7 @@
     font-size: 0.9rem;
     color: #555;
     line-height: 1.5;
-    padding-left: 24px; /* Align with text */
+    padding-left: 24px;
 }
 
 .history-item-time {
@@ -416,7 +476,6 @@
     text-align: right;
 }
 
-/* Loading & Empty States */
 .loading-state, .empty-state {
     padding: 40px;
     text-align: center;
@@ -445,29 +504,23 @@
     background: #e0e0e0;
 }
 
-/* Responsive */
 @media (max-width: 1024px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
-    
     .career-goal-banner {
         flex-direction: column;
         text-align: center;
     }
-    
     .goal-readiness {
         margin: 0 auto;
     }
-    
     .career-goal-icon {
         display: none;
     }
-    
     .roadmap-container {
-        height: 400px; /* Taller on mobile to stack nodes */
+        height: 400px;
     }
-    
     .goal-title-select {
         font-size: 2rem;
     }
