@@ -137,23 +137,6 @@
     border-color: var(--primary-color);
 }
 
-/* Layout Select */
-#layout-select {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: var(--border-radius);
-    font-size: 1rem;
-    background: white;
-    cursor: pointer;
-    transition: border-color var(--transition-fast);
-}
-
-#layout-select:focus {
-    outline: none;
-    border-color: var(--primary-color);
-}
-
 /* Control Actions */
 .control-actions {
     display: flex;
