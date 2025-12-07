@@ -208,17 +208,39 @@ class CourseRAGRetriever:
         )
         child_rows = cursor.fetchall()
 
+        # Get all courses for title lookup
+        cursor.execute("SELECT id, title FROM courses")
+        course_rows = cursor.fetchall()
+
         conn.close()
 
         print(f"Loaded {len(parent_rows)} parent docs, {len(child_rows)} child chunks")
 
         # Create parent document map (parent_id -> parent content)
+        # AND course_id -> parent_ids mapping
         parent_map = {}
+        self.course_id_to_parent_ids = {}
+
         for row in parent_rows:
-            parent_map[row[0]] = {
+            parent_id = row[0]
+            course_id = row[1]
+            
+            parent_map[parent_id] = {
                 'content': row[2],
-                'course_id': row[1]
+                'course_id': course_id
             }
+
+            if course_id:
+                if course_id not in self.course_id_to_parent_ids:
+                    self.course_id_to_parent_ids[course_id] = []
+                self.course_id_to_parent_ids[course_id].append(parent_id)
+
+        # Create title -> course_id map for keyword search
+        self.courses_map = {}
+        for row in course_rows:
+            if row[1]: # If title exists
+                # Map lowercased title to course ID
+                self.courses_map[row[1].lower()] = row[0]
 
         # Create child documents with parent_id in metadata
         child_docs = []
@@ -276,9 +298,33 @@ class CourseRAGRetriever:
             if parent_id:
                 parent_ids.add(parent_id)
 
+        # --- KEYWORD SEARCH ENHANCEMENT ---
+        # Check if the question contains any known course titles
+        question_lower = question.lower()
+        keyword_matches = []
+        
+        for title_lower, course_id in self.courses_map.items():
+            if title_lower in question_lower:
+                print(f"Found title match: '{title_lower}' (ID: {course_id})")
+                if course_id in self.course_id_to_parent_ids:
+                    # Add all parent docs for this course
+                    parent_ids.update(self.course_id_to_parent_ids[course_id])
+                    keyword_matches.append(course_id)
+
         # Retrieve parent documents with course details
         parent_docs = []
-        for parent_id in list(parent_ids)[:CHUNK_OVERLAP]:  # Limit to CHUNK_OVERLAP parents
+        # Convert set to list and ensure we don't exceed a reasonable limit (e.g., CHUNK_OVERLAP + explicit matches)
+        # We prioritize keyword matches if we have too many, but generally we just take all unique IDs found
+        
+        final_parent_ids = list(parent_ids)
+        
+        # If we have too many, maybe limit? For now, let's just take them all up to a higher limit 
+        # or rely on the set to keep it unique. 
+        # Let's cap at CHUNK_OVERLAP * 2 to be safe, prioritizing keyword matches?
+        # Actually, if a user asks for a specific course, they want THAT course. 
+        # So let's just retrieve all found IDs.
+        
+        for parent_id in final_parent_ids:
             if parent_id in self.parent_map:
                 parent_doc = self.parent_map[parent_id].copy()
                 # Get course details including URL
