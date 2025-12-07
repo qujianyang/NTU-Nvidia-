@@ -1,6 +1,6 @@
 /**
  * Learning Paths Visualization with Cytoscape.js
- * Interactive course relationship graph
+ * Interactive course relationship graph - Enhanced Aesthetics
  */
 
 // Global variables
@@ -128,7 +128,7 @@ async function generateLearningPath() {
 }
 
 // Build the Cytoscape.js graph
-function buildGraph(coursesToDisplay) { // Changed parameter name
+function buildGraph(coursesToDisplay) { 
     console.log('Building graph with', coursesToDisplay.length, 'courses');
 
     // Check if Cytoscape is loaded
@@ -148,28 +148,26 @@ function buildGraph(coursesToDisplay) { // Changed parameter name
 
     coursesToDisplay.forEach(course => {
         const level = getLevelFromCourse(course);
-        const color = getLevelColor(level);
-
+        // We use classes for styling now instead of hardcoded colors in data
+        
         elements.push({
             data: {
                 id: course.id,
-                label: course.title,
+                label: breakLabel(course.title), // Break long labels
                 level: level,
-                courseData: course
+                courseData: course,
+                domain: course.domain || 'LLM'
             },
-            classes: level
+            classes: `${level} ${course.domain === 'Robotics' ? 'robotics' : 'llm'}`
         });
     });
-
-    console.log('Created', elements.length, 'nodes');
 
     // Create edges from prerequisites
     let edgeCount = 0;
     coursesToDisplay.forEach(course => {
         if (course.prerequisites && Array.isArray(course.prerequisites)) {
             course.prerequisites.forEach(prereqId => {
-                // Ensure prerequisite course is also in the current graph courses
-                if (coursesToDisplay.some(c => c.id === prereqId)) { // Use coursesToDisplay
+                if (coursesToDisplay.some(c => c.id === prereqId)) { 
                     elements.push({
                         data: {
                             id: `${prereqId}-${course.id}`,
@@ -183,18 +181,8 @@ function buildGraph(coursesToDisplay) { // Changed parameter name
         }
     });
 
-    console.log('Created', edgeCount, 'edges');
-
-    // Create Cytoscape instance
     const container = document.getElementById('network');
-    if (!container) {
-        console.error('Network container element not found!');
-        return;
-    }
-
-    console.log('Container found:', container);
-    console.log('Container dimensions:', container.offsetWidth, 'x', container.offsetHeight);
-
+    
     try {
         cy = cytoscape({
             container: container,
@@ -202,24 +190,30 @@ function buildGraph(coursesToDisplay) { // Changed parameter name
             style: getCytoscapeStyle(),
             layout: {
                 name: 'dagre',
-                rankDir: 'TB', // Top to bottom
-                nodeSep: 100,
-                rankSep: 150,
+                rankDir: 'TB', 
+                nodeSep: 80,
+                rankSep: 120,
+                padding: 50,
                 animate: true,
-                animationDuration: 500
+                animationDuration: 800,
+                animationEasing: 'ease-out-cubic'
             },
             minZoom: 0.3,
-            maxZoom: 3,
-            wheelSensitivity: 0.2
+            maxZoom: 2,
+            wheelSensitivity: 0.3
         });
 
-        console.log('Cytoscape graph created successfully');
-        console.log('Nodes:', cy.nodes().length, 'Edges:', cy.edges().length);
-
-        // Add event listeners
+        // Interactive events
         cy.on('tap', 'node', function(evt) {
             const node = evt.target;
             const course = node.data('courseData');
+            
+            // Highlight interaction
+            cy.elements().removeClass('highlighted');
+            node.addClass('highlighted');
+            node.predecessors().addClass('highlighted');
+            node.successors().addClass('highlighted');
+            
             if (course) {
                 showCoursePanel(course);
             }
@@ -228,21 +222,52 @@ function buildGraph(coursesToDisplay) { // Changed parameter name
         cy.on('tap', function(evt) {
             if (evt.target === cy) {
                 closeCoursePanel();
+                cy.elements().removeClass('highlighted');
             }
         });
 
+        cy.on('mouseover', 'node', function(evt) {
+            document.body.style.cursor = 'pointer';
+            evt.target.addClass('hover');
+        });
+
+        cy.on('mouseout', 'node', function(evt) {
+            document.body.style.cursor = 'default';
+            evt.target.removeClass('hover');
+        });
+
         // Fit to viewport after layout
-        setTimeout(() => {
-            cy.fit(null, 50);
-            console.log('Graph fitted to viewport');
-        }, 100);
+        // setTimeout(() => {
+        //     cy.fit(null, 50);
+        // }, 200);
 
     } catch (error) {
         console.error('Error creating Cytoscape graph:', error);
     }
 }
 
-// Get Cytoscape style
+// Helper to break long labels
+function breakLabel(label) {
+    if (label.length > 25) {
+        const words = label.split(' ');
+        let lines = [];
+        let currentLine = words[0];
+        
+        for (let i = 1; i < words.length; i++) {
+            if (currentLine.length + words[i].length < 20) {
+                currentLine += ' ' + words[i];
+            } else {
+                lines.push(currentLine);
+                currentLine = words[i];
+            }
+        }
+        lines.push(currentLine);
+        return lines.join('\n');
+    }
+    return label;
+}
+
+// Get Cytoscape style - Enhanced aesthetics
 function getCytoscapeStyle() {
     return [
         {
@@ -250,73 +275,117 @@ function getCytoscapeStyle() {
             style: {
                 'label': 'data(label)',
                 'text-wrap': 'wrap',
-                'text-max-width': '150px',
-                'font-size': '12px',
-                'font-weight': 'bold',
+                'font-size': '14px',
+                'font-weight': '600',
+                'font-family': '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                 'text-valign': 'center',
                 'text-halign': 'center',
-                'color': '#ffffff',
-                'background-color': '#1890ff',
-                'border-width': 2,
-                'border-color': '#0050b3',
-                'width': 'label',
-                'height': 'label',
-                'padding': '10px',
-                'shape': 'roundrectangle'
+                'color': '#333',
+                'background-color': '#ffffff',
+                'border-width': 0,
+                'width': 180,
+                'height': 80,
+                'shape': 'round-rectangle',
+                'corner-radius': 12,
+                'text-max-width': 160,
+                'line-height': 1.2,
+                'shadow-blur': 15,
+                'shadow-color': 'rgba(0,0,0,0.1)',
+                'shadow-offset-y': 5,
+                'shadow-opacity': 1,
+                'overlay-opacity': 0 // Remove default selection overlay
             }
         },
+        // Level-based borders (subtle indicator)
         {
             selector: 'node.beginner',
             style: {
-                'background-color': '#52c41a',
-                'border-color': '#237804'
+                'border-width': 4,
+                'border-color': '#52c41a', // Green
+                'border-opacity': 0.8
             }
         },
         {
             selector: 'node.intermediate',
             style: {
-                'background-color': '#faad14',
-                'border-color': '#d46b08'
+                'border-width': 4,
+                'border-color': '#faad14', // Orange
+                'border-opacity': 0.8
             }
         },
         {
             selector: 'node.advanced',
             style: {
-                'background-color': '#f5222d',
-                'border-color': '#a8071a'
+                'border-width': 4,
+                'border-color': '#f5222d', // Red
+                'border-opacity': 0.8
             }
         },
         {
             selector: 'node.general',
             style: {
-                'background-color': '#1890ff',
-                'border-color': '#0050b3'
+                'border-width': 4,
+                'border-color': '#1890ff', // Blue
+                'border-opacity': 0.8
+            }
+        },
+        // Domain specific styling (icons/backgrounds could be added here if we had images)
+        {
+            selector: 'node.robotics',
+            style: {
+                // Robotics specific styling if needed
+            }
+        },
+        // Interaction states
+        {
+            selector: 'node.hover',
+            style: {
+                'shadow-blur': 25,
+                'shadow-offset-y': 8,
+                'shadow-color': 'rgba(118, 185, 0, 0.3)',
+                'width': 190, // slight scale up
+                'height': 90,
+                'z-index': 999
             }
         },
         {
             selector: 'node:selected',
             style: {
                 'border-width': 4,
-                'border-color': '#76b900'
+                'border-color': '#76b900',
+                'background-color': '#f6ffed'
             }
         },
+        // Edge styling
         {
             selector: 'edge',
             style: {
                 'width': 2,
-                'line-color': '#999',
-                'target-arrow-color': '#999',
-                'target-arrow-shape': 'triangle',
+                'line-color': '#d9d9d9',
+                'target-arrow-color': '#d9d9d9',
+                'target-arrow-shape': 'triangle-backcurve', // modernized arrow
                 'curve-style': 'bezier',
-                'arrow-scale': 1.5
+                'arrow-scale': 1.2,
+                'opacity': 0.8
             }
         },
         {
-            selector: 'edge:selected',
+            selector: 'edge.highlighted',
             style: {
                 'line-color': '#76b900',
                 'target-arrow-color': '#76b900',
-                'width': 3
+                'width': 3,
+                'opacity': 1,
+                'z-index': 100
+            }
+        },
+        {
+            selector: 'node.highlighted',
+            style: {
+                'border-color': '#76b900',
+                'border-width': 4,
+                'shadow-color': 'rgba(118, 185, 0, 0.4)',
+                'shadow-blur': 20
             }
         }
     ];
@@ -359,14 +428,14 @@ function filterByLevel(level) {
 }
 
 // Apply both domain and level filters
-function applyFilters(coursesToFilter = currentGraphCourses) { // Added coursesToFilter parameter
+function applyFilters(coursesToFilter = currentGraphCourses) { 
     if (!cy) return;
 
     const nodesToShow = cy.collection();
     
     coursesToFilter.forEach(course => {
         const node = cy.getElementById(course.id);
-        if (!node) return; // Node might not exist if it's from allCourses but not in currentGraphCourses
+        if (!node) return; 
 
         const courseLevel = getLevelFromCourse(course);
         const courseDomain = course.domain || 'LLM';

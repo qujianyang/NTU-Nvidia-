@@ -6,6 +6,7 @@
     <title>{% block title %}NVIDIA Course Advisor{% endblock %}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/widget.css">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -143,6 +144,66 @@
         </div>
     </footer>
 
+    <!-- Chat Widget HTML -->
+    <div id="chat-widget-container" class="chat-widget-container" style="display: none;">
+        <!-- Resize Handle -->
+        <div id="widget-resize-handle" class="widget-resize-handle">
+            <i class="fas fa-arrows-alt"></i>
+        </div>
+
+        <!-- Header -->
+        <div class="chat-widget-header">
+            <div class="widget-header-content">
+                <i class="fas fa-robot"></i>
+                <span>NvidiAdvisor</span>
+                <div class="status-dot"></div>
+            </div>
+            <button onclick="closeChatWidget()" class="widget-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Messages Area -->
+        <div id="chat-messages" class="widget-chat-messages">
+            <div class="message bot hero">
+                <strong><i class="fas fa-robot"></i> NvidiAdvisor:</strong>
+                <p>Hello! I can help you navigate NVIDIA's course catalog.</p>
+            </div>
+            <!-- Thought Process Indicator -->
+            <div id="thought-process-container" class="thought-process-container" style="display: none;">
+                <div class="thought-process-content">
+                    <i class="fas fa-brain fa-pulse thought-process-icon"></i>
+                    <span id="thought-process-text">Processing...</span>
+                    <div class="step-dots">
+                        <span class="dot" id="dot-1"></span>
+                        <span class="dot" id="dot-2"></span>
+                        <span class="dot" id="dot-3"></span>
+                        <span class="dot" id="dot-4"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="widget-input-area">
+            <div class="input-container">
+                <input type="text" id="user-input" placeholder="Ask about courses..." maxlength="500">
+                <button id="send-btn" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="input-footer">
+                <span id="char-counter">0/500</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toggle Button -->
+    <button id="chat-widget-toggle" class="chat-widget-toggle" onclick="toggleChatWidget()">
+        <i class="fas fa-comment-dots"></i>
+        <div id="widget-badge" class="widget-badge">1</div>
+    </button>
+
     <!-- Common Scripts -->
     <script>
         // Toggle user dropdown menu
@@ -194,6 +255,10 @@
             }
         }
     </script>
+    
+    <!-- Widget Scripts -->
+    <script src="/static/script.js"></script>
+    <script src="/static/widget.js"></script>
 
     {% block extra_js %}{% endblock %}
 </body>
