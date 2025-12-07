@@ -10,7 +10,8 @@ ROBOTICS_SKILL_MAP = [
         "icon": "fas fa-laptop-code",
         "status": "completed",
         "description": "Mastery of Linux environment and Python scripting.",
-        "progress": 100
+        "progress": 100,
+        "url": "https://www.nvidia.com/en-us/training/online/" 
     },
     {
         "id": "skill-simulation",
@@ -18,7 +19,8 @@ ROBOTICS_SKILL_MAP = [
         "icon": "fas fa-cube",
         "status": "active",
         "description": "Building and testing digital twins in Isaac Sim.",
-        "progress": 65 
+        "progress": 65,
+        "url": "https://developer.nvidia.com/isaac-sim"
     },
     {
         "id": "skill-ros",
@@ -26,7 +28,8 @@ ROBOTICS_SKILL_MAP = [
         "icon": "fas fa-robot",
         "status": "future",
         "description": "Middleware for hardware control and communication.",
-        "progress": 0
+        "progress": 0,
+        "url": "https://developer.nvidia.com/isaac-ros"
     },
     {
         "id": "skill-ai-deployment",
@@ -34,7 +37,8 @@ ROBOTICS_SKILL_MAP = [
         "icon": "fas fa-microchip",
         "status": "locked",
         "description": "Deploying models to Jetson Orin devices.",
-        "progress": 0
+        "progress": 0,
+        "url": "https://developer.nvidia.com/embedded/jetson-orin"
     }
 ]
 
@@ -45,7 +49,8 @@ AI_SKILL_MAP = [
         "icon": "fas fa-calculator",
         "status": "completed",
         "description": "Linear Algebra, Calculus, and Probability.",
-        "progress": 100
+        "progress": 100,
+        "url": "https://www.coursera.org/specializations/mathematics-machine-learning"
     },
     {
         "id": "skill-dl",
@@ -53,7 +58,8 @@ AI_SKILL_MAP = [
         "icon": "fas fa-brain",
         "status": "completed",
         "description": "Neural Networks, Backprop, and Optimization.",
-        "progress": 100
+        "progress": 100,
+        "url": "https://www.nvidia.com/en-us/training/deep-learning-institute/"
     },
     {
         "id": "skill-llm",
@@ -61,7 +67,8 @@ AI_SKILL_MAP = [
         "icon": "fas fa-language",
         "status": "active",
         "description": "Attention mechanisms and GPT architectures.",
-        "progress": 40
+        "progress": 40,
+        "url": "https://www.nvidia.com/en-us/training/large-language-models/"
     },
     {
         "id": "skill-rag",
@@ -69,7 +76,8 @@ AI_SKILL_MAP = [
         "icon": "fas fa-database",
         "status": "future",
         "description": "Retrieval Augmented Generation pipelines.",
-        "progress": 0
+        "progress": 0,
+        "url": "https://developer.nvidia.com/blog/rag-101-demystifying-retrieval-augmented-generation-pipelines/"
     }
 ]
 

@@ -96,7 +96,7 @@ function renderRoadmap(nodes) {
         nodeDiv.className = `roadmap-node ${node.status}`;
         nodeDiv.style.top = '50%';
         nodeDiv.style.left = `${10 + (index * spacing)}%`;
-        nodeDiv.title = node.description || node.title;
+        nodeDiv.title = node.description || node.title; // Use description for tooltip
 
         // Icon
         const icon = document.createElement('i');
@@ -149,7 +149,7 @@ function updateNextMove(nextMove) {
                     <span><i class="fas fa-clock"></i> 4 Hours</span>
                     <span><i class="fas fa-signal"></i> ${nextMove.status === 'active' ? 'In Progress' : 'Start Now'}</span>
                 </div>
-                <a href="#" class="btn-primary btn-large">
+                <a href="${nextMove.url || '#'}" target="_blank" class="btn-primary btn-large">
                     Continue Learning <i class="fas fa-arrow-right"></i>
                 </a>
             </div>

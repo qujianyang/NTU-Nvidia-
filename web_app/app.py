@@ -506,7 +506,8 @@ def calculate_user_state(user_completed_course_ids, path):
             "status": node.get("status", "future"), 
             "description": node.get("description", ""),
             "progress": node.get("progress", 0),
-            "courses_text": node.get("courses_text", "") # Pass specific details
+            "courses_text": node.get("courses_text", ""), # Pass specific details
+            "url": node.get("url", "#") # Pass the URL
         })
         
         if node.get("status") == "active" and not next_recommendation:
