@@ -11,9 +11,9 @@ An intelligent AI-powered learning advisor that transforms NVIDIA's static cours
 ![NVIDIA Learning Assistant Interface](https://github.com/user-attachments/assets/9a18f48f-da62-4230-8c3a-922ba95bd9d5)
 
 ### System Demo
-<video src="assets/demo.mp4" width="100%" controls>
-  Your browser does not support the video tag.
-</video>
+[![NVIDIA Learning Assistant Demo](https://img.youtube.com/vi/mRUZ7ZDOUGE/0.jpg)](https://www.youtube.com/watch?v=mRUZ7ZDOUGE)
+
+*Click the image above to watch the system demo on YouTube.*
 
 *The NVIDIA Learning Assistant features an interactive course catalog with an AI-powered chat widget for personalized course recommendations and learning path guidance.*
 
